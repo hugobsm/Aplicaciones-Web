@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miembros</title>
+    <style>
+        body {
+            font-family: 'BB-Regular, Helvetica Neue, Helvetica, Arial, sans-serif';
+            font-size: .75rem;
+            font-weight: 400;
+            line-height: 130%;
+            letter-spacing: .03em;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+        .member-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .member-list li {
+            margin-top: 10px;
+            display: inline;
+        }
+        .member-list a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #ddd;
+            transition: 0.3s;
+        }
+        .member-list a:hover {
+            background-color: rgb(113, 232, 239);
+        }
+        .member {
+            margin-top: 40px;
+            padding: 20px;
+        }
+        .member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="index.html">Inicio</a> |
+        <a href="detalles.html">Detalles</a> |
+        <a href="bocetos.html">Bocetos</a> |
+        <a href="miembros.html">Miembros</a> |
+        <a href="planificacion.html">Planificación</a> |
+        <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="container">
+        <h1>Team Members</h1>
+        <ul class="member-list">
+            <li><a href="#member1">Pablo de Asís</a></li>
+            <li><a href="#member2">Hugo Boisseleau</a></li>
+            <li><a href="#member3">Victoria Lopez</a></li>
+            <li><a href="#member4">Mario Martinez</a></li>
+            <li><a href="#member5">Óscar Platero</a></li>
+        </ul>
+        
+        <div id="member1" class="member">
+            <h2>Pablo de Asís</h2>
+            <img src="Imagenes Miembros/pasis.png" alt="Pablo de Asis">
+            <p>Email: pasis@ucm.es</p>
+            <p>Es un amante del baloncesto y de la moda. También le gusta el fútbol y la música</p>
+        </div>
+        
+        <div id="member2" class="member">
+            <h2>Hugo Boisseleau</h2>
+            <img src="Imagenes Miembros/hugobois.png" alt="Hugo Boisseleau">
+            <p>Email: hugobois@ucm.es</p>
+            <p>Es un apasionado de la moda y del diseño. Le gusta dibujar y la fotografía.</p>
+        </div>
+
+        <div id="member3" class="member">
+            <h2>Victoria Lopez</h2>
+            <img src="Imagenes Miembros/victol02.jpg" alt="Victoria Lopez">
+            <p>Email: victol02@ucm.es</p>
+            <p>Le gusta viajar y descubrir culturas.</p>
+        </div>
+
+        <div id="member4" class="member">
+            <h2>Mario Martinez</h2>
+            <img src="Imagenes Miembros/mariom48.jpg" alt="Mario Martinez">
+            <p>Email: mariom48@ucm.es</p>
+            <p>Le gusta hacer deporte y estar con su familia y amigos.</p>
+        </div>
+
+        <div id="member5" class="member">
+            <h2>Óscar Platero</h2>
+            <img src="Imagenes Miembros/oplatero.jpg" alt="Óscar Platero">
+            <p>Email: oplatero@ucm.es</p>
+            <p>Le gusta el fútbol y el tenis. Le gusta trabajar y viajar.</p>
+        </div>
+    </div>
+</body>
+</html>

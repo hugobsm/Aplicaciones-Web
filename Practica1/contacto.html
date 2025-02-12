@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto</title>
+    <style>
+        body {
+            font-family: 'BB-Regular, Helvetica Neue, Helvetica, Arial, sans-serif';
+            font-size: .75rem;
+            font-weight: 400;
+            line-height: 130%;
+            letter-spacing: .03em;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .nav {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+        .nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: black;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="index.html">Inicio</a> |
+        <a href="detalles.html">Detalles</a> |
+        <a href="bocetos.html">Bocetos</a> |
+        <a href="miembros.html">Miembros</a> |
+        <a href="planificacion.html">Planificación</a> |
+        <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="container">
+        <h2>Formulario de Contacto</h2>
+        <form action="mailto:tuemail@example.com" method="post" enctype="text/plain">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br><br>
+            
+            <label for="email">Dirección de email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+            
+            <p>Motivo de la consulta:</p>
+            <input type="radio" id="evaluacion" name="motivo" value="Evaluación" required>
+            <label for="evaluacion">Evaluación</label><br>
+            <input type="radio" id="sugerencias" name="motivo" value="Sugerencias">
+            <label for="sugerencias">Sugerencias</label><br>
+            <input type="radio" id="criticas" name="motivo" value="Críticas">
+            <label for="criticas">Críticas</label><br><br>
+            
+            <input type="checkbox" id="terminos" name="terminos" required>
+            <label for="terminos">Marque esta casilla para verificar que ha leído nuestros términos y condiciones del servicio</label><br><br>
+            
+            <label for="consulta">Consulta:</label><br>
+            <textarea id="consulta" name="consulta" rows="5" cols="40" required></textarea><br><br>
+            
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+</body>
+</html>
