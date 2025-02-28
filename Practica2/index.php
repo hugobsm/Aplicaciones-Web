@@ -45,11 +45,6 @@ $contenidoPrincipal = <<<EOS
             </div>
         </div>
     </section>
-    
-    <section class="info" style="text-align: center; padding: 40px; background: #f5f5f5;">
-        <h2>Sobre Nosotros</h2>
-        <p>Somos una tienda dedicada a ofrecer la mejor calidad en productos seleccionados.</p>
-    </section>
 EOS;
 
 require("includes/vistas/plantilla/plantilla.php");
