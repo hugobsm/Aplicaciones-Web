@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             background-color: #fff;
             color: #000;
+            padding-top: 80px; /* Para evitar que el contenido se solape con el header */
         }
         .header {
             display: flex;
@@ -17,6 +18,21 @@
             align-items: center;
             padding: 10px 40px;
             border-bottom: 1px solid black;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+        .header-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .left-menu, .right-menu {
             display: flex;
@@ -24,7 +40,6 @@
             gap: 20px;
         }
         .logo {
-            flex-grow: 1;
             text-align: center;
         }
         .logo img {
@@ -75,19 +90,21 @@
 </head>
 <body>
     <header class="header">
-        <div class="left-menu">
-            <a href="index.php">Inicio</a>
-            <a href="checkout.php">Compra</a>
-            <a href="about.php">About Us</a>
-        </div>
-        <div class="logo">
-            <a href="index.php"><img src="Imagenes Marca/logo.png" alt="Logo"></a>
-        </div>
-        <div class="right-menu">
-            <div class="search">
-                <input type="text" placeholder="Buscar...">
+        <div class="header-container">
+            <div class="left-menu">
+                <a href="index.php">Inicio</a>
+                <a href="checkout.php">Compra</a>
+                <a href="about.php">About Us</a>
             </div>
-            <?= $authLink ?>
+            <div class="logo">
+                <a href="index.php"><img src="Imagenes Marca/logo.png" alt="Logo"></a>
+            </div>
+            <div class="right-menu">
+                <div class="search">
+                    <input type="text" placeholder="Buscar...">
+                </div>
+                <?= $authLink ?>
+            </div>
         </div>
     </header>
 </body>
