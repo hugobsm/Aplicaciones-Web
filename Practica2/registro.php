@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// Conexión a la base de datos
-$servername = "localhost";  // Servidor de la base de datos
-$username = "root";  // Usuario de MySQL (por defecto en XAMPP)
-$password = "";  // Contraseña (vacía por defecto en XAMPP)
-$dbname = "brandswap";  // Nombre de la base de datos
+// Conectar a la base de datos
+$servername = "localhost"; // Servidor de la base de datos
+$username = "root"; // Usuario de MySQL (por defecto en XAMPP)
+$password = ""; // Contraseña (vacía por defecto en XAMPP)
+$dbname = "brandswap"; // Nombre de la base de datos
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -16,35 +16,19 @@ if ($conn->connect_error) {
 
 // Procesar el formulario cuando se envíe
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = htmlspecialchars(trim($_POST["nombre"]));
     $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
-    $contrasena = trim($_POST["contrasena"]);
+    $contrasena = password_hash(trim($_POST["contrasena"]), PASSWORD_DEFAULT); // Encripta la contraseña
 
-    // Buscar el usuario en la base de datos
-    $sql = "SELECT id_usuario, nombre, contrasena FROM usuarios WHERE email = ?";
+    // Insertar el usuario en la base de datos
+    $sql = "INSERT INTO usuarios (nombre, email, contrasena) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    $stmt->bind_param("sss", $nombre, $email, $contrasena);
 
-    // Si se encuentra el usuario
-    if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id_usuario, $nombre, $hash_contrasena);
-        $stmt->fetch();
-
-        // Verificar la contraseña
-        if (password_verify($contrasena, $hash_contrasena)) {
-            $_SESSION["login"] = true;
-            $_SESSION["id_usuario"] = $id_usuario;
-            $_SESSION["nombre"] = $nombre;
-            header("Location: index.php");
-            exit();
-        } else {
-            echo "Contraseña ingresada: " . $contrasena . "<br>";
-echo "Hash en BD: " . $hash_contrasena . "<br>";
-            $error = "⚠️ Contraseña incorrecta.";
-        }
+    if ($stmt->execute()) {
+        echo "<p>Registro exitoso. <a href='login.php'>Iniciar sesión</a></p>";
     } else {
-        $error = "⚠️ Usuario no encontrado.";
+        echo "<p>Error: " . $stmt->error . "</p>";
     }
 
     $stmt->close();
@@ -57,7 +41,7 @@ $conn->close();
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Iniciar Sesión</title>
+    <title>Registro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,34 +65,32 @@ $conn->close();
             border-radius: 5px;
         }
         input[type="submit"] {
-            background-color: #007bff;
+            background-color: #28a745;
             color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
         }
         input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>Iniciar Sesión</h2>
-        <?php if (!empty($error)) { echo "<p class='error'>$error</p>"; } ?>
+        <h2>Registro de usuario</h2>
         <form method="POST">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required><br><br>
+
             <label for="email">Correo electrónico:</label>
             <input type="email" id="email" name="email" required><br><br>
 
             <label for="contrasena">Contraseña:</label>
             <input type="password" id="contrasena" name="contrasena" required><br><br>
 
-            <input type="submit" value="Iniciar Sesión">
+            <input type="submit" value="Registrar">
         </form>
     </div>
 
