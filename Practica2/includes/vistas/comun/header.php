@@ -4,13 +4,12 @@ session_start(); // Asegura que se inicie la sesión en cada página que depende
 function mostrarSaludo() 
 {
     if (isset($_SESSION["login"]) && $_SESSION["login"] === true) {
-        echo "Bienvenido, " . $_SESSION['nombre'] . ". <a href='logout.php'>(Salir)</a>";
+        echo "<a href='profile.php'>Bienvenido, ". $_SESSION['nombre'] ."</a>. <a href='logout.php'>(Salir)</a>";
     } else {
         echo "<a href='login.php'>Iniciar sesión</a> | <a href='registro.php'>Registro</a>";
     }
 }
 
-$authLink = isset($_SESSION['user']) ? '<a href="profile.php">Mi Perfil</a>' : '<a href="login.php">Iniciar Sesión</a> | <a href="registro.php">Registro</a>';
 ?>
 
 <style>
