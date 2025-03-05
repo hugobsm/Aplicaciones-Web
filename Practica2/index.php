@@ -1,7 +1,4 @@
 <?php
-session_start();
-$authLink = isset($_SESSION['user']) ? '<a href="profile.php">Mi Perfil</a>' : '<a href="login.php">Registro/Iniciar Sesión</a>';
-
 $tituloPagina = 'Portada';
 
 $contenidoPrincipal = <<<EOS

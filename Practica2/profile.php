@@ -8,8 +8,8 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user = $_SESSION['user']; // Datos del usuario almacenados en la sesión
-
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
