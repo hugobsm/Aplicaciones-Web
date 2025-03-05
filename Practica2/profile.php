@@ -1,13 +1,5 @@
 <?php
 session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit();
-}
-
-$user = $_SESSION['user']; // Datos del usuario almacenados en la sesión
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +47,15 @@ $user = $_SESSION['user']; // Datos del usuario almacenados en la sesión
 </head>
 <body>
     <div class="profile-container">
-        <h1>Bienvenido, <?php echo htmlspecialchars($user['name']); ?>!</h1>
-        <img src="<?php echo $user['profile_pic'] ?? 'default-avatar.png'; ?>" alt="Foto de perfil" class="profile-img">
-        <p>Email: <?php echo htmlspecialchars($user['email']); ?></p>
-        <p>Fecha de Registro: <?php echo htmlspecialchars($user['register_date']); ?></p>
+        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h1>
+        <img src="<?php echo $_SESSION['profile_pic'] ?? 'default-avatar.png'; ?>" alt="Foto de perfil" class="profile-img">
+        <p>Email: <?php echo htmlspecialchars($_SESSION['email']); ?></p>
+        <p>Fecha de Registro: <?php echo htmlspecialchars($_SESSION['register_date']); ?></p>
         <a href="logout.php" class="logout">Cerrar Sesión</a>
     </div>
 </body>
 </html>
+<?php
+require("includes/vistas/plantilla/plantilla.php");
+
+
