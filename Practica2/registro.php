@@ -80,6 +80,7 @@ $conn->close();
 
     <div class="container">
         <h2>Registro de usuario</h2>
+        <p>¿Ya tienes una cuenta? <a href="login.php">Inicia sesión aquí</a></p> <!-- Enlace agregado -->
         <form method="POST">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required><br><br>
