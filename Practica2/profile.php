@@ -1,5 +1,18 @@
 <?php
 session_start();
+
+// Verificar si el usuario ha iniciado sesión
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: login.php"); // Redirigir al login si no está autenticado
+    exit();
+}
+
+// Asegurar que la imagen de perfil tenga un valor predeterminado
+$foto_perfil = $_SESSION['foto_perfil'] ?? 'uploads/default-avatar.png';
+
+// Asegurar que la fecha de registro no sea null
+$fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
+
 ?>
 
 <!DOCTYPE html>
@@ -48,14 +61,13 @@ session_start();
 <body>
     <div class="profile-container">
         <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h1>
-        <img src="<?php echo $_SESSION['profile_pic'] ?? 'default-avatar.png'; ?>" alt="Foto de perfil" class="profile-img">
+        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" class="profile-img">
         <p>Email: <?php echo htmlspecialchars($_SESSION['email']); ?></p>
-        <p>Fecha de Registro: <?php echo htmlspecialchars($_SESSION['register_date']); ?></p>
+        <p>Fecha de Registro: <?php echo htmlspecialchars($fecha_registro); ?></p>
         <a href="logout.php" class="logout">Cerrar Sesión</a>
     </div>
 </body>
 </html>
 <?php
 require("includes/vistas/plantilla/plantilla.php");
-
-
+?>

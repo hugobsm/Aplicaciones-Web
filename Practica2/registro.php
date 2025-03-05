@@ -2,10 +2,10 @@
 session_start();
 
 // Conectar a la base de datos
-$servername = "localhost"; // Servidor de la base de datos
-$username = "root"; // Usuario de MySQL (por defecto en XAMPP)
-$password = ""; // Contraseña (vacía por defecto en XAMPP)
-$dbname = "brandswap"; // Nombre de la base de datos
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "brandswap";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,10 +20,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_EMAIL);
     $contrasena = password_hash(trim($_POST["contrasena"]), PASSWORD_DEFAULT); // Encripta la contraseña
 
-    // Insertar el usuario en la base de datos
-    $sql = "INSERT INTO usuarios (nombre, email, contrasena) VALUES (?, ?, ?)";
+    // Manejar la imagen de perfil
+    $foto_perfil = "uploads/default-avatar.png"; // Imagen por defecto
+    if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] == 0) {
+        $imagen = $_FILES['foto_perfil'];
+        $extensiones_permitidas = ['jpg', 'jpeg', 'png'];
+        $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
+
+        if (in_array($extension, $extensiones_permitidas)) {
+            if (!is_dir("uploads/")) {
+                mkdir("uploads/", 0777, true);
+            }
+            $nombre_imagen = "uploads/" . uniqid("perfil_") . "." . $extension;
+            move_uploaded_file($imagen['tmp_name'], $nombre_imagen);
+            $foto_perfil = $nombre_imagen;
+        }
+    }
+
+    // Insertar el usuario en la base de datos con la foto de perfil
+    $sql = "INSERT INTO usuarios (nombre, email, contrasena, foto_perfil, fecha_registro) VALUES (?, ?, ?, ?, NOW())";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $nombre, $email, $contrasena);
+    $stmt->bind_param("ssss", $nombre, $email, $contrasena, $foto_perfil);
 
     if ($stmt->execute()) {
         echo "<p>Registro exitoso. <a href='login.php'>Iniciar sesión</a></p>";
@@ -80,8 +97,8 @@ $conn->close();
 
     <div class="container">
         <h2>Registro de usuario</h2>
-        <p>¿Ya tienes una cuenta? <a href="login.php">Inicia sesión aquí</a></p> <!-- Enlace agregado -->
-        <form method="POST">
+        <p>¿Ya tienes una cuenta? <a href="login.php">Inicia sesión aquí</a></p>
+        <form method="POST" enctype="multipart/form-data">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required><br><br>
 
@@ -90,6 +107,9 @@ $conn->close();
 
             <label for="contrasena">Contraseña:</label>
             <input type="password" id="contrasena" name="contrasena" required><br><br>
+
+            <label for="foto_perfil">Foto de Perfil:</label>
+            <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*"><br><br>
 
             <input type="submit" value="Registrar">
         </form>
