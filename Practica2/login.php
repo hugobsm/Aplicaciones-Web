@@ -20,14 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $contrasena = trim($_POST["contrasena"]);
 
     // Buscar el usuario en la base de datos (AÑADIENDO la foto de perfil)
-    $sql = "SELECT id_usuario, nombre, contrasena, foto_perfil FROM usuarios WHERE email = ?";
+    $sql = "SELECT id_usuario, nombre, contrasena, foto_perfil,fecha_registro FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        $stmt->bind_result($id_usuario, $nombre, $hash_contrasena, $foto_perfil);
+        $stmt->bind_result($id_usuario, $nombre, $hash_contrasena, $foto_perfil,$fecha_registro);
         $stmt->fetch();
 
         // Verificar la contraseña
@@ -36,9 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["id_usuario"] = $id_usuario;
             $_SESSION["nombre"] = $nombre;
             $_SESSION["email"] = $email;
-            $_SESSION["fecha_registro"] = $fecha_registro;
             $_SESSION["foto_perfil"] = $foto_perfil ?? "uploads/default-avatar.png"; // Si no tiene imagen, usa la predeterminada
-
+            $_SESSION["fecha_registro"] = $fecha_registro;
             header("Location: index.php");
             exit();
         } else {
