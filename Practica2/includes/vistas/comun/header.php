@@ -1,6 +1,8 @@
 <?php
-session_start(); // Asegura que se inicie la sesión en cada página que depende de ella
-
+//session_start(); // Asegura que se inicie la sesión en cada página que depende de ella
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 function mostrarSaludo() 
 {
     if (isset($_SESSION["login"]) && $_SESSION["login"] === true) {

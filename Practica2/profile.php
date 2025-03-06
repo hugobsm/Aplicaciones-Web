@@ -58,16 +58,20 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
         }
     </style>
 </head>
-<body>
-    <div class="profile-container">
-        <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?>!</h1>
-        <img src="<?php echo htmlspecialchars($foto_perfil); ?>" alt="Foto de perfil" class="profile-img">
-        <p>Email: <?php echo htmlspecialchars($_SESSION['email']); ?></p>
-        <p>Fecha de Registro: <?php echo htmlspecialchars($fecha_registro); ?></p>
-        <a href="logout.php" class="logout">Cerrar Sesión</a>
-    </div>
-</body>
+
 </html>
 <?php
+
+$contenidoPrincipal = "
+    <div class='profile-container'>
+        <h1>Bienvenido, " . htmlspecialchars($_SESSION['nombre']) . "!</h1>
+        <img src='" . htmlspecialchars($_SESSION['foto_perfil']) . "' alt='Foto de perfil' class='profile-img'>
+        <p>Email: " . htmlspecialchars($_SESSION['email']) . "</p>
+        <p>Fecha de Registro: " . htmlspecialchars($_SESSION['fecha_registro']) . "</p>
+        <a href='logout.php' class='logout'>Cerrar Sesión</a>
+    </div>
+";
+
+
 require("includes/vistas/plantilla/plantilla.php");
 ?>
