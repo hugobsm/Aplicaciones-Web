@@ -45,11 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("issdss", $id_usuario, $nombre_producto, $descripcion, $precio, $nombre_imagen, $fecha_publicacion);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Artículo publicado con éxito'); window.location.href='perfil.php';</script>";
+        echo "<script>alert('Artículo publicado con éxito'); window.location.href='profile.php';</script>";
     } else {
         echo "<script>alert('Error al publicar el artículo');</script>";
     }
 }
+
 ?>
 
 <!DOCTYPE html>

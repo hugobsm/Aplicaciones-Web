@@ -45,6 +45,29 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
             border: 3px solid #333;
             margin-bottom: 15px;
         }
+        .buttons-container {
+            margin-top: 20px;
+        }
+        .add-button, .view-products-button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: black;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .add-button:hover, .view-products-button:hover {
+            background-color: #333;
+        }
+        .view-products-button {
+            background-color: #007bff;
+        }
+        .view-products-button:hover {
+            background-color: #0056b3;
+        }
         .logout {
             display: inline-block;
             padding: 10px 20px;
@@ -57,39 +80,26 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
         .logout:hover {
             background: darkred;
         }
-        .add-button {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            background-color: black;
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            line-height: 30px;
-            border-radius: 50%;
-            text-decoration: none;
-            position: absolute;
-            right: 20px;
-            top: 20px;
-        }
     </style>
 </head>
+<body>
 
-</html>
 <?php
-
 $contenidoPrincipal = "
     <div class='profile-container'>
-        <h1>Bienvenido, " . htmlspecialchars($_SESSION['nombre']) . "!
-            <a href='publicararticulo.php' class='add-button'>+</a>
-        </h1>
+        <h1>Bienvenido, " . htmlspecialchars($_SESSION['nombre']) . "!</h1>
         <img src='" . htmlspecialchars($_SESSION['foto_perfil']) . "' alt='Foto de perfil' class='profile-img'>
         <p>Email: " . htmlspecialchars($_SESSION['email']) . "</p>
         <p>Fecha de Registro: " . htmlspecialchars($_SESSION['fecha_registro']) . "</p>
+        <div class='buttons-container'>
+            <a href='publicararticulo.php' class='add-button'>Añadir producto</a>
+            <a href='verProductos.php' class='view-products-button'>Ver mis productos</a>
+        </div>
         <a href='logout.php' class='logout'>Cerrar Sesión</a>
     </div>
 ";
 
 require("includes/vistas/plantilla/plantilla.php");
 ?>
+</body>
+</html>
