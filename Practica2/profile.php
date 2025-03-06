@@ -36,6 +36,7 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
         .profile-img {
             width: 120px;
@@ -56,6 +57,22 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
         .logout:hover {
             background: darkred;
         }
+        .add-button {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: black;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 30px;
+            border-radius: 50%;
+            text-decoration: none;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
     </style>
 </head>
 
@@ -64,14 +81,15 @@ $fecha_registro = $_SESSION['fecha_registro'] ?? 'No disponible';
 
 $contenidoPrincipal = "
     <div class='profile-container'>
-        <h1>Bienvenido, " . htmlspecialchars($_SESSION['nombre']) . "!</h1>
+        <h1>Bienvenido, " . htmlspecialchars($_SESSION['nombre']) . "!
+            <a href='publicararticulo.php' class='add-button'>+</a>
+        </h1>
         <img src='" . htmlspecialchars($_SESSION['foto_perfil']) . "' alt='Foto de perfil' class='profile-img'>
         <p>Email: " . htmlspecialchars($_SESSION['email']) . "</p>
         <p>Fecha de Registro: " . htmlspecialchars($_SESSION['fecha_registro']) . "</p>
         <a href='logout.php' class='logout'>Cerrar Sesión</a>
     </div>
 ";
-
 
 require("includes/vistas/plantilla/plantilla.php");
 ?>
