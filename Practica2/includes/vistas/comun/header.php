@@ -130,7 +130,7 @@ function mostrarSaludo()
             <div class="left-menu">
                 <a href="index.php">Inicio</a>
                 <a href="checkout.php">Compra</a>
-                <a href="about.php">About Us</a>
+                <a href="miembros.php">About Us</a>
             </div>
             <div class="logo">
                 <a href="index.php"><img src="Imagenes Marca/logo.png" alt="Logo"></a>
