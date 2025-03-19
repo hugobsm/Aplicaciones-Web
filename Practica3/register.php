@@ -1,5 +1,5 @@
 <?php
-require_once("config.php"); // Carga la configuración de la BD y la app
+require_once("includes/config.php"); // Carga la configuración de la BD y la app
 require_once("includes/login/registerForm.php");
 
 $tituloPagina = 'Registro de usuario';
