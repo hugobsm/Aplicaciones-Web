@@ -1,31 +1,30 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="../estilo.css" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title><?= $tituloPagina ?></title>
-	</head>
+<head>
+<link rel="stylesheet" type="text/css" href="CSS/estilo.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><?= $tituloPagina ?></title>
+</head>
 
-	<body>
-		<div id="contenedor">
+<body>
 
-			<?php
-				require("includes/comun/cabecera.php");
-				require("includes/comun/sidebarizq.php");
-			?>
+<div id="contenedor">
 
-			<main>
-				<article>
-					<?= $contenidoPrincipal ?>
-				</article>
-			</main>
+	<?php
+		require("includes/comun/cabecera.php");
+	?>
 
-			<?php
-				require("includes/comun/sidebarDer.php");
-				require("includes/comun/pie.php");
-			?>
+	<main>
+	  	<article>
+			<?= $contenidoPrincipal ?>
+		</article>
+	</main>
 
-		</div> <!-- Fin del contenedor -->
+	<?php
+		require("includes/comun/pie.php");
+	?>
 
-	</body>
+</div> <!-- Fin del contenedor -->
+
+</body>
 </html>
