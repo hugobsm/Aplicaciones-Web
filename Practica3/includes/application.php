@@ -1,130 +1,100 @@
-<?php
+<?php 
 
-class application
+class Application
 {
-	private static $instancia;
-	
-	public static function getInstance() 
-	{
-		if ( !self::$instancia instanceof self ) 
-		{
-			self::$instancia = new static();
-		}
-		
-		return self::$instancia;
-	}
+    private static $instancia;
+    private $bdDatosConexion;
+    private $inicializada = false;
+    private $conn;
+    private $atributosPeticion;
 
-	private function __construct()
-	{
-	}
+    const ATRIBUTOS_PETICION = 'attsPeticion';
 
-	private $bdDatosConexion;
-	
-	private $inicializada = false;
-	
-	private $conn;
-
-	private $atributosPeticion;
-
-	const ATRIBUTOS_PETICION = 'attsPeticion';
-	
-	public function init($bdDatosConexion)
-	{
-        if ( ! $this->inicializada ) 
-		{
-    	    $this->bdDatosConexion = $bdDatosConexion;
-    		
-			$this->inicializada = true;
-    		
-			session_start();
-
-			$this->atributosPeticion = $_SESSION[self::ATRIBUTOS_PETICION] ?? [];
-			
-			unset($_SESSION[self::ATRIBUTOS_PETICION]);
+    public static function getInstance() 
+    {
+        if (!self::$instancia instanceof self) 
+        {
+            self::$instancia = new static();
         }
-	}
-	
-	public function shutdown()
-	{
-	    $this->compruebaInstanciaInicializada();
-	    
-		if ($this->conn !== null && ! $this->conn->connect_errno) 
-		{
-	        $this->conn->close();
-	    }
-	}
-	
-	private function compruebaInstanciaInicializada()
-	{
-	    if (! $this->inicializada ) 
-		{
-	        echo "Aplicacion no inicializa";
-	        exit();
-	    }
-	}
-	
-	public function getConexionBd()
-	{
-	    $this->compruebaInstanciaInicializada();
-		
-		if (! $this->conn ) 
-		{
-			$bdHost = $this->bdDatosConexion['host'];
-			$bdUser = $this->bdDatosConexion['user'];
-			$bdPass = $this->bdDatosConexion['pass'];
-			$bd     = $this->bdDatosConexion['bd'];
-			
-			//$driver = new mysqli_driver();
-			
-			//$driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
+        return self::$instancia;
+    }
 
-			$conn = new mysqli($bdHost, $bdUser, $bdPass, $bd);
-			
-			if ( $conn->connect_errno ) 
-			{
-				echo "Error de conexión a la BD ({$conn->connect_errno}):  {$conn->connect_error}";
-				exit();
-			}
-			
-			if ( ! $conn->set_charset("utf8mb4")) 
-			{
-				echo "Error al configurar la BD ({$conn->errno}):  {$conn->error}";
-				exit();
-			}
-			
-			$this->conn = $conn;
-		}
-		
-		return $this->conn;
-	}
+    private function __construct()
+    {
+    }
 
-	public function putAtributoPeticion($clave, $valor)
-	{
-		$atts = null;
-		
-		if (isset($_SESSION[self::ATRIBUTOS_PETICION])) 
-		{
-			$atts = &$_SESSION[self::ATRIBUTOS_PETICION];
-		} 
-		else 
-		{
-			$atts = array();
-			
-			$_SESSION[self::ATRIBUTOS_PETICION] = &$atts;
-		}
+    public function init($bdDatosConexion)
+    {
+        if (!$this->inicializada) 
+        {
+            $this->bdDatosConexion = $bdDatosConexion;
+            $this->inicializada = true;
+            session_start();
+            $this->atributosPeticion = $_SESSION[self::ATRIBUTOS_PETICION] ?? [];
+            unset($_SESSION[self::ATRIBUTOS_PETICION]);
+        }
+    }
 
-		$atts[$clave] = $valor;
-	}
+    public function shutdown()
+    {
+        $this->compruebaInstanciaInicializada();
+        if ($this->conn !== null && !$this->conn->connect_errno) 
+        {
+            $this->conn->close();
+        }
+    }
 
-	public function getAtributoPeticion($clave)
-	{
-		$result = $this->atributosPeticion[$clave] ?? null;
-		
-		if(is_null($result) && isset($_SESSION[self::ATRIBUTOS_PETICION])) 
-		{
-			$result = $_SESSION[self::ATRIBUTOS_PETICION][$clave] ?? null;
-		}
-		
-		return $result;
-	}
+    private function compruebaInstanciaInicializada()
+    {
+        if (!$this->inicializada) 
+        {
+            echo "Aplicación no inicializada";
+            exit();
+        }
+    }
+
+    public function getConexionBd()
+    {
+        $this->compruebaInstanciaInicializada();
+
+        if (!$this->conn) 
+        {
+            $bdHost = $this->bdDatosConexion['host'];
+            $bdUser = $this->bdDatosConexion['user'];
+            $bdPass = $this->bdDatosConexion['pass'];
+            $bd     = $this->bdDatosConexion['bd'];
+
+            $conn = new mysqli($bdHost, $bdUser, $bdPass, $bd);
+
+            if ($conn->connect_errno) 
+            {
+                echo "Error de conexión a la BD ({$conn->connect_errno}):  {$conn->connect_error}";
+                exit();
+            }
+
+            if (!$conn->set_charset("utf8mb4")) 
+            {
+                echo "Error al configurar la BD ({$conn->errno}):  {$conn->error}";
+                exit();
+            }
+
+            $this->conn = $conn;
+        }
+
+        return $this->conn;
+    }
+
+    public function putAtributoPeticion($clave, $valor)
+    {
+        if (!isset($_SESSION[self::ATRIBUTOS_PETICION])) {
+            $_SESSION[self::ATRIBUTOS_PETICION] = [];
+        }
+        $_SESSION[self::ATRIBUTOS_PETICION][$clave] = $valor;
+    }
+
+    public function getAtributoPeticion($clave)
+    {
+        return $this->atributosPeticion[$clave] ?? $_SESSION[self::ATRIBUTOS_PETICION][$clave] ?? null;
+    }
 }
+?>

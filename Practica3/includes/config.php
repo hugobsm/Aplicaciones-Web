@@ -3,16 +3,15 @@
 require_once("application.php");
 
 define('BD_HOST', 'localhost');
-define('BD_NAME', 'aw_c');
-define('BD_USER', 'aw_c');
-define('BD_PASS', 'aw_c');
+define('BD_NAME', 'brandswap');
+define('BD_USER', 'root'); // Ajusta según tu configuración
+define('BD_PASS', ''); // Si tienes contraseña, colócala aquí
 
 ini_set('default_charset', 'UTF-8');
 setLocale(LC_ALL, 'es_ES.UTF.8');
 date_default_timezone_set('Europe/Madrid');
 
-$app = application::getInstance();
-
+$app = Application::getInstance();
 $app->init(array('host'=>BD_HOST, 'bd'=>BD_NAME, 'user'=>BD_USER, 'pass'=>BD_PASS));
 
 register_shutdown_function([$app, 'shutdown']);
@@ -20,11 +19,9 @@ register_shutdown_function([$app, 'shutdown']);
 function gestorExcepciones(Throwable $exception) 
 {
     error_log(jTraceEx($exception)); 
-
     http_response_code(500);
 
     $tituloPagina = 'Error';
-
     $contenidoPrincipal = <<<EOS
     <h1>Oops</h1>
     <p> Parece que ha habido un fallo.</p>
@@ -35,13 +32,6 @@ function gestorExcepciones(Throwable $exception)
 
 set_exception_handler('gestorExcepciones');
 
-// http://php.net/manual/es/exception.gettraceasstring.php#114980
-/**
- * jTraceEx() - provide a Java style exception trace
- * @param Throwable $exception
- * @param string[] $seen Array passed to recursive calls to accumulate trace lines already seen leave as NULL when calling this function
- * @return string  string stack trace, one entry per trace line
- */
 function jTraceEx($e, $seen=null) 
 {
     $starter = $seen ? 'Caused by: ' : '';
