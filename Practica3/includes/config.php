@@ -1,6 +1,6 @@
 <?php
 
-require_once("application.php");
+require_once("includes/application.php");
 
 define('BD_HOST', 'localhost');
 define('BD_NAME', 'brandswap');
@@ -27,7 +27,7 @@ function gestorExcepciones(Throwable $exception)
     <p> Parece que ha habido un fallo.</p>
     EOS;
 
-    require("comun/plantilla.php");
+    require("includes/comun/plantilla.php");
 }
 
 set_exception_handler('gestorExcepciones');

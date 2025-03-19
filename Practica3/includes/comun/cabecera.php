@@ -4,7 +4,7 @@ function mostrarSaludo()
     if (isset($_SESSION["login"]) && $_SESSION["login"] === true) {
         echo "<a href='profile.php'>Bienvenido, ". $_SESSION['nombre'] ."</a>. <a href='logout.php'>(Salir)</a>";
     } else {
-        echo "<a href='login.php'>Iniciar sesión</a> | <a href='register.php'>Registro</a>";
+        echo "<a href='login.php'>Iniciar sesión</a> | <a href='registro.php'>Registro</a>";
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . "/../comun/formBase.php";
-include __DIR__ . "/../usuario/userAppService.php";
+include __DIR__ . "/../includes/comun/formBase.php";
+include __DIR__ . "/../includes/usuario/userAppService.php";
 
 class registerForm extends formBase
 {
