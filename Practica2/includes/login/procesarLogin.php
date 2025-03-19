@@ -1,55 +1,77 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="utf-8">
-    <title>Primera página dinámica</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            margin: auto;
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <?php
-        session_start();
+<?php
+include __DIR__ . "/../comun/formBase.php";
+include __DIR__ . "/../usuario/userAppService.php";
 
-        $username = htmlspecialchars(trim(strip_tags($_REQUEST["nombre"] ?? "")));
-        $password = htmlspecialchars(trim(strip_tags($_REQUEST["password"] ?? "")));
-
-        if ($username === "nombre" && $password === "userpass") {
-            $_SESSION["login"] = true;
-            $_SESSION["nombre"] = "Usuario";
-        } elseif ($username === "admin" && $password === "adminpass") {
-            $_SESSION["login"] = true;
-            $_SESSION["nombre"] = "Administrador";
-            $_SESSION["esAdmin"] = true;
+class loginForm extends formBase
+{
+    public function __construct() 
+    {
+        parent::__construct('loginForm');
+    }
+    
+    protected function CreateFields($datos)
+    {
+        $nombreUsuario = '';
+        
+        if ($datos) 
+        {
+            $nombreUsuario = isset($datos['nombreUsuario']) ? $datos['nombreUsuario'] : $nombreUsuario;
         }
 
-        if (!isset($_SESSION["login"])) {
-            echo "<h1>Error</h1><p>El usuario o contraseña no son válidos.</p>";
-        } else {
-            echo "<h1>Bienvenido, {$_SESSION['nombre']}!</h1><p>Usa el menú de la izquierda para navegar.</p>";
+        $html = <<<EOF
+        <fieldset>
+            <legend>Usuario y contraseña</legend>
+            <p><label>Email:</label> <input type="email" name="nombreUsuario" value="$nombreUsuario" required/></p>
+            <p><label>Password:</label> <input type="password" name="password" required/></p>
+            <button type="submit" name="login">Entrar</button>
+        </fieldset>
+EOF;
+        return $html;
+    }
+    
+    protected function Process($datos)
+    {
+        $result = array();
+
+        $email = trim($datos['nombreUsuario'] ?? '');
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+
+        if (empty($email)) 
+        {
+            $result[] = "El email no puede estar vacío";
         }
-        ?>
-    </div>
-</body>
-</html>
+
+        $password = trim($datos['password'] ?? '');
+        $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        if (empty($password)) 
+        {
+            $result[] = "El password no puede estar vacío.";
+        }
+
+        if (count($result) === 0) 
+        {
+            $userDTO = new userDTO(0, $email, $password);
+            $userAppService = userAppService::GetSingleton();
+
+            $foundedUserDTO = $userAppService->login($userDTO);
+
+            if (!$foundedUserDTO) 
+            {
+                $result[] = "El usuario o la contraseña no coinciden.";
+            } 
+            else 
+            {
+                $_SESSION["login"] = true;
+                $_SESSION["id_usuario"] = $foundedUserDTO->getId();
+                $_SESSION["nombre"] = $foundedUserDTO->getNombre();
+                $_SESSION["email"] = $foundedUserDTO->getEmail();
+                $_SESSION["foto_perfil"] = $foundedUserDTO->getFotoPerfil() ?? "uploads/default-avatar.png"; 
+
+                $result = 'index.php';
+            }
+        }
+        return $result;
+    }
+}
+?>
