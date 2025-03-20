@@ -32,6 +32,7 @@ EOF;
         if (!isset($_SESSION['id_usuario'])) {
             return ["Debes iniciar sesión para comprar."];
         }
+        error_log("🛒 Iniciando procesarCompra.php...");
 
         $id_usuario = $_SESSION['id_usuario'];
         $id_producto = trim($datos['id_producto'] ?? '');
@@ -43,6 +44,7 @@ EOF;
 
         $compraDTO = new CompraDTO(0, $id_usuario, $id_producto, date("Y-m-d H:i:s"), $metodo_pago);
         $compraAppService = compraAppService::GetSingleton();
+        error_log("🛒 Iniciando procesarCompra.php...");
 
         try {
             $compraAppService->realizarCompra($compraDTO);
@@ -52,5 +54,6 @@ EOF;
             return [$e->getMessage()];
         }
     }
+
 }
 ?>
