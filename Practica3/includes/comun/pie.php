@@ -4,7 +4,7 @@
             <h3>Enlaces</h3>
             <ul>
                 <li><a href="index.php">Inicio</a></li>
-                <li><a href="checkout.php">Compra</a></li>
+                <li><a href="compra.php">Compra</a></li>
                 <li><a href="miembros.php">About Us</a></li>
                 <li><a href="contact.php">Contacto</a></li>
             </ul>
