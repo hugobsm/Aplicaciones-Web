@@ -38,6 +38,9 @@ if ($mensaje) {
 HTML;
     }
 }
+$contenidoPrincipal .= <<<EOS
+    <a href="publicarArticulo.php" class="button">Publicar Nuevo Producto</a>
+EOS;
 
 $contenidoPrincipal .= "</div></div>";
 
