@@ -3,16 +3,18 @@
 class userDTO
 {
     private $id;
-
-    private $username;
-
+    private $nombre;
+    private $email;
     private $password;
+    private $fotoPerfil;
 
-    public function __construct($id, $username, $password)
+    public function __construct($id, $nombre, $email, $password, $fotoPerfil = null)
     {
         $this->id = $id;
-        $this->username = $username;
+        $this->nombre = $nombre;
+        $this->email = $email;
         $this->password = $password;
+        $this->fotoPerfil = $fotoPerfil;
     }
 
     public function id()
@@ -20,14 +22,24 @@ class userDTO
         return $this->id;
     }
 
-    public function username()
+    public function nombre()
     {
-        return $this->username;
+        return $this->nombre;
+    }
+
+    public function email()
+    {
+        return $this->email;
     }
 
     public function password()
     {
         return $this->password;
+    }
+
+    public function fotoPerfil()
+    {
+        return $this->fotoPerfil;
     }
 }
 ?>

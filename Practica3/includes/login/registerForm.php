@@ -1,6 +1,6 @@
 <?php
-include __DIR__ . "/../includes/comun/formBase.php";
-include __DIR__ . "/../includes/usuario/userAppService.php";
+include __DIR__ . "/../comun/formBase.php";
+include __DIR__ . "/../usuario/userAppService.php";
 
 class registerForm extends formBase
 {
@@ -12,9 +12,8 @@ class registerForm extends formBase
     protected function CreateFields($datos)
     {
         $nombreUsuario = '';
-        
-        if ($datos) 
-        {
+
+        if ($datos) {
             $nombreUsuario = isset($datos['nombreUsuario']) ? $datos['nombreUsuario'] : $nombreUsuario;
         }
 
@@ -39,32 +38,28 @@ EOF;
         $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
         $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if (empty($nombreUsuario)) 
-        {
+        if (empty($nombreUsuario)) {
             $result[] = "El nombre de usuario no puede estar vacío.";
         }
 
         $email = trim($datos['email'] ?? '');
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-        if (empty($email)) 
-        {
+        if (empty($email)) {
             $result[] = "El email no puede estar vacío.";
         }
 
         $password = trim($datos['password'] ?? '');
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if (empty($password)) 
-        {
+        if (empty($password)) {
             $result[] = "El password no puede estar vacío.";
         }
 
         $rePassword = trim($datos['rePassword'] ?? '');
         $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if ($password !== $rePassword)
-        {
+        if ($password !== $rePassword) {
             $result[] = "Las contraseñas no coinciden.";
         }
 
@@ -85,10 +80,8 @@ EOF;
             }
         }
 
-        if (count($result) === 0) 
-        {
-            try
-            {
+        if (count($result) === 0) {
+            try {
                 $userDTO = new userDTO(0, $nombreUsuario, $email, password_hash($password, PASSWORD_DEFAULT), $fotoPerfil);
                 $userAppService = userAppService::GetSingleton();
 
@@ -101,13 +94,15 @@ EOF;
 
                 $result = 'index.php';
 
-                $app = application::getInstance();
+                $app = Application::getInstance();
                 $mensaje = "Registro exitoso. Bienvenido, {$nombreUsuario}!";
                 $app->putAtributoPeticion('mensaje', $mensaje);
-            }
-            catch(userAlreadyExistException $e)
-            {
+            } catch (Exception $e) {
                 $result[] = $e->getMessage();
             }
         }
 
+        return $result;
+    }
+}
+?>

@@ -28,50 +28,43 @@ class loginForm extends formBase
 EOF;
         return $html;
     }
-    
     protected function Process($datos)
-    {
-        $result = array();
+{
+    error_log("🛠️ Iniciando Process() en loginForm");
 
-        $email = trim($datos['nombreUsuario'] ?? '');
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = trim($datos['nombreUsuario'] ?? '');
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    error_log("📧 Email ingresado: " . $email);
 
-        if (empty($email)) 
-        {
-            $result[] = "El email no puede estar vacío";
-        }
+    $password = trim($datos['password'] ?? '');
+    $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $password = trim($datos['password'] ?? '');
-        $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if (empty($password)) 
-        {
-            $result[] = "El password no puede estar vacío.";
-        }
-
-        if (count($result) === 0) 
-        {
-            $userDTO = new userDTO(0, $email, $password);
-            $userAppService = userAppService::GetSingleton();
-
-            $foundedUserDTO = $userAppService->login($userDTO);
-
-            if (!$foundedUserDTO) 
-            {
-                $result[] = "El usuario o la contraseña no coinciden.";
-            } 
-            else 
-            {
-                $_SESSION["login"] = true;
-                $_SESSION["id_usuario"] = $foundedUserDTO->getId();
-                $_SESSION["nombre"] = $foundedUserDTO->getNombre();
-                $_SESSION["email"] = $foundedUserDTO->getEmail();
-                $_SESSION["foto_perfil"] = $foundedUserDTO->getFotoPerfil() ?? "uploads/default-avatar.png"; 
-
-                $result = 'index.php';
-            }
-        }
-        return $result;
+    if (empty($email) || empty($password)) {
+        error_log("❌ Error: Email o contraseña vacíos.");
+        return ["El email y la contraseña no pueden estar vacíos."];
     }
+
+    $userDTO = new userDTO(0, "", $email, $password);
+    $userAppService = userAppService::GetSingleton();
+    $foundedUserDTO = $userAppService->login($userDTO);
+
+    if (!$foundedUserDTO) {
+        error_log("❌ Usuario no encontrado o credenciales incorrectas.");
+        return ["El usuario o la contraseña no coinciden."];
+    } 
+
+    error_log("✅ Login exitoso para el usuario: " . $foundedUserDTO->nombre());
+
+    $_SESSION["login"] = true;
+    $_SESSION["id_usuario"] = $foundedUserDTO->id();
+    $_SESSION["nombre"] = $foundedUserDTO->nombre();
+    $_SESSION["email"] = $foundedUserDTO->email();
+    $_SESSION["foto_perfil"] = $foundedUserDTO->fotoPerfil() ?? "uploads/default-avatar.png"; 
+
+    error_log("🔄 Redirigiendo a index.php...");
+    header("Location: index.php");
+    exit();
+}
+
 }
 ?>
