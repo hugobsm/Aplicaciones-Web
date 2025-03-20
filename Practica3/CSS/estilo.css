@@ -414,4 +414,67 @@ main {
     margin-bottom: 10px;
 }
 
+/* Estilos generales */
+.titulo-contacto {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.contacto-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding: 20px;
+}
+
+.informacion-contacto {
+    width: 40%;
+}
+
+.informacion-contacto h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.informacion-contacto p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.formulario-contacto {
+    width: 55%;
+}
+
+.form-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-contacto label {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.form-contacto input, .form-contacto textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-contacto button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.form-contacto button:hover {
+    background-color: #0056b3;
+}
 

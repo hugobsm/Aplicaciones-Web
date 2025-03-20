@@ -1,5 +1,9 @@
 <?php
+require_once("includes/config.php");
 $tituloPagina = "Nuestro Equipo";
+$app = application::getInstance();
+
+$mensaje = $app->getAtributoPeticion('mensaje');
 $contenidoPrincipal = <<<EOS
 
 <h1 class="titulo-equipo">Nuestro Equipo</h1>
