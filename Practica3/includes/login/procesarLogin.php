@@ -30,17 +30,17 @@ EOF;
     }
     protected function Process($datos)
 {
-    error_log("🛠️ Iniciando Process() en loginForm");
+    
 
     $email = trim($datos['nombreUsuario'] ?? '');
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-    error_log("📧 Email ingresado: " . $email);
+    
 
     $password = trim($datos['password'] ?? '');
     $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
     if (empty($email) || empty($password)) {
-        error_log("❌ Error: Email o contraseña vacíos.");
+        
         return ["El email y la contraseña no pueden estar vacíos."];
     }
 
@@ -49,11 +49,11 @@ EOF;
     $foundedUserDTO = $userAppService->login($userDTO);
 
     if (!$foundedUserDTO) {
-        error_log("❌ Usuario no encontrado o credenciales incorrectas.");
+        
         return ["El usuario o la contraseña no coinciden."];
     } 
 
-    error_log("✅ Login exitoso para el usuario: " . $foundedUserDTO->nombre());
+   
 
     $_SESSION["login"] = true;
     $_SESSION["id_usuario"] = $foundedUserDTO->id();

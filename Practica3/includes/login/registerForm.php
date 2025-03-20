@@ -66,7 +66,7 @@ EOF;
         $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($password !== $rePassword) {
-            error_log("❌ Las contraseñas no coinciden.");
+            
             $result[] = "Las contraseñas no coinciden.";
         }
 
@@ -84,9 +84,9 @@ EOF;
                 $nombreImagen = "uploads/" . uniqid("perfil_") . "." . $extension;
                 move_uploaded_file($imagen['tmp_name'], $nombreImagen);
                 $fotoPerfil = $nombreImagen;
-                error_log("🖼️ Foto de perfil guardada: " . $fotoPerfil);
+               
             } else {
-                error_log("❌ Formato de imagen no permitido.");
+                
                 $result[] = "Formato de imagen no permitido.";
             }
         }

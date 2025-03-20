@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="CSS/estilo.css" />
+<link rel="stylesheet" type="text/css" href="CSS/estilo.css?v=<?php echo time(); ?>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title><?= $tituloPagina ?></title>
 </head>

@@ -217,3 +217,15 @@ body {
 .producto img {
     width: 100%;
 }
+
+.perfil-foto {
+    width: 150px; /* Ajusta el tamaño según necesites */
+    height: 150px;
+    object-fit: cover; /* Para evitar distorsiones */
+    border-radius: 50%; /* Para hacerlo circular, si quieres */
+    display: block;
+    margin: 10px auto; /* Centrar la imagen */
+}
+
+
+

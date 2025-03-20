@@ -118,5 +118,69 @@ class userDAO extends baseDAO implements IUser
 
         return $result;
     }
+    /*public function getUserById($id_usuario)
+    {
+    $conn = application::getInstance()->getConexionBd();
+    $query = "SELECT id_usuario, nombre, email, foto_perfil FROM usuarios WHERE id_usuario = ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_usuario);
+    $stmt->execute();
+    $stmt->bind_result($id, $nombre, $email, $fotoPerfil);
+
+    if ($stmt->fetch()) {
+        $stmt->close();
+        return new userDTO($id, $nombre, $email, "", $fotoPerfil);
+    }
+
+    return null;
+    }*/
+    public function getUserById($id_usuario)
+{
+    $conn = application::getInstance()->getConexionBd();
+    $query = "SELECT id_usuario, nombre, email, foto_perfil FROM usuarios WHERE id_usuario = ?";
+    
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        error_log("❌ Error preparando la consulta en getUserById()");
+        return null;
+    }
+
+    $stmt->bind_param("i", $id_usuario);
+    $stmt->execute();
+    $stmt->bind_result($id, $nombre, $email, $fotoPerfil);
+
+    if ($stmt->fetch()) {
+        $stmt->close();
+        error_log("✅ Usuario encontrado: $nombre");
+        return new userDTO($id, $nombre, $email, "", $fotoPerfil);
+    }
+
+    error_log("⚠️ Usuario con ID $id_usuario no encontrado.");
+    return null;
+}
+
+
+public function getProductsByUserId($id_usuario)
+{
+    $conn = application::getInstance()->getConexionBd();
+    $query = "SELECT id_producto, nombre_producto, descripcion, precio, imagen, fecha_publicacion 
+              FROM productos WHERE id_usuario = ? ORDER BY fecha_publicacion DESC";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_usuario);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $productos = [];
+    while ($row = $result->fetch_assoc()) {
+        $productos[] = $row;
+    }
+
+    $stmt->close();
+    return $productos;
+}
+
+
 }
 ?>
