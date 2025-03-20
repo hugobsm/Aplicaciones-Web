@@ -18,7 +18,7 @@ $contenidoPrincipal = <<<EOS
 
         <!-- Botón para publicar artículos -->
         <div class="publicar-container">
-       <a href="includes/productos/acciones/publicararticulo.php" class="button publicar-button">Publicar Artículo</a>
+       <a href="publicarProducto.php" class="button publicar-button">Publicar Artículo</a>
     
         </div>
 
@@ -52,7 +52,7 @@ HTML;
     }
 }
 $contenidoPrincipal .= <<<EOS
-    <a href="publicarArticulo.php" class="button">Publicar Nuevo Producto</a>
+    <a href="publicarProducto.php" class="button">Publicar Nuevo Producto</a>
 EOS;
 
 $contenidoPrincipal .= "</div></div>";
