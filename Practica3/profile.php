@@ -30,11 +30,13 @@ EOS;
 if ($mensaje) {
     $contenidoPrincipal .= "<p class='no-products'>{$mensaje}</p>";
 } else {
+    
     // Mostrar productos en tarjetas
     foreach ($productos as $producto) {
         $contenidoPrincipal .= <<<HTML
             <div class="product-card">
-                <img class="product-image" src="uploads/{$producto['imagen']}" alt="Imagen del producto">
+            <img class="product-image" src="{$producto['imagen']}" alt="Imagen del producto">
+
                 <div class="product-details">
                     <h3 class="product-name">{$producto['nombre_producto']}</h3>
                     <p class="product-description">{$producto['descripcion']}</p>
