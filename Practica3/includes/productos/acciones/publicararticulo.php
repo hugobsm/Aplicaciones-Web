@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Manejo de la imagen
     $nombre_imagen = "default.jpg"; // Imagen por defecto
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
-        $directorio_subida = "uploads/";
+        $directorio_subida = $_SERVER['DOCUMENT_ROOT'] . "/Aplicaciones-web/Practica3/uploads/";
         $nombre_imagen = time() . "_" . basename($_FILES["imagen"]["name"]);
         $ruta_imagen = $directorio_subida . $nombre_imagen;
 
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("issdss", $id_usuario, $nombre_producto, $descripcion, $precio, $nombre_imagen, $fecha_publicacion);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Artículo publicado con éxito'); window.location.href='profile.php';</script>";
+        echo "<script>alert('Artículo publicado con éxito'); window.location.href='/Aplicaciones-web/Practica3/profile.php';</script>";
     } else {
         echo "<script>alert('Error al publicar el artículo');</script>";
     }
