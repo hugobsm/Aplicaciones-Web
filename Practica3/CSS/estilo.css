@@ -343,4 +343,21 @@ main {
     text-align: center;
 }
 
+.publicar-button {
+    display: inline-block;
+    background-color: #000;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out;
+    margin-bottom: 20px; /* Espacio entre el botón y los productos */
+}
+
+.publicar-button:hover {
+    background-color: #333;
+}
+
 

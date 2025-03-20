@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 // Conexión a la base de datos
 $servername = "localhost";  
 $username = "root";  
@@ -13,23 +12,23 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
-
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: login.php"); // Redirigir al login si no está autenticado
     exit();
 }
 
+// Procesar el formulario cuando se envíe
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre_producto = $_POST['nombre_producto'] ?? '';
     $descripcion = $_POST['descripcion'] ?? '';
-    $precio = $_POST['precio'] ?? 0;
+    $precio = $_POST['precio'] ?? '';
     $id_usuario = $_SESSION['id_usuario'];
     $fecha_publicacion = date("Y-m-d H:i:s");
 
     // Manejo de la imagen
     $nombre_imagen = "default.jpg"; // Imagen por defecto
-    if (!empty($_FILES['imagen']['name'])) {
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
         $directorio_subida = "uploads/";
         $nombre_imagen = time() . "_" . basename($_FILES["imagen"]["name"]);
         $ruta_imagen = $directorio_subida . $nombre_imagen;
@@ -43,14 +42,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query = "INSERT INTO productos (id_usuario, nombre_producto, descripcion, precio, imagen, fecha_publicacion) 
               VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("isssss", $id_usuario, $nombre_producto, $descripcion, $precio, $nombre_imagen, $fecha_publicacion);
+    $stmt->bind_param("issdss", $id_usuario, $nombre_producto, $descripcion, $precio, $nombre_imagen, $fecha_publicacion);
 
     if ($stmt->execute()) {
-        header("Location: profile.php?success=1");
-        exit();
+        echo "<script>alert('Artículo publicado con éxito'); window.location.href='profile.php';</script>";
     } else {
-        header("Location: publicararticulo.php?error=1");
-        exit();
+        echo "<script>alert('Error al publicar el artículo');</script>";
     }
 }
 
@@ -121,6 +118,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <textarea name="descripcion" placeholder="Descripción" required></textarea>
         <input type="number" name="precio" placeholder="Precio" step="0.01" required>
 
+        <!-- Botón personalizado para subir una foto -->
         <label for="imagen">Seleccionar una foto</label>
         <input type="file" name="imagen" id="imagen" accept="image/*">
         <span id="nombreArchivo">Ningún archivo seleccionado</span>

@@ -16,6 +16,11 @@ $contenidoPrincipal = <<<EOS
             </div>
         </div>
 
+        <!-- Botón para publicar artículos -->
+        <div class="publicar-container">
+            <a href="/includes/productos/acciones/publicararticulo.php" class="button publicar-button">Publicar Artículo</a>
+        </div>
+
         <h2>Mis Productos</h2>
         <div class="productos-container">
 EOS;
