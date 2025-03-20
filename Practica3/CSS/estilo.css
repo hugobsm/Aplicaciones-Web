@@ -219,13 +219,15 @@ body {
 }
 
 .perfil-foto {
-    width: 150px; /* Ajusta el tamaño según necesites */
-    height: 150px;
-    object-fit: cover; /* Para evitar distorsiones */
-    border-radius: 50%; /* Para hacerlo circular, si quieres */
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
     display: block;
-    margin: 10px auto; /* Centrar la imagen */
+    margin: 0 auto;
 }
+
+
 
 main {
     padding: 25px; /* Ajusta el valor según lo necesites */
@@ -246,11 +248,16 @@ main {
 /* Información del perfil */
 .perfil-info {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    text-align: center;
+    gap: 10px;
+    max-width: 100%;
+    overflow: visible;
 }
+
+
+
 
 .perfil-datos {
     text-align: left;
@@ -338,26 +345,33 @@ main {
 
 /* Mensaje sin productos */
 .no-products {
-    color: #666;
-    font-style: italic;
     text-align: center;
+    font-style: italic;
+    color: #666;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
+
+
 
 .publicar-button {
-    display: inline-block;
-    background-color: #000;
+    background-color: black;
     color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-weight: bold;
+    padding: 12px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
     text-transform: uppercase;
-    text-decoration: none;
-    transition: background 0.3s ease-in-out;
-    margin-bottom: 20px; /* Espacio entre el botón y los productos */
+    border-radius: 8px;
+    display: block;
+    width: fit-content;
+    margin: 10px auto;
+}
+.publicar-button:hover {
+    background-color: #444;
 }
 
-.publicar-button:hover {
-    background-color: #333;
-}
 
 
