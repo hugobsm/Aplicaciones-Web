@@ -24,6 +24,7 @@ abstract class formBase
   
     public function Manage()
     {   
+        
         if ( ! $this->IsSent($_POST) ) 
 		{
             return $this->Create();
@@ -48,7 +49,8 @@ abstract class formBase
     private function IsSent(&$params)
     {
         return isset($params['action']) && $params['action'] == $this->formId;
-    } 
+    }
+    
 
     private function Create($errores = array(), &$datos = array())
     {

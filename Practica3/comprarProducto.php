@@ -1,21 +1,17 @@
 <?php
-require_once("includes/config.php");
+require_once("includes/config.php"); // Carga la configuración de la BD y la app
 require_once("includes/accionCompra/procesarCompra.php");
 
 $tituloPagina = "Comprar Producto";
-$idProducto = $_GET['id'] ?? null;
 
-if (!$idProducto) {
-    die("Producto no encontrado.");
-}
+$form = new comprarProductoForm($_GET['id'] ?? null); // Instancia el formulario con el ID del producto
 
-$form = new comprarProductoForm($idProducto);
+$htmlFormCompra = $form->Manage(); // Renderiza el formulario
+
 $contenidoPrincipal = <<<EOS
-    <h1>Comprar Producto</h1>
-    <div class="comprar-container">
-        {$form->Manage()}
-    </div>
+<h1>Comprar Producto</h1>
+$htmlFormCompra
 EOS;
 
-require("includes/comun/plantilla.php");
+require("includes/comun/plantilla.php"); // Usa la plantilla común de la aplicación
 ?>
