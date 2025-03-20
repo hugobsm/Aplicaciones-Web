@@ -49,6 +49,12 @@ class productoAppService
         $IProductoDAO = productoFactory::CreateProducto();
         return $IProductoDAO->eliminarProducto($id);
     }
+    public function obtenerProductoPorId($idProducto)
+{
+    $IProductoDAO = productoFactory::CreateProducto();
+    return $IProductoDAO->obtenerProductoPorId($idProducto);
+}
+
 }
 
 ?>

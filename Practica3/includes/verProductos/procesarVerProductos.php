@@ -21,14 +21,18 @@ class verProductosForm extends formBase
 
         $html = "<div class='productos-container'>";
         foreach ($productos as $producto) {
+            $idProducto = $producto->getId();
             $html .= <<<EOF
             <div class="product">
-                <img src="{$producto->getImagen()}" alt="Imagen del producto">
+                <a href="verProducto.php?id={$idProducto}">
+                    <img src="{$producto->getImagen()}" alt="Imagen del producto">
+                </a>
                 <div class="product-info">
                     <p class="product-name"><strong>{$producto->getNombre()}</strong></p>
                     <p class="product-description">{$producto->getDescripcion()}</p>
                     <p class="product-price"><strong>Precio:</strong> \${$producto->getPrecio()}</p>
                     <p class="product-date"><strong>Publicado:</strong> {$producto->getFechaPublicacion()}</p>
+                    <a href="verProducto.php?id={$idProducto}" class="ver-detalle">Ver más</a>
                 </div>
             </div>
 EOF;
@@ -37,10 +41,10 @@ EOF;
 
         return $html;
     }
-    public function mostrarProductos()
-{
-    return $this->CreateFields([]);
-}
 
+    public function mostrarProductos()
+    {
+        return $this->CreateFields([]);
+    }
 }
 ?>

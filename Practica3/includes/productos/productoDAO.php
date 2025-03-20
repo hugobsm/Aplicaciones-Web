@@ -100,6 +100,8 @@ class productoDAO extends baseDAO implements IProducto
 
         return $this->ExecuteCommand($sql);
     }
+ 
+
 
 }
 ?>

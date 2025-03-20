@@ -584,4 +584,30 @@ main {
     color: #777;
 }
 
+.producto-detalle {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.producto-detalle img {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.boton-comprar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.boton-comprar:hover {
+    background-color: #218838;
+}
 
