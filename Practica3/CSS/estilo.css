@@ -531,4 +531,57 @@ main {
 .form-contacto button:hover {
     background-color: #0056b3;
 }
+.productos-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Espacio entre los productos */
+    padding: 20px;
+}
+
+.product {
+    width: 250px; /* Tamaño fijo para cada producto */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product img {
+    width: 100%; /* Ajusta la imagen al ancho del contenedor */
+    height: 200px; /* Tamaño uniforme para todas las imágenes */
+    object-fit: cover; /* Recorta la imagen para ajustarla sin distorsionarla */
+    border-radius: 10px 10px 0 0;
+}
+
+.product-info {
+    padding: 10px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.product-date {
+    font-size: 12px;
+    color: #777;
+}
+
 

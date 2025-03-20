@@ -32,5 +32,11 @@ class productoMock implements IProducto
     {
         return true;
     }
+    public function actualizarProducto($productoDTO)
+    {
+        // Simulación de actualización, retorna true como si hubiera funcionado
+        return true;
+    }
+     
 }
 ?>

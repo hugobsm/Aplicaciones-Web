@@ -69,18 +69,13 @@ class productoDAO extends baseDAO implements IProducto
 
     public function obtenerTodosLosProductos()
     {
-        $conn = application::getInstance()->getConexionBd();
-        $query = "SELECT * FROM productos ORDER BY fecha_publicacion DESC";
-
-        $stmt = $conn->prepare($query);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
+        $sql = "SELECT * FROM productos ORDER BY fecha_publicacion DESC";
+        $resultado = $this->ExecuteQuery($sql);
+    
         $productos = [];
-        while ($fila = $resultado->fetch_assoc()) {
+        foreach ($resultado as $fila) {
             $productos[] = new ProductoDTO(...array_values($fila));
         }
-
         return $productos;
     }
 
@@ -94,5 +89,17 @@ class productoDAO extends baseDAO implements IProducto
         
         return $stmt->execute();
     }
+    public function actualizarProducto($productoDTO)
+    {
+        $sql = "UPDATE productos SET 
+                nombre_producto = '" . $this->realEscapeString($productoDTO->getNombre()) . "',
+                descripcion = '" . $this->realEscapeString($productoDTO->getDescripcion()) . "',
+                precio = '" . $this->realEscapeString($productoDTO->getPrecio()) . "',
+                imagen = '" . $this->realEscapeString($productoDTO->getImagen()) . "'
+            WHERE id_producto = " . $this->realEscapeString($productoDTO->getId());
+
+        return $this->ExecuteCommand($sql);
+    }
+
 }
 ?>
