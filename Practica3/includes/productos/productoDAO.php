@@ -32,22 +32,45 @@ class productoDAO extends baseDAO implements IProducto
         }
     }
 
-    public function obtenerProductoPorId($id)
-    {
-        $conn = application::getInstance()->getConexionBd();
-        $query = "SELECT * FROM productos WHERE id_producto = ?";
+    public function obtenerProductoPorId($id) {
+        error_log("🔍 Buscando producto con ID: $id");
         
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-
-        if ($fila = $resultado->fetch_assoc()) {
-            return new ProductoDTO(...array_values($fila));
+        $conn = application::getInstance()->getConexionBd();
+        $sql = "SELECT id_producto, id_usuario, nombre_producto, descripcion, precio, imagen, fecha_publicacion 
+                FROM productos WHERE id_producto = ?";
+        
+        $stmt = $conn->prepare($sql);
+        if (!$stmt) {
+            error_log("❌ Error preparando consulta: " . $conn->error);
+            return null;
         }
-
-        return null;
+    
+        $stmt->bind_param("i", $id);
+        if (!$stmt->execute()) {
+            error_log("❌ Error ejecutando consulta: " . $stmt->error);
+            return null;
+        }
+    
+        $resultado = $stmt->get_result();
+        
+        if ($fila = $resultado->fetch_assoc()) {
+            error_log("✅ Producto encontrado: " . json_encode($fila));
+            return new ProductoDTO(
+                $fila['id_producto'],
+                $fila['id_usuario'],
+                $fila['nombre_producto'],
+                $fila['descripcion'],
+                $fila['precio'],
+                $fila['imagen'],
+                $fila['fecha_publicacion']
+            );
+        } else {
+            error_log("⚠️ Producto con ID $id no encontrado.");
+            return null;
+        }
     }
+    
+    
 
     public function obtenerProductosPorUsuario($id_usuario)
     {
@@ -80,15 +103,16 @@ class productoDAO extends baseDAO implements IProducto
     }
 
     public function eliminarProducto($id)
-    {
-        $conn = application::getInstance()->getConexionBd();
-        $query = "DELETE FROM productos WHERE id_producto = ?";
+{
+    $conn = application::getInstance()->getConexionBd();
+    $query = "DELETE FROM productos WHERE id_producto = ?";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id);
 
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id);
-        
-        return $stmt->execute();
-    }
+    return $stmt->execute();
+}
+
     public function actualizarProducto($productoDTO)
     {
         $sql = "UPDATE productos SET 

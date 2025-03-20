@@ -611,3 +611,17 @@ main {
     background-color: #218838;
 }
 
+.button {
+    display: inline-block !important;  /* Asegura que no esté oculto */
+    background-color: #28a745 !important; /* Color verde para resaltar */
+    color: white !important; /* Texto en blanco */
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #218838 !important; /* Un verde más oscuro al pasar el mouse */
+}

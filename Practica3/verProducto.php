@@ -13,10 +13,12 @@ if (!$idProducto) {
 $productoAppService = productoAppService::GetSingleton();
 $producto = $productoAppService->obtenerProductoPorId($idProducto);
 
-if (!$producto) {
-    die("El producto solicitado no existe.");
+// 🚨 DEPURACIÓN: Verificar si `$producto` es un objeto ProductoDTO
+if (!$producto instanceof ProductoDTO) {
+    die("❌ ERROR: No es una instancia de ProductoDTO.");
 }
-
+//var_dump($producto->getId());
+//die();
 $contenidoPrincipal = <<<EOS
     <div class="producto-detalle">
         <h1>{$producto->getNombre()}</h1>
@@ -24,9 +26,12 @@ $contenidoPrincipal = <<<EOS
         <p class="descripcion">{$producto->getDescripcion()}</p>
         <p class="precio"><strong>Precio:</strong> \${$producto->getPrecio()}</p>
         <p class="fecha"><strong>Publicado el:</strong> {$producto->getFechaPublicacion()}</p>
-        <button class="boton-comprar">Comprar</button>
+      
+        <a href="comprarProducto.php?id={$producto->getId()}" class="button">Comprar</a>
+
     </div>
 EOS;
+
 
 require("includes/comun/plantilla.php");
 ?>
