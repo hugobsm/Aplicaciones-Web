@@ -20,7 +20,7 @@ function mostrarSaludo()
             </div>
             <div class="left-menu">
                 <a href="index.php">Inicio</a>
-                <a href="checkout.php">Compra</a>
+                <a href="compra.php">Compra</a>
                 <a href="miembros.php">About Us</a>
             </div>
             <div class="logo">
