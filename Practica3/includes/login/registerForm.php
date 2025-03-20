@@ -33,10 +33,14 @@ EOF;
 
     protected function Process($datos)
     {
+        error_log("🛠️ Iniciando Process() en registerForm");
+
         $result = array();
 
+        // Capturar y validar datos del formulario
         $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
         $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        error_log("📛 Nombre: " . $nombreUsuario);
 
         if (empty($nombreUsuario)) {
             $result[] = "El nombre de usuario no puede estar vacío.";
@@ -44,6 +48,7 @@ EOF;
 
         $email = trim($datos['email'] ?? '');
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        error_log("📧 Email: " . $email);
 
         if (empty($email)) {
             $result[] = "El email no puede estar vacío.";
@@ -51,6 +56,7 @@ EOF;
 
         $password = trim($datos['password'] ?? '');
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        error_log("🔑 Contraseña recibida.");
 
         if (empty($password)) {
             $result[] = "El password no puede estar vacío.";
@@ -60,11 +66,12 @@ EOF;
         $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($password !== $rePassword) {
+            error_log("❌ Las contraseñas no coinciden.");
             $result[] = "Las contraseñas no coinciden.";
         }
 
+        // Manejo de foto de perfil
         $fotoPerfil = "uploads/default-avatar.png"; // Imagen por defecto
-
         if (isset($_FILES['fotoPerfil']) && $_FILES['fotoPerfil']['error'] == 0) {
             $imagen = $_FILES['fotoPerfil'];
             $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
@@ -77,27 +84,43 @@ EOF;
                 $nombreImagen = "uploads/" . uniqid("perfil_") . "." . $extension;
                 move_uploaded_file($imagen['tmp_name'], $nombreImagen);
                 $fotoPerfil = $nombreImagen;
+                error_log("🖼️ Foto de perfil guardada: " . $fotoPerfil);
+            } else {
+                error_log("❌ Formato de imagen no permitido.");
+                $result[] = "Formato de imagen no permitido.";
             }
         }
 
         if (count($result) === 0) {
             try {
-                $userDTO = new userDTO(0, $nombreUsuario, $email, password_hash($password, PASSWORD_DEFAULT), $fotoPerfil);
+                // Crear DTO correctamente
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $userDTO = new userDTO(0, $nombreUsuario, $email, $hashedPassword, $fotoPerfil);
                 $userAppService = userAppService::GetSingleton();
 
-                $createdUserDTO = $userAppService->register($userDTO);
+                error_log("🛠️ Creando usuario en la base de datos...");
+                $createdUserDTO = $userAppService->create($userDTO);
 
+                if (!$createdUserDTO) {
+                    throw new Exception("Error al registrar el usuario.");
+                }
+
+                error_log("✅ Usuario registrado correctamente: " . $createdUserDTO->email());
+
+                // Iniciar sesión después del registro
                 $_SESSION["login"] = true;
-                $_SESSION["nombre"] = $nombreUsuario;
-                $_SESSION["email"] = $email;
-                $_SESSION["foto_perfil"] = $fotoPerfil;
+                $_SESSION["id_usuario"] = $createdUserDTO->id();
+                $_SESSION["nombre"] = $createdUserDTO->nombre();
+                $_SESSION["email"] = $createdUserDTO->email();
+                $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
 
-                $result = 'index.php';
+                // Redirigir a index.php
+                error_log("🔄 Redirigiendo a index.php...");
+                header("Location: index.php");
+                exit();
 
-                $app = Application::getInstance();
-                $mensaje = "Registro exitoso. Bienvenido, {$nombreUsuario}!";
-                $app->putAtributoPeticion('mensaje', $mensaje);
             } catch (Exception $e) {
+                error_log("❌ Error en el registro: " . $e->getMessage());
                 $result[] = $e->getMessage();
             }
         }
