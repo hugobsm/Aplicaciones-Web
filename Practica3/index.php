@@ -10,7 +10,7 @@ $mensaje = $app->getAtributoPeticion('mensaje');
 		
 $contenidoPrincipal = <<<EOS
     <section class="banner">
-    <button class="btn-productos" onclick="location.href='productos.php'">Ver Productos</button>
+    <button class="btn-productos" onclick="location.href='verProductos.php'">Ver Productos</button>
 </section>
 
 <section class="productos">

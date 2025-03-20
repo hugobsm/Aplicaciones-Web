@@ -27,3 +27,4 @@ class ProductoDTO {
     public function getImagen() { return $this->imagen; }
     public function getFechaPublicacion() { return $this->fecha_publicacion; }
 }
+?>

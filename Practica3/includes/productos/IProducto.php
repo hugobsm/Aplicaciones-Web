@@ -11,5 +11,8 @@ interface IProducto
     public function actualizarProducto($productoDTO);
     
     public function eliminarProducto($id);
+
+    public function obtenerTodosLosProductos();
+
 }
 ?>

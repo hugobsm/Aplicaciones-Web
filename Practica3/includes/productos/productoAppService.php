@@ -1,0 +1,54 @@
+<?php
+
+require_once("productoFactory.php");
+
+class productoAppService
+{
+    private static $instance;
+
+    public static function GetSingleton()
+    {
+        if (!self::$instance instanceof self)
+        {
+            self::$instance = new self;
+        }
+
+        return self::$instance;
+    }
+
+    private function __construct()
+    {
+    }
+
+    public function publicarProducto($productoDTO)
+    {
+        $IProductoDAO = productoFactory::CreateProducto();
+        return $IProductoDAO->crearProducto($productoDTO);
+    }
+
+    public function obtenerProducto($id)
+    {
+        $IProductoDAO = productoFactory::CreateProducto();
+        return $IProductoDAO->obtenerProductoPorId($id);
+    }
+
+    public function obtenerProductosDeUsuario($id_usuario)
+    {
+        $IProductoDAO = productoFactory::CreateProducto();
+        return $IProductoDAO->obtenerProductosPorUsuario($id_usuario);
+    }
+
+    public function obtenerTodosLosProductos()
+    {
+        $IProductoDAO = productoFactory::CreateProducto();
+        return $IProductoDAO->obtenerTodosLosProductos();
+    }
+
+    public function eliminarProducto($id)
+    {
+        $IProductoDAO = productoFactory::CreateProducto();
+        return $IProductoDAO->eliminarProducto($id);
+    }
+}
+
+?>
