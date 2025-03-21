@@ -96,6 +96,8 @@ HTML;
                 $idProducto = htmlspecialchars($compra->getIdProducto());
                 $fechaCompra = htmlspecialchars($compra->getFechaCompra());
                 $metodoPago = htmlspecialchars($compra->getMetodoPago());
+                $idVendedorRaw = $compra->getIdVendedor();
+                $idVendedor = htmlspecialchars($idVendedorRaw);
 
                 $html .= <<<HTML
                 <div class="product-card">
@@ -103,6 +105,9 @@ HTML;
                         <h3 class="product-name">Producto comprado (ID: $idProducto)</h3>
                         <p class="product-date"><strong>Fecha de compra:</strong> {$fechaCompra}</p>
                         <p class="product-date"><strong>Método de pago:</strong> {$metodoPago}</p>
+                        <p class="product-name">ID vendedor: $idVendedorRaw</p>
+                        <a href="valorarVendedor.php?id_vendedor=$idVendedorRaw" class="button valorar-button">Valorar vendedor</a>
+
                     </div>
                 </div>
 HTML;

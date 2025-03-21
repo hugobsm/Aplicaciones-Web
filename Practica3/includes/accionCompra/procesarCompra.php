@@ -53,7 +53,7 @@ class comprarProductoForm extends formBase {
         }
 
         error_log("🆔 ID Producto: " . $id_producto);
-        error_log("👤 ID Usuario: " . $id_usuario);
+        error_log("👤 ID Usuario (comprador): " . $id_usuario);
         error_log("💳 Método Pago: " . $metodo_pago);
 
         // ✅ Verificar si el producto existe
@@ -64,8 +64,20 @@ class comprarProductoForm extends formBase {
             die("❌ ERROR: El producto con ID $id_producto no existe.");
         }
 
+        // ✅ Obtener el ID del vendedor desde el producto
+        $id_vendedor = $producto->getIdUsuario();
+        error_log("🧾 ID Vendedor: " . $id_vendedor);
+
         // ✅ Insertar la compra en la base de datos
-        $compraDTO = new CompraDTO(0, $id_usuario, $id_producto, date("Y-m-d H:i:s"), $metodo_pago);
+        $compraDTO = new CompraDTO(
+            0,
+            $id_usuario,                      // comprador
+            $id_producto,
+            date("Y-m-d H:i:s"),
+            $metodo_pago,
+            $id_vendedor                      // vendedor
+        );
+
         $compraAppService = compraAppService::GetSingleton();
 
         try {

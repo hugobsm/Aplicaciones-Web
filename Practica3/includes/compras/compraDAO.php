@@ -7,29 +7,33 @@ require_once(__DIR__ . "/../comun/baseDAO.php");
 class compraDAO extends baseDAO implements ICompra {
     public function realizarCompra($compraDTO) {
         $conn = application::getInstance()->getConexionBd();
-
-        $query = "INSERT INTO compras (id_usuario, id_producto, fecha_compra, metodo_pago) VALUES (?, ?, ?, ?)";
+    
+        $query = "INSERT INTO compras (id_usuario, id_producto, fecha_compra, metodo_pago, id_vendedor)
+                  VALUES (?, ?, ?, ?, ?)";
+    
         $stmt = $conn->prepare($query);
         $stmt->bind_param(
-            "iiss",
+            "iissi",
             $compraDTO->getIdUsuario(),
             $compraDTO->getIdProducto(),
             $compraDTO->getFechaCompra(),
-            $compraDTO->getMetodoPago()
+            $compraDTO->getMetodoPago(),
+            $compraDTO->getIdVendedor()
         );
-
+    
         if ($stmt->execute()) {
-            // Eliminar el producto de la tabla de productos después de la compra
+            // Eliminar producto después de comprar
             $deleteQuery = "DELETE FROM productos WHERE id_producto = ?";
             $deleteStmt = $conn->prepare($deleteQuery);
             $deleteStmt->bind_param("i", $compraDTO->getIdProducto());
             $deleteStmt->execute();
             return true;
         } else {
-            error_log("❌ Error al procesar la compra: " . $stmt->error);
+            error_log("❌ Error al registrar compra: " . $stmt->error);
             return false;
         }
     }
+    
 
     public function obtenerComprasPorUsuario($id_usuario) {
         $conn = application::getInstance()->getConexionBd();
