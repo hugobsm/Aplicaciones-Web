@@ -4,6 +4,7 @@ require_once("valoracionDTO.php");
 require_once(__DIR__ . "/../comun/baseDAO.php");
 
 class valoracionDAO extends baseDAO implements IValoracion {
+    
     public function insertarValoracion($valoracionDTO) {
         $conn = application::getInstance()->getConexionBd();
     
@@ -16,23 +17,22 @@ class valoracionDAO extends baseDAO implements IValoracion {
             return false;
         }
     
-        $stmt->bind_param(
-            "iiiss",
-            $valoracionDTO->getIdComprador(),
-            $valoracionDTO->getIdVendedor(),
-            $valoracionDTO->getPuntuacion(),
-            $valoracionDTO->getComentario(),
-            $valoracionDTO->getFechaValoracion()
-        );
+        $id_comprador = $valoracionDTO->getIdComprador();
+        $id_vendedor = $valoracionDTO->getIdVendedor();
+        $puntuacion = $valoracionDTO->getPuntuacion();
+        $comentario = $valoracionDTO->getComentario();
+        $fecha = $valoracionDTO->getFechaValoracion();
+    
+        $stmt->bind_param("iiiss", $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha);
     
         if (!$stmt->execute()) {
             error_log("❌ Error al ejecutar la consulta: " . $stmt->error);
             return false;
         }
     
-        error_log("✅ Valoración insertada correctamente.");
         return true;
     }
+    
     
 
     public function obtenerValoracionesPorVendedor($id_vendedor) {
