@@ -14,15 +14,17 @@ class productoDAO extends baseDAO implements IProducto
                   VALUES (?, ?, ?, ?, ?, ?)";
 
         $stmt = $conn->prepare($query);
-        $stmt->bind_param(
-            "issdss",
-            $productoDTO->getIdUsuario(),
-            $productoDTO->getNombre(),
-            $productoDTO->getDescripcion(),
-            $productoDTO->getPrecio(),
-            $productoDTO->getImagen(),
-            $productoDTO->getFechaPublicacion()
-        );
+        
+$id_usuario = $productoDTO->getIdUsuario();
+$nombre = $productoDTO->getNombre();
+$descripcion = $productoDTO->getDescripcion();
+$precio = $productoDTO->getPrecio();
+$imagen = $productoDTO->getImagen();
+$fecha_publicacion = $productoDTO->getFechaPublicacion();
+
+// Luego pásalas a bind_param()
+$stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion);
+
 
         if ($stmt->execute()) {
             return true;
