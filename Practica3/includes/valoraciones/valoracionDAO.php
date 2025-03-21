@@ -6,10 +6,16 @@ require_once(__DIR__ . "/../comun/baseDAO.php");
 class valoracionDAO extends baseDAO implements IValoracion {
     public function insertarValoracion($valoracionDTO) {
         $conn = application::getInstance()->getConexionBd();
-
+    
         $query = "INSERT INTO valoraciones (id_comprador, id_vendedor, puntuacion, comentario, fecha_valoracion)
                   VALUES (?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
+    
+        if (!$stmt) {
+            error_log("❌ Error al preparar la consulta: " . $conn->error);
+            return false;
+        }
+    
         $stmt->bind_param(
             "iiiss",
             $valoracionDTO->getIdComprador(),
@@ -18,9 +24,16 @@ class valoracionDAO extends baseDAO implements IValoracion {
             $valoracionDTO->getComentario(),
             $valoracionDTO->getFechaValoracion()
         );
-
-        return $stmt->execute();
+    
+        if (!$stmt->execute()) {
+            error_log("❌ Error al ejecutar la consulta: " . $stmt->error);
+            return false;
+        }
+    
+        error_log("✅ Valoración insertada correctamente.");
+        return true;
     }
+    
 
     public function obtenerValoracionesPorVendedor($id_vendedor) {
         $conn = application::getInstance()->getConexionBd();

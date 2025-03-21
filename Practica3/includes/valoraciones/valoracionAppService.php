@@ -13,8 +13,15 @@ class valoracionAppService {
 
     public function insertarValoracion($valoracionDTO) {
         $valoracionDAO = valoracionFactory::CreateValoracion();
-        return $valoracionDAO->insertarValoracion($valoracionDTO);
+        $ok = $valoracionDAO->insertarValoracion($valoracionDTO);
+        
+        if (!$ok) {
+            error_log("❌ valoracionAppService: Error al insertar valoración.");
+        }
+        
+        return $ok;
     }
+    
 
     public function obtenerValoracionesPorVendedor($id_vendedor) {
         $valoracionDAO = valoracionFactory::CreateValoracion();

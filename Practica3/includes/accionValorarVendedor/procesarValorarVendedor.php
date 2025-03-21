@@ -11,11 +11,15 @@ class valorarVendedorForm extends formBase {
     }
 
     protected function CreateFields($datos) {
+        // Esta línea es clave: intenta recuperar de $datos (POST) o usa el del constructor
+        $idVendedor = $datos['id_vendedor'] ?? $this->idVendedor;
+    
+        if (!$idVendedor) {
+            return "<p>Error: No se especificó un vendedor.</p>";
+        }
+    
         $puntuacion = $datos['puntuacion'] ?? '';
         $comentario = htmlspecialchars($datos['comentario'] ?? '');
-    
-        // ✅ Recuperar el id_vendedor de los datos si se ha reenviado el formulario
-        $idVendedor = $datos['id_vendedor'] ?? $this->idVendedor;
     
         $html = <<<EOF
         <fieldset>
@@ -43,31 +47,32 @@ class valorarVendedorForm extends formBase {
         return $html;
     }
     
+    
 
     private function selected($value, $expected) {
         return ($value == $expected) ? 'selected' : '';
     }
 
     protected function Process($datos) {
-        error_log("🧾 ID vendedor recibido al valorar: $id_vendedor");
-
         $id_comprador = $_SESSION['id_usuario'] ?? null;
         $id_vendedor = intval($datos['id_vendedor'] ?? 0);
         $puntuacion = intval($datos['puntuacion'] ?? 0);
         $comentario = trim($datos['comentario'] ?? '');
-
+    
         if (!$id_comprador || !$id_vendedor || !$puntuacion || empty($comentario)) {
             return ["Todos los campos son obligatorios."];
         }
-
+    
+        error_log("🧾 Procesando valoración: Comprador $id_comprador → Vendedor $id_vendedor");
+    
         $fecha_valoracion = date("Y-m-d H:i:s");
         $valoracionDTO = new ValoracionDTO(0, $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha_valoracion);
-
+    
         $valoracionService = valoracionAppService::GetSingleton();
         $valoracionService->insertarValoracion($valoracionDTO);
-
-        // Redirige tras enviar
+    
         return "profile.php";
     }
+    
 }
 ?>
