@@ -11,7 +11,6 @@ class valorarVendedorForm extends formBase {
     }
 
     protected function CreateFields($datos) {
-        // Esta línea es clave: intenta recuperar de $datos (POST) o usa el del constructor
         $idVendedor = $datos['id_vendedor'] ?? $this->idVendedor;
     
         if (!$idVendedor) {
@@ -21,7 +20,7 @@ class valorarVendedorForm extends formBase {
         $puntuacion = $datos['puntuacion'] ?? '';
         $comentario = htmlspecialchars($datos['comentario'] ?? '');
     
-        $html = <<<EOF
+        $html = <<<HTML
         <fieldset>
             <legend>Valorar al vendedor (ID: {$idVendedor})</legend>
             <p>
@@ -40,12 +39,13 @@ class valorarVendedorForm extends formBase {
                 <textarea name="comentario" rows="4" cols="50" required>$comentario</textarea>
             </p>
             <input type="hidden" name="id_vendedor" value="$idVendedor" />
-            <button type="submit">Enviar valoración</button>
         </fieldset>
-    EOF;
+        <button type="submit">Enviar valoración</button>
+    HTML;
     
         return $html;
     }
+    
     
     
 
