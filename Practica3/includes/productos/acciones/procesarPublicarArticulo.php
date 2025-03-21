@@ -30,7 +30,7 @@ class publicarProductoForm extends formBase {
                 </p>
 
                 <p><label>Imagen del Producto:</label> 
-                    <input type="file" name="imagen" accept="image/*"/>
+                    <input type="file" name="imagen" accept="image/*" required/>
                 </p>
 
                 <button type="submit" name="publicar">Publicar Producto</button>
@@ -41,33 +41,29 @@ class publicarProductoForm extends formBase {
         return $html;
     }
 
-    protected function Process($datos) { 
+    protected function Process($datos) {
         error_log("🛠️ Entrando en Process() de publicarProductoForm...");
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            die("❌ ERROR: El formulario no fue enviado por POST.");
+            return ["❌ ERROR: El formulario no fue enviado por POST."];
         }
 
-        if (empty($_POST)) {
-            die("❌ ERROR: El formulario está vacío.");
-        }
-
-        // Capturar datos del formulario
         $nombre = trim($datos['nombre_producto'] ?? '');
         $descripcion = trim($datos['descripcion'] ?? '');
         $precio = trim($datos['precio'] ?? '');
 
         if (empty($nombre) || empty($descripcion) || empty($precio)) {
-            return ["Todos los campos son obligatorios."];
+            return ["❌ Todos los campos son obligatorios."];
         }
-
-        // 🔍 Verificando contenido de $_FILES
-        error_log("🔍 Verificando contenido de \$_FILES:");
-        error_log(print_r($_FILES, true));
 
         $imagenRuta = "uploads/default-product.png"; // Ruta por defecto
 
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
+        if (isset($_FILES['imagen'])) {
+    error_log("🧪 Nombre de la imagen: " . $_FILES['imagen']['name']);
+    error_log("🧪 Código de error de imagen: " . $_FILES['imagen']['error']);
+}
+
+        if (!empty($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
             $imagen = $_FILES['imagen'];
             $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
             $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
@@ -82,39 +78,32 @@ class publicarProductoForm extends formBase {
                 $nombreImagen = uniqid("producto_") . "." . $extension;
                 $rutaFinal = $uploadsDir . $nombreImagen;
 
-                error_log("🛠️ Moviendo archivo a: " . $rutaFinal);
-
                 if (move_uploaded_file($imagen['tmp_name'], $rutaFinal)) {
                     $imagenRuta = "uploads/" . $nombreImagen;
                     error_log("✅ Imagen subida correctamente: " . $imagenRuta);
                 } else {
-                    error_log("❌ Error al mover la imagen. Verificar permisos.");
-                    return ["Hubo un problema al subir la imagen."];
+                    return ["❌ Hubo un error al mover la imagen. Verifica permisos."];
                 }
             } else {
-                error_log("❌ Extensión de imagen no permitida: " . $extension);
-                return ["Formato de imagen no permitido."];
+                return ["❌ Formato de imagen no permitido."];
             }
         } else {
-            error_log("⚠️ No se detectó una imagen, usando imagen por defecto.");
+            return ["❌ No se ha subido ninguna imagen."];
         }
 
-        // Insertar en la base de datos
+        // Obtener instancia del servicio
         $productoService = productoAppService::getInstance();
-
         $resultado = $productoService->publicarProducto($nombre, $descripcion, $precio, $imagenRuta);
 
         if ($resultado) {
             error_log("✅ Producto publicado con éxito.");
+            $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
+            header("Location: $base_url/profile.php");
+            exit();
         } else {
-            error_log("❌ Error al publicar el producto en la base de datos.");
-            return ["Hubo un error al guardar el producto."];
+            error_log("❌ Fallo en productoService->publicarProducto()");
+            return ["❌ Ha habido un error al guardar el producto. Inténtalo de nuevo."];
         }
-
-        // Redirigir a la página correcta
-        $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
-        header("Location: $base_url/profile.php");
-        exit();
     }
 }
 ?>
