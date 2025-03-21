@@ -1,6 +1,8 @@
 <?php
 include __DIR__ . "/../../comun/formBase.php";
 include __DIR__ . "/../../productos/productoAppService.php";
+require_once __DIR__ . "/../../productos/productoDTO.php";
+
 
 class publicarProductoForm extends formBase {
     public function __construct() {
@@ -34,6 +36,7 @@ class publicarProductoForm extends formBase {
                 </p>
 
                 <button type="submit" name="publicar">Publicar Producto</button>
+                <input type="hidden" name="action" value="publicarProductoForm" />
             </fieldset>
         </form>
         EOF;
@@ -43,67 +46,62 @@ class publicarProductoForm extends formBase {
 
     protected function Process($datos) {
         error_log("🛠️ Entrando en Process() de publicarProductoForm...");
-
+    
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["❌ ERROR: El formulario no fue enviado por POST."];
         }
-
-        $nombre = trim($datos['nombre_producto'] ?? '');
-        $descripcion = trim($datos['descripcion'] ?? '');
-        $precio = trim($datos['precio'] ?? '');
-
-        if (empty($nombre) || empty($descripcion) || empty($precio)) {
-            return ["❌ Todos los campos son obligatorios."];
-        }
-
-        $imagenRuta = "uploads/default-product.png"; // Ruta por defecto
-
-        if (isset($_FILES['imagen'])) {
-    error_log("🧪 Nombre de la imagen: " . $_FILES['imagen']['name']);
-    error_log("🧪 Código de error de imagen: " . $_FILES['imagen']['error']);
-}
-
-        if (!empty($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
-            $imagen = $_FILES['imagen'];
-            $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
-            $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
-
-            if (in_array($extension, $extensionesPermitidas)) {
-                $uploadsDir = __DIR__ . "/../../uploads/";
-
-                if (!is_dir($uploadsDir)) {
-                    mkdir($uploadsDir, 0777, true);
-                }
-
-                $nombreImagen = uniqid("producto_") . "." . $extension;
-                $rutaFinal = $uploadsDir . $nombreImagen;
-
-                if (move_uploaded_file($imagen['tmp_name'], $rutaFinal)) {
-                    $imagenRuta = "uploads/" . $nombreImagen;
-                    error_log("✅ Imagen subida correctamente: " . $imagenRuta);
-                } else {
-                    return ["❌ Hubo un error al mover la imagen. Verifica permisos."];
-                }
+    
+        // Datos del formulario
+        $nombre = trim($_POST['nombre_producto'] ?? '');
+        $descripcion = trim($_POST['descripcion'] ?? '');
+        $precio = floatval($_POST['precio'] ?? 0);
+        $imagenBase64 = null;
+    
+        if (!empty($_FILES['imagen']['tmp_name'])) {
+            $contenidoImagen = file_get_contents($_FILES['imagen']['tmp_name']);
+            if ($contenidoImagen !== false) {
+                $imagenBase64 = base64_encode($contenidoImagen);
+                error_log("✅ Imagen convertida a base64. Longitud: " . strlen($imagenBase64));
             } else {
-                return ["❌ Formato de imagen no permitido."];
+                error_log("❌ No se pudo leer el contenido de la imagen.");
             }
         } else {
-            return ["❌ No se ha subido ninguna imagen."];
+            error_log("⚠️ No se subió ninguna imagen.");
         }
-
-        // Obtener instancia del servicio
+    
+        // Crear DTO
+        require_once(__DIR__ . "/../productoDTO.php");
+        $usuario_id = $_SESSION['id_usuario'] ?? 0;
+        $fecha_publicacion = date("Y-m-d H:i:s");
+    
+        $productoDTO = new ProductoDTO(
+            null,
+            $usuario_id,
+            $nombre,
+            $descripcion,
+            $precio,
+            $imagenBase64,
+            $fecha_publicacion
+        );
+    
+        error_log("📦 ProductoDTO creado");
+    
+        // Insertar
         $productoService = productoAppService::getInstance();
-        $resultado = $productoService->publicarProducto($nombre, $descripcion, $precio, $imagenRuta);
-
+        $resultado = $productoService->publicarProducto($productoDTO);
+    
         if ($resultado) {
-            error_log("✅ Producto publicado con éxito.");
+            error_log("✅ Producto guardado correctamente.");
+            // Redirige
             $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
             header("Location: $base_url/profile.php");
             exit();
         } else {
-            error_log("❌ Fallo en productoService->publicarProducto()");
-            return ["❌ Ha habido un error al guardar el producto. Inténtalo de nuevo."];
+            error_log("❌ Error al guardar en la base de datos.");
+            return ["Hubo un error al guardar el producto."];
         }
     }
+    
 }
+
 ?>

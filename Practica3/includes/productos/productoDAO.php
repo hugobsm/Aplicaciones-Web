@@ -22,6 +22,15 @@ $precio = $productoDTO->getPrecio();
 $imagen = $productoDTO->getImagen();
 $fecha_publicacion = $productoDTO->getFechaPublicacion();
 
+// DEBUG
+error_log("🧪 INSERTANDO EN BBDD:");
+error_log("Usuario: $id_usuario");
+error_log("Nombre: $nombre");
+error_log("Descripción: $descripcion");
+error_log("Precio: $precio");
+error_log("Longitud Imagen: " . strlen($imagen));
+error_log("Fecha: $fecha_publicacion");
+
 // Luego pásalas a bind_param()
 $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion);
 

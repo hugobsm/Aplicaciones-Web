@@ -28,12 +28,6 @@ class productoAppService
     
     public function publicarProducto($productoDTO)
     {
-        error_log("📦 publicando producto con: ");
-error_log("  Nombre: " . $productoDTO->getNombre());
-error_log("  Descripción: " . $productoDTO->getDescripcion());
-error_log("  Precio: " . $productoDTO->getPrecio());
-error_log("  ImagenRuta: " . $productoDTO->getImagen());
-
         $IProductoDAO = productoFactory::CreateProducto();
         return $IProductoDAO->crearProducto($productoDTO);
     }
