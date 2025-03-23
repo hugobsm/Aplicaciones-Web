@@ -10,7 +10,7 @@ $contenidoPrincipal = <<<EOS
 <div class="contacto-container">
     <div class="informacion-contacto">
         <h2>Información de Contacto</h2>
-        <p><strong>Email:</strong> contacto@valiantvestes.com</p>
+        <p><strong>Email:</strong> contacto@brandswap.com</p>
         <p><strong>Teléfono:</strong> +34 912 345 678</p>
         <p><strong>Dirección:</strong> Calle Ejemplo 123, Madrid, España</p>
     </div>
