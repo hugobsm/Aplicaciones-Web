@@ -1,41 +1,45 @@
 <?php
 include __DIR__ . "/../productos/productoAppService.php";
 
-class verProductosForm
+class verProductos
 {
-    public function mostrarProductos()
+    public static function mostrarTodos()
     {
         $productoAppService = productoAppService::GetSingleton();
         $productos = $productoAppService->obtenerTodosLosProductos();
 
-        if (!$productos) {
+        if (!$productos || empty($productos)) {
             return "<p>No hay productos disponibles en este momento.</p>";
         }
 
         $html = "<div class='productos-container'>";
         foreach ($productos as $producto) {
             $idProducto = $producto->getId();
-            $imgSrc = str_starts_with($producto->getImagen(), 'uploads')
-                ? $producto->getImagen()
-                : 'data:image/png;base64,' . $producto->getImagen();
+            $nombre = htmlspecialchars($producto->getNombre());
+            $descripcion = htmlspecialchars($producto->getDescripcion());
+            $precio = number_format($producto->getPrecio(), 2);
+            $fecha = htmlspecialchars($producto->getFechaPublicacion());
 
-            $html .= <<<EOF
-            <div class="product">
+            // 🖼️ Sin modificar la ruta de la imagen
+            $imagen = htmlspecialchars($producto->getImagen());
+
+            $html .= <<<HTML
+            <div class="product-card">
                 <a href="verProducto.php?id={$idProducto}">
-                    <img src="$imgSrc" alt="Imagen del producto">
+                    <img class="product-image" src="{$fecha}" alt="Imagen del producto">
                 </a>
                 <div class="product-info">
-                    <p class="product-name"><strong>{$producto->getNombre()}</strong></p>
-                    <p class="product-description">{$producto->getDescripcion()}</p>
-                    <p class="product-price"><strong>Precio:</strong> \${$producto->getPrecio()}</p>
-                    <p class="product-date"><strong>Publicado:</strong> {$producto->getFechaPublicacion()}</p>
+                    <p class="product-name"><strong>{$nombre}</strong></p>
+                    <p class="product-description">{$descripcion}</p>
+                    <p class="product-price"><strong>Precio:</strong> \${$precio}</p>
+                    <p class="product-date"><strong>Publicado:</strong> {$imagen}</p>
                     <a href="verProducto.php?id={$idProducto}" class="ver-detalle">Ver más</a>
                 </div>
             </div>
-EOF;
+HTML;
         }
-        $html .= "</div>";
 
+        $html .= "</div>";
         return $html;
     }
 }
