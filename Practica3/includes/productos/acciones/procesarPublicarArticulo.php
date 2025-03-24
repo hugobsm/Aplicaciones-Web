@@ -68,7 +68,7 @@ error_log("Código de error de subida: " . ($_FILES['imagen']['error'] ?? 'No de
             $ext = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
         
             $nombreUnico = uniqid("img_") . "." . $ext;
-            $rutaCarpeta = __DIR__ . "/../../uploads/";
+            $rutaCarpeta = __DIR__ . "/../../../uploads/";
         
             // ✅ Crear la carpeta si no existe
             if (!is_dir($rutaCarpeta)) {
