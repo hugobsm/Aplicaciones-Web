@@ -1,16 +1,9 @@
 <?php
-
-include __DIR__ . "/../comun/formBase.php";
 include __DIR__ . "/../productos/productoAppService.php";
 
-class verProductosForm extends formBase
+class verProductosForm
 {
-    public function __construct()
-    {
-        parent::__construct('verProductosForm');
-    }
-
-    protected function CreateFields($datos)
+    public function mostrarProductos()
     {
         $productoAppService = productoAppService::GetSingleton();
         $productos = $productoAppService->obtenerTodosLosProductos();
@@ -22,10 +15,14 @@ class verProductosForm extends formBase
         $html = "<div class='productos-container'>";
         foreach ($productos as $producto) {
             $idProducto = $producto->getId();
+            $imgSrc = str_starts_with($producto->getImagen(), 'uploads')
+                ? $producto->getImagen()
+                : 'data:image/png;base64,' . $producto->getImagen();
+
             $html .= <<<EOF
             <div class="product">
                 <a href="verProducto.php?id={$idProducto}">
-                    <img src="{$producto->getImagen()}" alt="Imagen del producto">
+                    <img src="$imgSrc" alt="Imagen del producto">
                 </a>
                 <div class="product-info">
                     <p class="product-name"><strong>{$producto->getNombre()}</strong></p>
@@ -40,11 +37,6 @@ EOF;
         $html .= "</div>";
 
         return $html;
-    }
-
-    public function mostrarProductos()
-    {
-        return $this->CreateFields([]);
     }
 }
 ?>
