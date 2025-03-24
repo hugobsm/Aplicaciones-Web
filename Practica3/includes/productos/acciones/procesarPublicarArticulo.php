@@ -1,8 +1,7 @@
-<?php
+<?php 
 include __DIR__ . "/../../comun/formBase.php";
 include __DIR__ . "/../../productos/productoAppService.php";
 require_once __DIR__ . "/../../productos/productoDTO.php";
-
 
 class publicarProductoForm extends formBase {
     public function __construct() {
@@ -15,93 +14,103 @@ class publicarProductoForm extends formBase {
         $precio = $datos['precio'] ?? '';
 
         $html = <<<EOF
-        <form method="POST" action="{$_SERVER['PHP_SELF']}" enctype="multipart/form-data">
-            <fieldset>
-                <legend>Publicar Nuevo Producto</legend>
+    <fieldset>
+        <legend>Publicar Nuevo Producto</legend>
 
-                <p><label>Nombre del Producto:</label> 
-                    <input type="text" name="nombre_producto" value="$nombre" required/>
-                </p>
+        <p><label>Nombre del Producto:</label> 
+            <input type="text" name="nombre_producto" value="$nombre" required/>
+        </p>
 
-                <p><label>Descripción:</label> 
-                    <textarea name="descripcion" required>$descripcion</textarea>
-                </p>
+        <p><label>Descripción:</label> 
+            <textarea name="descripcion" required>$descripcion</textarea>
+        </p>
 
-                <p><label>Precio:</label> 
-                    <input type="number" name="precio" value="$precio" required/>
-                </p>
+        <p><label>Precio:</label> 
+            <input type="number" name="precio" value="$precio" required/>
+        </p>
 
-                <p><label>Imagen del Producto:</label> 
-                    <input type="file" name="imagen" accept="image/*" required/>
-                </p>
+        <p><label>Imagen del Producto:</label> 
+            <input type="file" name="imagen" accept="image/*" required/>
+        </p>
 
-                <button type="submit" name="publicar">Publicar Producto</button>
-                <input type="hidden" name="action" value="publicarProductoForm" />
-            </fieldset>
-        </form>
-        EOF;
+        <button type="submit" name="publicar">Publicar Producto</button>
+    </fieldset>
+EOF;
+
 
         return $html;
     }
 
     protected function Process($datos) {
         error_log("🛠️ Entrando en Process() de publicarProductoForm...");
-    
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["❌ ERROR: El formulario no fue enviado por POST."];
         }
-    
-        // Datos del formulario
+
         $nombre = trim($_POST['nombre_producto'] ?? '');
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = floatval($_POST['precio'] ?? 0);
-        $imagenBase64 = null;
-    
-        if (!empty($_FILES['imagen']['tmp_name'])) {
-            $contenidoImagen = file_get_contents($_FILES['imagen']['tmp_name']);
-            if ($contenidoImagen !== false) {
-                $imagenBase64 = base64_encode($contenidoImagen);
-                error_log("✅ Imagen convertida a base64. Longitud: " . strlen($imagenBase64));
-            } else {
-                error_log("❌ No se pudo leer el contenido de la imagen.");
-            }
-        } else {
-            error_log("⚠️ No se subió ninguna imagen.");
+        $nombreArchivo = null;
+
+        // Validación básica
+        if (!$nombre || !$descripcion || !$precio) {
+            return ["Todos los campos son obligatorios."];
         }
-    
-        // Crear DTO
-        require_once(__DIR__ . "/../productoDTO.php");
+        error_log("📂 Verificando subida de imagen...");
+error_log("¿Existe \$_FILES['imagen']? " . (isset($_FILES['imagen']) ? "Sí" : "No"));
+error_log("Código de error de subida: " . ($_FILES['imagen']['error'] ?? 'No definido'));
+
+        // Procesar la imagen
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+            $nombreOriginal = $_FILES['imagen']['name'];
+            $tmpName = $_FILES['imagen']['tmp_name'];
+            $ext = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+        
+            $nombreUnico = uniqid("img_") . "." . $ext;
+            $rutaCarpeta = __DIR__ . "/../../uploads/";
+        
+            // ✅ Crear la carpeta si no existe
+            if (!is_dir($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
+            }
+        
+            $rutaDestino = $rutaCarpeta . $nombreUnico;
+        
+            if (!move_uploaded_file($tmpName, $rutaDestino)) {
+                return ["❌ No se pudo mover la imagen al directorio destino."];
+            }
+        
+            $nombreArchivo = "uploads/" . $nombreUnico; // este es el valor que se guarda en la BBDD
+        } else {
+            return ["❌ Error al subir la imagen."];
+        }
+        
+
         $usuario_id = $_SESSION['id_usuario'] ?? 0;
         $fecha_publicacion = date("Y-m-d H:i:s");
-    
+
         $productoDTO = new ProductoDTO(
             null,
             $usuario_id,
             $nombre,
             $descripcion,
             $precio,
-            $imagenBase64,
+            $nombreArchivo, // <- Solo el nombre del archivo se guarda
             $fecha_publicacion
         );
-    
-        error_log("📦 ProductoDTO creado");
-    
-        // Insertar
+
         $productoService = productoAppService::getInstance();
         $resultado = $productoService->publicarProducto($productoDTO);
-    
+
         if ($resultado) {
             error_log("✅ Producto guardado correctamente.");
-            // Redirige
             $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
             header("Location: $base_url/profile.php");
             exit();
         } else {
-            error_log("❌ Error al guardar en la base de datos.");
             return ["Hubo un error al guardar el producto."];
         }
     }
-    
 }
-
 ?>
