@@ -61,6 +61,11 @@ class valorarVendedorForm extends formBase {
         $puntuacion = intval($datos['puntuacion'] ?? 0);
         $comentario = trim($datos['comentario'] ?? '');
     
+        $id_comprador = filter_var($id_comprador, FILTER_SANITIZE_FULL_SPECIAL_CHARS);            
+        $id_vendedor = filter_var($id_vendedor, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $puntuacion = filter_var($puntuacion, FILTER_SANITIZE_NUMBER_INT);   
+        $comentario = filter_var($comentario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
         if (!$id_comprador || !$id_vendedor || !$puntuacion || empty($comentario)) {
             error_log("❌ Campos incompletos. No se inserta.");
             return ["Todos los campos son obligatorios."];
