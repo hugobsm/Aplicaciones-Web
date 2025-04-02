@@ -8,6 +8,12 @@ define('BD_NAME', 'brandswap');
 define('BD_USER', 'root'); // Ajusta según tu configuración
 define('BD_PASS', ''); // Si tienes contraseña, colócala aquí
 
+define('RAIZ_APP',__DIR__);
+define('RUTA_APP', '/Aplicaciones-Web/Practica3/');
+define('RUTA_IMGS', RUTA_APP.'/imgs');
+define('RUTA_CSS',  RUTA_APP.'/css');
+//define('RUTA_JS',  RUTA_APP.'/js/');
+
 ini_set('default_charset', 'UTF-8');
 setLocale(LC_ALL, 'es_ES.UTF.8');
 date_default_timezone_set('Europe/Madrid');
