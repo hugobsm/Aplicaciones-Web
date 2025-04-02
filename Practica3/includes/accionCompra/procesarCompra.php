@@ -1,7 +1,7 @@
 <?php
-include __DIR__ . "/../comun/formBase.php";
-include __DIR__ . "/../compras/compraAppService.php";
-include __DIR__ . "/../productos/productoAppService.php";
+require_once(__DIR__ . "/../compras/compraAppService.php");
+require_once(__DIR__ . "/../productos/productoAppService.php");
+require_once(__DIR__ . "/../comun/formBase.php");
 
 class comprarProductoForm extends formBase {
     private $idProducto;
@@ -27,74 +27,50 @@ class comprarProductoForm extends formBase {
                 <button type="submit" name="comprar">Confirmar Compra</button>
             </fieldset>
         </form>
-    EOF;
+EOF;
         return $html;
     }
 
-    protected function Process($datos) { 
-        error_log("🛒 Intentando realizar la compra...");
-
-        // ✅ Verificar si el formulario se envió correctamente
+    protected function Process($datos) {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            die("❌ ERROR: El formulario NO se envió por POST.");
+            return ["Error: El formulario debe enviarse mediante POST."];
         }
 
-        if (empty($datos['id_producto']) || empty($datos['metodo_pago'])) {
-            die("❌ ERROR: Datos incompletos.");
-        }
-
-        // ✅ Obtener valores del formulario
-        $id_producto = intval($datos['id_producto']);
-        $metodo_pago = trim($datos['metodo_pago']);
+        $id_producto = intval($datos['id_producto'] ?? 0);
+        $metodo_pago = trim($datos['metodo_pago'] ?? '');
         $id_usuario = $_SESSION['id_usuario'] ?? null;
 
-        if (!$id_usuario) {
-            die("❌ ERROR: Debes iniciar sesión para comprar.");
+        if (!$id_usuario || !$id_producto || !$metodo_pago) {
+            return ["Faltan datos obligatorios para completar la compra."];
         }
 
-        error_log("🆔 ID Producto: " . $id_producto);
-        error_log("👤 ID Usuario (comprador): " . $id_usuario);
-        error_log("💳 Método Pago: " . $metodo_pago);
+        // Validación básica de seguridad (escapar entrada de usuario)
+        $metodo_pago = htmlspecialchars($metodo_pago, ENT_QUOTES, 'UTF-8');
 
-        // ✅ Verificar si el producto existe
-        $productoAppService = productoAppService::GetSingleton();
-        $producto = $productoAppService->obtenerProductoPorId($id_producto);
+        $productoService = productoAppService::GetSingleton();
+        $producto = $productoService->obtenerProductoPorId($id_producto);
 
         if (!$producto) {
-            die("❌ ERROR: El producto con ID $id_producto no existe.");
+            return ["El producto seleccionado no existe."];
         }
 
-        // ✅ Obtener el ID del vendedor desde el producto
         $id_vendedor = $producto->getIdUsuario();
-        error_log("🧾 ID Vendedor: " . $id_vendedor);
+        $fecha_compra = date("Y-m-d H:i:s");
 
-        // ✅ Insertar la compra en la base de datos
         $compraDTO = new CompraDTO(
             0,
-            $id_usuario,                      // comprador
+            $id_usuario,
             $id_producto,
-            date("Y-m-d H:i:s"),
+            $fecha_compra,
             $metodo_pago,
-            $id_vendedor                      // vendedor
+            $id_vendedor
         );
 
-        $compraAppService = compraAppService::GetSingleton();
+        $compraService = compraAppService::GetSingleton();
+        $compraService->realizarCompra($compraDTO);
+        $productoService->eliminarProducto($id_producto);
 
-        try {
-            $compraAppService->realizarCompra($compraDTO);
-            error_log("✅ Compra registrada en la base de datos.");
-
-            // ✅ Eliminar el producto de la base de datos
-            $productoAppService->eliminarProducto($id_producto);
-            error_log("🗑️ Producto eliminado de la base de datos.");
-
-            // ✅ Redirigir a confirmación
-            header("Location: confirmacionCompra.php");
-            exit();
-        } catch (Exception $e) {
-            error_log("❌ Error en la compra: " . $e->getMessage());
-            die("❌ ERROR: " . $e->getMessage());
-        }
+        header("Location: confirmacionCompra.php");
+        exit();
     }
 }
-?>
