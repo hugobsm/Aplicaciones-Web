@@ -1,3 +1,10 @@
+/* Contenedor principal */
+#contenedor {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
 .footer {
     background-color: #000;
     color: white;
@@ -65,6 +72,9 @@ body {
     background-color: #fff;
     color: #000;
     padding-top: 80px; /* Evita que el contenido se solape con el header */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 .header {
     display: flex;
@@ -285,6 +295,7 @@ button:hover {
 
 
 main {
+    flex: 1;
     padding-top: 25px; /* Ajusta el valor según lo necesites */
 }
 
