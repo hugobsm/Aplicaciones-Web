@@ -94,7 +94,7 @@ $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen
         return $productos;
     }
 
-    public function obtenerTodosLosProductos()
+    /*public function obtenerTodosLosProductos()
     {
         $sql = "SELECT * FROM productos ORDER BY fecha_publicacion DESC";
         $resultado = $this->ExecuteQuery($sql);
@@ -104,6 +104,33 @@ $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen
             $productos[] = new ProductoDTO(...array_values($fila));
         }
         return $productos;
+    }*/
+    public function obtenerTodosLosProductos($id_usuario_actual = null)
+    {
+    $conn = application::getInstance()->getConexionBd();
+
+    // Modificar la consulta para excluir los productos del usuario actual si se proporciona un ID
+    $query = "SELECT * FROM productos";
+    if ($id_usuario_actual !== null) {
+        $query .= " WHERE id_usuario != ?"; // Excluir productos del usuario actual
+    }
+    $query .= " ORDER BY fecha_publicacion DESC";
+
+    $stmt = $conn->prepare($query);
+
+    if ($id_usuario_actual !== null) {
+        $stmt->bind_param("i", $id_usuario_actual);
+    }
+
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $productos = [];
+    while ($fila = $resultado->fetch_assoc()) {
+        $productos[] = new ProductoDTO(...array_values($fila));
+    }
+
+    return $productos;
     }
 
     public function eliminarProducto($id)

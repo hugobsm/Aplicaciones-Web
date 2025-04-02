@@ -44,10 +44,10 @@ class productoAppService
         return $IProductoDAO->obtenerProductosPorUsuario($id_usuario);
     }
 
-    public function obtenerTodosLosProductos()
+    public function obtenerTodosLosProductos($id_usuario_actual = null)
     {
         $IProductoDAO = productoFactory::CreateProducto();
-        return $IProductoDAO->obtenerTodosLosProductos();
+        return $IProductoDAO->obtenerTodosLosProductos($id_usuario_actual);
     }
 
     public function eliminarProducto($id)
