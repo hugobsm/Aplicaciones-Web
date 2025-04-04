@@ -57,8 +57,6 @@ EOF;
         $descripcion = filter_var($descripcion, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $precio = filter_var($precio, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        error_log("🛠️ Procesando publicación de producto: $nombre, $descripcion, $precio");
-
     // Validación básica
         if (!$nombre || !$descripcion || !$precio) {
             return ["Todos los campos son obligatorios."];
@@ -108,7 +106,6 @@ EOF;
         $resultado = $productoService->publicarProducto($productoDTO);
 
         if ($resultado) {
-            error_log("✅ Producto guardado correctamente.");
             $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
             header("Location: $base_url/profile.php");
             exit();

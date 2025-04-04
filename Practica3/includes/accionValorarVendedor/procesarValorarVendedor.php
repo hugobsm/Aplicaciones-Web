@@ -54,8 +54,7 @@ class valorarVendedorForm extends formBase {
     }
 
     protected function Process($datos) {
-        error_log("🚀 Entrando en Process() de valorar vendedor");
-    
+        
         $id_comprador = $_SESSION['id_usuario'] ?? null;
         $id_vendedor = intval($datos['id_vendedor'] ?? 0);
         $puntuacion = intval($datos['puntuacion'] ?? 0);
@@ -67,18 +66,12 @@ class valorarVendedorForm extends formBase {
         $comentario = filter_var($comentario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if (!$id_comprador || !$id_vendedor || !$puntuacion || empty($comentario)) {
-            error_log("❌ Campos incompletos. No se inserta.");
             return ["Todos los campos son obligatorios."];
         }
     
         $fecha_valoracion = date("Y-m-d H:i:s");
     
-        error_log("🧾 Insertando valoración:");
-        error_log("Comprador: $id_comprador");
-        error_log("Vendedor: $id_vendedor");
-        error_log("Puntuación: $puntuacion");
-        error_log("Comentario: $comentario");
-        error_log("Fecha: $fecha_valoracion");
+       
     
         $valoracionDTO = new ValoracionDTO(0, $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha_valoracion);
         $valoracionService = valoracionAppService::GetSingleton();

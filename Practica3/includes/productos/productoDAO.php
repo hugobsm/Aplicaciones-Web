@@ -31,13 +31,11 @@ $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen
         if ($stmt->execute()) {
             return true;
         } else {
-            error_log("❌ Error al insertar producto: " . $stmt->error);
             return false;
         }
     }
 
     public function obtenerProductoPorId($id) {
-        error_log("🔍 Buscando producto con ID: $id");
         
         $conn = application::getInstance()->getConexionBd();
         $sql = "SELECT id_producto, id_usuario, nombre_producto, descripcion, precio, imagen, fecha_publicacion 
@@ -45,20 +43,18 @@ $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen
         
         $stmt = $conn->prepare($sql);
         if (!$stmt) {
-            error_log("❌ Error preparando consulta: " . $conn->error);
             return null;
         }
     
         $stmt->bind_param("i", $id);
         if (!$stmt->execute()) {
-            error_log("❌ Error ejecutando consulta: " . $stmt->error);
             return null;
         }
     
         $resultado = $stmt->get_result();
         
         if ($fila = $resultado->fetch_assoc()) {
-            error_log("✅ Producto encontrado: " . json_encode($fila));
+
             return new ProductoDTO(
                 $fila['id_producto'],
                 $fila['id_usuario'],
@@ -69,7 +65,7 @@ $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen
                 $fila['fecha_publicacion']
             );
         } else {
-            error_log("⚠️ Producto con ID $id no encontrado.");
+
             return null;
         }
     }

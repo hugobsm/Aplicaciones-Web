@@ -33,14 +33,12 @@ EOF;
 
     protected function Process($datos)
     {
-        error_log("🛠️ Iniciando Process() en registerForm");
 
         $result = array();
 
         // Capturar y validar datos del formulario
         $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
         $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        error_log("📛 Nombre: " . $nombreUsuario);
 
         if (empty($nombreUsuario)) {
             $result[] = "El nombre de usuario no puede estar vacío.";
@@ -48,7 +46,6 @@ EOF;
 
         $email = trim($datos['email'] ?? '');
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-        error_log("📧 Email: " . $email);
 
         if (empty($email)) {
             $result[] = "El email no puede estar vacío.";
@@ -56,7 +53,6 @@ EOF;
 
         $password = trim($datos['password'] ?? '');
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        error_log("🔑 Contraseña recibida.");
 
         if (empty($password)) {
             $result[] = "El password no puede estar vacío.";
@@ -98,14 +94,12 @@ EOF;
                 $userDTO = new userDTO(0, $nombreUsuario, $email, $hashedPassword, $fotoPerfil);
                 $userAppService = userAppService::GetSingleton();
 
-                error_log("🛠️ Creando usuario en la base de datos...");
                 $createdUserDTO = $userAppService->create($userDTO);
 
                 if (!$createdUserDTO) {
                     throw new Exception("Error al registrar el usuario.");
                 }
 
-                error_log("✅ Usuario registrado correctamente: " . $createdUserDTO->email());
 
                 // Iniciar sesión después del registro
                 $_SESSION["login"] = true;
@@ -115,12 +109,10 @@ EOF;
                 $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
 
                 // Redirigir a index.php
-                error_log("🔄 Redirigiendo a index.php...");
                 header("Location: index.php");
                 exit();
 
             } catch (Exception $e) {
-                error_log("❌ Error en el registro: " . $e->getMessage());
                 $result[] = $e->getMessage();
             }
         }

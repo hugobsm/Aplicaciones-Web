@@ -29,7 +29,7 @@ class compraDAO extends baseDAO implements ICompra {
             $deleteStmt->execute();
             return true;
         } else {
-            error_log("❌ Error al registrar compra: " . $stmt->error);
+
             return false;
         }
     }
