@@ -39,7 +39,11 @@ EOF;
         $id_producto = intval($datos['id_producto'] ?? 0);
         $metodo_pago = trim($datos['metodo_pago'] ?? '');
         $id_usuario = $_SESSION['id_usuario'] ?? null;
-
+        
+        $id_producto = filter_var($id_producto, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $metodo_pago = filter_var($metodo_pago, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $id_usuario = filter_var($id_usuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
         if (!$id_usuario || !$id_producto || !$metodo_pago) {
             return ["Faltan datos obligatorios para completar la compra."];
         }

@@ -42,7 +42,7 @@ EOF;
     }
 
     protected function Process($datos) {
-        error_log("🛠️ Entrando en Process() de publicarProductoForm...");
+       
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return ["❌ ERROR: El formulario no fue enviado por POST."];
@@ -52,14 +52,16 @@ EOF;
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = floatval($_POST['precio'] ?? 0);
         $nombreArchivo = null;
+//$nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $nombre = filter_var($nombre, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $descripcion = filter_var($descripcion, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $precio = filter_var($precio, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
-        // Validación básica
+    // Validación básica
         if (!$nombre || !$descripcion || !$precio) {
             return ["Todos los campos son obligatorios."];
         }
-        error_log("📂 Verificando subida de imagen...");
-error_log("¿Existe \$_FILES['imagen']? " . (isset($_FILES['imagen']) ? "Sí" : "No"));
-error_log("Código de error de subida: " . ($_FILES['imagen']['error'] ?? 'No definido'));
+        
 
         // Procesar la imagen
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
@@ -104,7 +106,6 @@ error_log("Código de error de subida: " . ($_FILES['imagen']['error'] ?? 'No de
         $resultado = $productoService->publicarProducto($productoDTO);
 
         if ($resultado) {
-            error_log("✅ Producto guardado correctamente.");
             $base_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'], 1);
             header("Location: $base_url/profile.php");
             exit();

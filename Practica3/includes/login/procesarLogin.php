@@ -61,7 +61,7 @@ EOF;
     $_SESSION["email"] = $foundedUserDTO->email();
     $_SESSION["foto_perfil"] = $foundedUserDTO->fotoPerfil() ?? "uploads/default-avatar.png"; 
 
-    error_log("🔄 Redirigiendo a index.php...");
+
     header("Location: index.php");
     exit();
 }
