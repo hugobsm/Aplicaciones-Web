@@ -2,12 +2,16 @@
 function mostrarSaludo() 
 {
     if (isset($_SESSION["login"]) && $_SESSION["login"] === true) {
-        echo "<a href='profile.php'>Bienvenido, ". $_SESSION['nombre'] ."</a>. <a href='logout.php'>(Salir)</a>";
+        // Verifica que $_SESSION['usuario'] esté definida antes de acceder a ella
+        if (isset($_SESSION['usuario']) && isset($_SESSION['usuario']['nombre'])) {
+            echo "<a href='profile.php'>Bienvenido, ". $_SESSION['usuario']['nombre'] ."</a>. <a href='logout.php'>(Salir)</a>";
+        } else {
+            echo "<a href='login.php'>Iniciar sesión</a> | <a href='registro.php'>Registro</a>";
+        }
     } else {
         echo "<a href='login.php'>Iniciar sesión</a> | <a href='registro.php'>Registro</a>";
     }
 }
-
 ?>
 
 <body>
@@ -24,13 +28,12 @@ function mostrarSaludo()
                 <a href="miembros.php">About Us</a>
                 <?php
                 // Solo el administrador ve esta opción
-                if (isset($_SESSION["login"]) && $_SESSION["login"] === true && $_SESSION["usuario"]["tipo"] === "admin") {
+                if (isset($_SESSION["login"]) && $_SESSION["login"] === true && isset($_SESSION["usuario"]["tipo"]) && $_SESSION["usuario"]["tipo"] === "admin") {
                     echo '<a href="includes/admin/verUsuario.php">Usuarios</a>';
                 }
                 ?>
             </div>
 
-            
             <div class="logo">
                 <a href="index.php"><img src="Imagenes Marca/logo.png" alt="Logo"></a>
             </div>
