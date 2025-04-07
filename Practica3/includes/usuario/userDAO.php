@@ -75,7 +75,7 @@ class userDAO extends baseDAO implements IUser
             $escNombre = $this->realEscapeString($userDTO->nombre());
             $hashedPassword = self::hashPassword($userDTO->password());
             $fotoPerfil = $userDTO->fotoPerfil();
-            $tipo = $userDTO->tipo();
+            $tipo = $this->realEscapeString($userDTO->tipo());
     
             $conn = application::getInstance()->getConexionBd();
     

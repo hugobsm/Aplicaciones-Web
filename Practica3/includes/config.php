@@ -3,9 +3,9 @@
 require_once("includes/application.php");
 
 
-define('BD_HOST', 'vm018.db.swarm.test');
+define('BD_HOST', 'localhost');
 define('BD_NAME', 'brandswap');
-define('BD_USER', 'brandswap'); // Ajusta según tu configuración
+define('BD_USER', 'root'); // Ajusta según tu configuración
 define('BD_PASS', ''); // Si tienes contraseña, colócala aquí
 
 define('RAIZ_APP',__DIR__);

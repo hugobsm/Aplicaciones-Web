@@ -48,6 +48,7 @@ EOF;
     $userAppService = userAppService::GetSingleton();
     $foundedUserDTO = $userAppService->login($userDTO);
 
+
     if (!$foundedUserDTO) {
         
         return ["El usuario o la contraseña no coinciden."];
@@ -60,10 +61,7 @@ $_SESSION["id_usuario"] = $foundedUserDTO->id();
 $_SESSION["nombre"] = $foundedUserDTO->nombre();
 $_SESSION["email"] = $foundedUserDTO->email();
 $_SESSION["foto_perfil"] = $foundedUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
-$_SESSION["usuario"] = [
-    "tipo" => $foundedUserDTO->tipo()
-]; 
-
+$_SESSION["tipo"] = $foundedUserDTO->tipo(); 
 
     header("Location: index.php");
     exit();

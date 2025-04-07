@@ -96,5 +96,12 @@ class Application
     {
         return $this->atributosPeticion[$clave] ?? $_SESSION[self::ATRIBUTOS_PETICION][$clave] ?? null;
     }
+    
+   
+   /* public function isCurrentUserAdmin()
+    {
+        return $this->isCurrentUserLogged() && json_decode($_SESSION['user'], true)['usertype'] == 0;
+    }*/
+
 }
 ?>

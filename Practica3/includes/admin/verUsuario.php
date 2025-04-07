@@ -2,13 +2,13 @@
 require_once __DIR__ . '/../usuario/userDAO.php';
 require_once __DIR__ . '/../comun/cabecera.php';
 
-if (session_status() === PHP_SESSION_NONE) session_start();
+/*if (session_status() === PHP_SESSION_NONE) session_start();
 
 // Solo el admin puede ver esto
 if (!isset($_SESSION['usuario']['tipo']) || $_SESSION['usuario']['tipo'] !== 'admin') {
     header("Location: ../../index.php");
     exit();
-}
+}*/
 
 $userDAO = new userDAO();
 $usuarios = $userDAO->findAll(); // Método que recupera todos los usuarios
