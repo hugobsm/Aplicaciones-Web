@@ -86,19 +86,21 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) NOT NULL,
   `contrasena` varchar(100) NOT NULL,
   `fecha_registro` datetime DEFAULT current_timestamp(),
-  `foto_perfil` varchar(255) DEFAULT NULL
+  `foto_perfil` varchar(255) DEFAULT NULL,
+  `tipo` varchar(20) NOT NULL DEFAULT 'usuario'  
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombre`, `email`, `contrasena`, `fecha_registro`, `foto_perfil`) VALUES
-(4, 'Victoria', 'victorialdc10@gmail.com', '$2y$10$x4tKaGdOJCdMHwqhrqD2Je1Il2pVElSwoGAHP/UgLVsbfgDJqDkhK', '2025-03-05 19:37:42', 'uploads/perfil_67c899f6d7190.jpg'),
-(7, 'juan', 'juan@gmail.com', '$2y$10$gsNAScxxKnDclvZGxoNwVeicRVAuT7VOJP04XfIuyaKjqpUuMJgMK', '2025-03-06 12:12:47', 'uploads/perfil_67c9832f83cd8.jpg'),
-(8, 'laura', 'laura@gmail.com', '$2y$10$S4LOS1UVL0QnvNtpe7OiR.f.woqd4Vz3QUAzVGYD/Jo5CT3SXN7he', '2025-03-20 12:30:33', 'uploads/default-avatar.png');
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `email`, `contrasena`, `fecha_registro`, `foto_perfil`, `tipo`) VALUES
+(4, 'Victoria', 'victorialdc10@gmail.com', '$2y$10$x4tKaGdOJCdMHwqhrqD2Je1Il2pVElSwoGAHP/UgLVsbfgDJqDkhK', '2025-03-05 19:37:42', 'uploads/perfil_67c899f6d7190.jpg', 'admin'),
+(7, 'juan', 'juan@gmail.com', '$2y$10$gsNAScxxKnDclvZGxoNwVeicRVAuT7VOJP04XfIuyaKjqpUuMJgMK', '2025-03-06 12:12:47', 'uploads/perfil_67c9832f83cd8.jpg', 'usuario'),
+(8, 'laura', 'laura@gmail.com', '$2y$10$S4LOS1UVL0QnvNtpe7OiR.f.woqd4Vz3QUAzVGYD/Jo5CT3SXN7he', '2025-03-20 12:30:33', 'uploads/default-avatar.png', 'usuario');
 
 -- --------------------------------------------------------
+
 
 --
 -- Estructura de tabla para la tabla `valoraciones`

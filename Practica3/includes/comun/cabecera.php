@@ -22,7 +22,15 @@ function mostrarSaludo()
                 <a href="index.php">Inicio</a>
                 <a href="verProductos.php">Compra</a>
                 <a href="miembros.php">About Us</a>
+                <?php
+                // Solo el administrador ve esta opción
+                if (isset($_SESSION["login"]) && $_SESSION["login"] === true && $_SESSION["usuario"]["tipo"] === "admin") {
+                    echo '<a href="includes/admin/verUsuario.php">Usuarios</a>';
+                }
+                ?>
             </div>
+
+            
             <div class="logo">
                 <a href="index.php"><img src="Imagenes Marca/logo.png" alt="Logo"></a>
             </div>
