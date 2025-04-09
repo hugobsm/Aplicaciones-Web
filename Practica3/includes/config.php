@@ -5,13 +5,13 @@ require_once("includes/application.php");
 
 define('BD_HOST', 'vm018.db.swarm.test');
 define('BD_NAME', 'brandswap');
-define('BD_USER', 'brandswap'); // Ajusta según tu configuración
-define('BD_PASS', ''); // Si tienes contraseña, colócala aquí
+define('BD_USER', 'prueba'); // Ajusta según tu configuración
+define('BD_PASS', 'prueba'); // Si tienes contraseña, colócala aquí
 
 define('RAIZ_APP',__DIR__);
 define('RUTA_APP', '/Aplicaciones-Web/Practica3/');
-define('RUTA_IMGS', RUTA_APP.'/imgs');
-define('RUTA_CSS',  RUTA_APP.'/css');
+define('RUTA_IMGS', RUTA_APP.'/uploads');
+define('RUTA_CSS',  RUTA_APP.'/CSS');
 //define('RUTA_JS',  RUTA_APP.'/js/');
 
 ini_set('default_charset', 'UTF-8');
