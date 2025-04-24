@@ -194,3 +194,20 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+CREATE TABLE categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_categoria VARCHAR(100) NOT NULL
+);
+INSERT INTO categorias (nombre_categoria) VALUES
+('Mujer'), ('Hombre'), ('Niño'), ('Unisex'),('Blusas'),('Vestidos'), ('Sudaderas'),('Abrigos'),('Tops'),('Accesorios'),('Calzado'),('Camisetas'), ('Pantalones'), ('Color Negro'), ('Color Verde'), ('Color Rosa'), ('Color Amarillo'),('Color Naranja'), ('Color Rojo'),('Color Azul'), ('Color Morado'),('Color Lila'),('Color Marrón'),('Color Blanco'),
+('Talla S'),('Talla XS'), ('Talla M'),('Talla L'),('Talla XL'), ('Color Multicolor');
+
+CREATE TABLE producto_categoria (
+    id_producto INT,
+    id_categoria INT,
+    PRIMARY KEY (id_producto, id_categoria),
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE CASCADE,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria) ON DELETE CASCADE
+);
