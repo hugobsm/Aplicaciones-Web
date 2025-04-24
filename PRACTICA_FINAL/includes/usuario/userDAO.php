@@ -12,20 +12,29 @@ class userDAO extends baseDAO implements IUser
     }
 
     public function login($userDTO)
-    {
-        error_log("Intentando login con email: " . $userDTO->email());
+{
+    error_log("Intentando login con email: " . $userDTO->email());
+    error_log("Contraseña introducida: " . $userDTO->password());
 
-        $foundedUserDTO = $this->buscaUsuario($userDTO->email());
+    $foundedUserDTO = $this->buscaUsuario($userDTO->email());
 
-        if ($foundedUserDTO && self::testHashPassword($userDTO->password(), $foundedUserDTO->password())) 
-        {
-            error_log("Usuario autenticado correctamente.");
+    if ($foundedUserDTO) {
+        error_log("Usuario encontrado en base de datos.");
+        error_log("Contraseña en BD (hash): " . $foundedUserDTO->password());
+
+        if (self::testHashPassword($userDTO->password(), $foundedUserDTO->password())) {
+            error_log("✅ Login correcto");
             return $foundedUserDTO;
-        } 
-
-        error_log("Error: Usuario no encontrado o contraseña incorrecta.");
-        return false;
+        } else {
+            error_log("❌ Contraseña incorrecta");
+        }
+    } else {
+        error_log("❌ Usuario no encontrado");
     }
+
+    return false;
+}
+
 
     private function buscaUsuario($email)
     {

@@ -3,9 +3,10 @@ function mostrarSaludo()
 {
     if (isset($_SESSION["login"]) && $_SESSION["login"] === true) {
         // Verifica que $_SESSION['usuario'] esté definida antes de acceder a ella
-        if (isset($_SESSION['usuario']) && isset($_SESSION['usuario']['nombre'])) {
-            echo "<a href='profile.php'>Bienvenido, ". $_SESSION['usuario']['nombre'] ."</a>. <a href='logout.php'>(Salir)</a>";
-        } else {
+        if (isset($_SESSION['nombre'])) {
+            echo "<a href='profile.php'>Bienvenido, ". htmlspecialchars($_SESSION['nombre']) ."</a>. <a href='logout.php'>(Salir)</a>";
+        }
+         else {
             echo "<a href='login.php'>Iniciar sesión</a> | <a href='registro.php'>Registro</a>";
         }
     } else {
