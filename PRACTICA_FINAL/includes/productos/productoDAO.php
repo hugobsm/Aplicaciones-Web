@@ -7,33 +7,41 @@ require_once(__DIR__ . "/../comun/baseDAO.php");
 class productoDAO extends baseDAO implements IProducto
 {
     public function crearProducto($productoDTO)
-    {
-        $conn = application::getInstance()->getConexionBd();
+{
+    $conn = application::getInstance()->getConexionBd();
 
-        $query = "INSERT INTO productos (id_usuario, nombre_producto, descripcion, precio, imagen, fecha_publicacion)
-                  VALUES (?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO productos (id_usuario, nombre_producto, descripcion, precio, imagen, fecha_publicacion)
+              VALUES (?, ?, ?, ?, ?, ?)";
 
-        $stmt = $conn->prepare($query);
-        
-$id_usuario = $productoDTO->getIdUsuario();
-$nombre = $productoDTO->getNombre();
-$descripcion = $productoDTO->getDescripcion();
-$precio = $productoDTO->getPrecio();
-$imagen = $productoDTO->getImagen();
-$fecha_publicacion = $productoDTO->getFechaPublicacion();
+    $stmt = $conn->prepare($query);
+    
+    $id_usuario = $productoDTO->getIdUsuario();
+    $nombre = $productoDTO->getNombre();
+    $descripcion = $productoDTO->getDescripcion();
+    $precio = $productoDTO->getPrecio();
+    $imagen = $productoDTO->getImagen();
+    $fecha_publicacion = $productoDTO->getFechaPublicacion();
 
-//escapar realEscapeString
+    $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion);
 
-// Luego pásalas a bind_param()
-$stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion);
+    if ($stmt->execute()) {
+        $nuevoId = $conn->insert_id; // ✅ Captura del ID generado
 
-
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+        // ✅ Retorna un ProductoDTO con el ID nuevo
+        return new ProductoDTO(
+            $nuevoId,
+            $id_usuario,
+            $nombre,
+            $descripcion,
+            $precio,
+            $imagen,
+            $fecha_publicacion
+        );
+    } else {
+        return false;
     }
+}
+
 
     public function obtenerProductoPorId($id) {
         
