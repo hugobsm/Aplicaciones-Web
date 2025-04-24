@@ -663,3 +663,105 @@ main {
 .perfil-datos p {
     margin: 5px 0;
 }
+
+
+
+
+
+/*VVVVV*/
+.menu-filtros {
+    margin-bottom: 20px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.filtro-hover {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-filtros {
+    background-color: #5D9C59;
+    color: white;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-filtros:hover {
+    background-color: #3E7C3D;
+}
+
+.filtro-categorias {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.filtro-hover:hover .filtro-categorias {
+    display: block;
+}
+
+.form-filtros {
+    display: flex;
+    gap: 40px;
+}
+
+.categoria {
+    position: relative;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+.categoria > span {
+    cursor: pointer;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.subcategoria {
+    background-color: #f7f7f7;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+}
+
+.subcategoria label {
+    display: block;
+    font-weight: normal;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #444;
+}
+
+.aplicar-wrap {
+    display: flex;
+    align-items: flex-end;
+}
+
+.btn-aplicar {
+    padding: 10px 16px;
+    background-color: #111;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-aplicar:hover {
+    background-color: #333;
+}
+

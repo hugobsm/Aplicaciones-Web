@@ -40,7 +40,7 @@ class userDTO {
 
     public function password()
     {
-        return $this->password;
+        return $this->contrasena;
     }
 
     public function fotoPerfil()

@@ -26,6 +26,12 @@ class userAppService
 
         $foundedUserDTO = $IUserDAO->login($userDTO);
 
+
+         // Depuración: Verificar si el usuario fue encontrado
+    var_dump($foundedUserDTO);
+    die();
+
+    return $foundedUserDTO;
         return $foundedUserDTO;
     }
 
