@@ -23,5 +23,11 @@ class procesarVerProducto {
 
         return $valoracionService->obtenerValoracionesPorVendedor($idVendedor);
     }
+
+    public static function obtenerMediaValoracionVendedor($idUsuario) {
+        $valoracionAppService = valoracionAppService::GetSingleton();
+        return $valoracionAppService->obtenerMediaPorVendedor($idUsuario);
+    }
+    
 }
 ?>

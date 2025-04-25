@@ -816,3 +816,80 @@ main {
     border-bottom: 1px solid #ccc;
 }
 
+
+/*VVVV*/
+/* Estilo del contenedor principal que agrupa producto y valoraciones */
+.detalle-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+/* Caja de valoraciones */
+.valoraciones-box {
+    width: 450px;
+    max-height: 460px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background: #fdfdfd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Título y estrellas */
+.valoraciones-box h3 {
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Valoración media */
+.media-valoracion {
+    font-size: 22px;
+    color: #f5a623;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.estrellas {
+    font-size: 26px;
+    letter-spacing: 2px;
+}
+
+.nota-media {
+    font-size: 16px;
+    color: #444;
+    margin-left: 8px;
+}
+
+/* Scroll interno de valoraciones */
+.valoraciones-scroll {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Valoraciones individuales */
+.valoracion {
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.valoracion:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Estética general */
+.valoracion strong {
+    color: #333;
+}
+

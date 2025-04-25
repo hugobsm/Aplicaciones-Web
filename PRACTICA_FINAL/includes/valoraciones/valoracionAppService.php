@@ -27,5 +27,11 @@ class valoracionAppService {
         $valoracionDAO = valoracionFactory::CreateValoracion();
         return $valoracionDAO->obtenerValoracionesPorVendedor($id_vendedor);
     }
+
+    public function obtenerMediaPorVendedor($id_vendedor) {
+        $valoracionDAO = valoracionFactory::CreateValoracion();
+        return $valoracionDAO->obtenerMediaPorVendedor($id_vendedor);
+    }
+    
 }
 ?>

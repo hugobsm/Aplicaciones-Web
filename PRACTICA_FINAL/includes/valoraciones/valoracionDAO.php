@@ -35,19 +35,53 @@ class valoracionDAO extends baseDAO implements IValoracion {
     
     
 
-    public function obtenerValoracionesPorVendedor($id_vendedor) {
-        $conn = application::getInstance()->getConexionBd();
-        $query = "SELECT * FROM valoraciones WHERE id_vendedor = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id_vendedor);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+    public function obtenerValoracionesPorVendedor($id_vendedor)
+{
+    $conn = application::getInstance()->getConexionBd();
 
-        $valoraciones = [];
-        while ($fila = $resultado->fetch_assoc()) {
-            $valoraciones[] = new ValoracionDTO(...array_values($fila));
-        }
-        return $valoraciones;
+    $sql = "SELECT v.*, u.email AS email_comprador
+            FROM valoraciones v
+            JOIN usuarios u ON v.id_comprador = u.id_usuario
+            WHERE v.id_vendedor = ?
+            ORDER BY v.fecha_valoracion DESC";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_vendedor);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    $valoraciones = [];
+    while ($fila = $result->fetch_assoc()) {
+        // Añadimos un campo 'email_comprador' adicional
+        $valoracionDTO = new ValoracionDTO(
+            $fila['id_valoracion'],
+            $fila['id_comprador'],
+            $fila['id_vendedor'],
+            $fila['puntuacion'],
+            $fila['comentario'],
+            $fila['fecha_valoracion']
+        );
+        $valoracionDTO->emailComprador = $fila['email_comprador']; // Propiedad pública temporal
+        $valoraciones[] = $valoracionDTO;
     }
+
+    return $valoraciones;
 }
+
+public function obtenerMediaPorVendedor($id_vendedor) {
+    $conn = application::getInstance()->getConexionBd();
+    $sql = "SELECT AVG(puntuacion) as media FROM valoraciones WHERE id_vendedor = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_vendedor);
+    $stmt->execute();
+    $stmt->bind_result($media);
+    $stmt->fetch();
+    $stmt->close();
+    return $media ?? 0;
+}
+}
+
+
+
 ?>
