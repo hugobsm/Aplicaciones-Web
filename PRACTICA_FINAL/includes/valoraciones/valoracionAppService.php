@@ -33,5 +33,6 @@ class valoracionAppService {
         return $valoracionDAO->obtenerMediaPorVendedor($id_vendedor);
     }
     
+    
 }
 ?>

@@ -892,4 +892,8 @@ main {
 .valoracion strong {
     color: #333;
 }
-
+.valorado {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+}

@@ -122,4 +122,21 @@ HTML;
     {
         return "profile.php";
     }
+
+    public function compraValorada($id_compra)
+    {
+        $conn = application::getInstance()->getConexionBd();
+
+        $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_compra = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id_compra);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        if ($fila = $resultado->fetch_assoc()) {
+            return $fila['total'] > 0; // Devuelve true si ya está valorada
+        }
+
+        return false;
+    }
 }

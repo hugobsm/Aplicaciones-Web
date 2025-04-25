@@ -80,6 +80,7 @@ public function obtenerMediaPorVendedor($id_vendedor) {
     $stmt->close();
     return $media ?? 0;
 }
+
 }
 
 
