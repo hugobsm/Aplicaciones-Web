@@ -6,7 +6,15 @@ class verProductos
     public static function mostrarTodos()
     {
         $productoAppService = productoAppService::GetSingleton();
-        $productos = $productoAppService->obtenerTodosLosProductos();
+
+        // Si se han pasado filtros por GET, aplicar filtrado
+        $categoriasSeleccionadas = $_GET['categorias'] ?? [];
+
+        if (!empty($categoriasSeleccionadas)) {
+            $productos = $productoAppService->obtenerProductosPorCategorias($categoriasSeleccionadas);
+        } else {
+            $productos = $productoAppService->obtenerTodosLosProductos();
+        }
 
         if (!$productos || empty($productos)) {
             return "<p>No hay productos disponibles en este momento.</p>";
@@ -19,8 +27,6 @@ class verProductos
             $descripcion = htmlspecialchars($producto->getDescripcion());
             $precio = number_format($producto->getPrecio(), 2);
             $fecha = htmlspecialchars($producto->getFechaPublicacion());
-
-            // 🖼️ Sin modificar la ruta de la imagen
             $imagen = htmlspecialchars($producto->getImagen());
 
             $html .= <<<HTML
@@ -43,4 +49,5 @@ HTML;
         return $html;
     }
 }
+
 ?>

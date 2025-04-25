@@ -61,6 +61,13 @@ class productoAppService
     return $IProductoDAO->obtenerProductoPorId($idProducto);
 }
 
+public function obtenerProductosPorCategorias($nombresCategorias) {
+    $IProductoDAO = productoFactory::CreateProducto();
+    return $IProductoDAO->obtenerProductosPorCategorias($nombresCategorias);
+}
+
+
+
 }
 
 ?>

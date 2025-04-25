@@ -161,6 +161,50 @@ class productoDAO extends baseDAO implements IProducto
     }
  
 
+    public function obtenerProductosPorCategorias($nombresCategorias) {
+        $conn = application::getInstance()->getConexionBd();
+    
+        // Crear placeholders para IN (?, ?, ...)
+        $placeholders = implode(',', array_fill(0, count($nombresCategorias), '?'));
+    
+        // Paso 1: Obtener IDs de categorías
+        $query = "SELECT id_categoria FROM categorias WHERE nombre_categoria IN ($placeholders)";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param(str_repeat('s', count($nombresCategorias)), ...$nombresCategorias);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+    
+        $idsCategorias = [];
+        while ($row = $resultado->fetch_assoc()) {
+            $idsCategorias[] = $row['id_categoria'];
+        }
+    
+        if (empty($idsCategorias)) return [];
+    
+        // Paso 2: Obtener productos que tengan al menos una de esas categorías
+        $placeholders = implode(',', array_fill(0, count($idsCategorias), '?'));
+        $tipos = str_repeat('i', count($idsCategorias));
+    
+        $query = "
+            SELECT DISTINCT p.* 
+            FROM productos p
+            JOIN producto_categoria pc ON p.id_producto = pc.id_producto
+            WHERE pc.id_categoria IN ($placeholders)
+            ORDER BY p.fecha_publicacion DESC
+        ";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param($tipos, ...$idsCategorias);
+        $stmt->execute();
+        $res = $stmt->get_result();
+    
+        $productos = [];
+        while ($fila = $res->fetch_assoc()) {
+            $productos[] = new ProductoDTO(...array_values($fila));
+        }
+    
+        return $productos;
+    }
+    
 
 }
 ?>
