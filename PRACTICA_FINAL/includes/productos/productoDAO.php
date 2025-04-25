@@ -205,6 +205,23 @@ class productoDAO extends baseDAO implements IProducto
         return $productos;
     }
     
+    public function obtenerValoracionesPorVendedor($id_vendedor) {
+        $conn = application::getInstance()->getConexionBd();
+    
+        $query = "SELECT puntuacion, comentario, fecha_valoracion FROM valoraciones WHERE id_vendedor = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id_vendedor);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $valoraciones = [];
+        while ($row = $result->fetch_assoc()) {
+            $valoraciones[] = $row;
+        }
+    
+        return $valoraciones;
+    }
+    
 
 }
 ?>

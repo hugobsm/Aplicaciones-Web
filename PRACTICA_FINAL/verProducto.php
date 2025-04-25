@@ -27,5 +27,24 @@ $contenidoPrincipal = <<<EOS
         <a href="comprarProducto.php?id={$producto->getId()}" class="button">Comprar</a>
     </div>
 EOS;
+// Añadir valoraciones después del producto
+$valoraciones = procesarVerProducto::obtenerValoracionesDeVendedor($idProducto);
+$valoracionesHtml = "<div class='valoraciones'><h3>Valoraciones del vendedor</h3>";
+
+if (empty($valoraciones)) {
+    $valoracionesHtml .= "<p>No hay valoraciones disponibles.</p>";
+} else {
+    foreach ($valoraciones as $val) {
+        $comentario = htmlspecialchars($val->getComentario());
+        $puntuacion = intval($val->getPuntuacion());
+        $valoracionesHtml .= "<div class='valoracion'>
+            <strong>Puntuación:</strong> {$puntuacion} / 5<br>
+            <strong>Comentario:</strong> {$comentario}
+        </div>";
+    }
+}
+$valoracionesHtml .= "</div>";
+
+$contenidoPrincipal .= $valoracionesHtml;
 
 require("includes/comun/plantilla.php");

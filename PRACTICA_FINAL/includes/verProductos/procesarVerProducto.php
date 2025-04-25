@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . "/../productos/productoAppService.php");
+require_once(__DIR__ . "/../valoraciones/valoracionAppService.php");
 
 class procesarVerProducto {
     public static function obtenerProducto($idProducto) {
@@ -10,4 +11,17 @@ class procesarVerProducto {
         $productoAppService = productoAppService::GetSingleton();
         return $productoAppService->obtenerProductoPorId($idProducto);
     }
+
+    public static function obtenerValoracionesDeVendedor($idProducto) {
+        $productoAppService = productoAppService::GetSingleton();
+        $producto = $productoAppService->obtenerProductoPorId($idProducto);
+
+        if (!$producto) return [];
+
+        $idVendedor = $producto->getIdUsuario(); // el vendedor
+        $valoracionService = valoracionAppService::GetSingleton();
+
+        return $valoracionService->obtenerValoracionesPorVendedor($idVendedor);
+    }
 }
+?>
