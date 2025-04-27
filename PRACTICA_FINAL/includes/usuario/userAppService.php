@@ -44,7 +44,7 @@ class userAppService
         return $IUserDAO->getProductsByUserId($id_usuario);
     }
     public function getUserProfile($id_usuario)
-{
+    {
     $IUserDAO = userFactory::CreateUser();
     $user = $IUserDAO->getUserById($id_usuario);
 
@@ -55,7 +55,14 @@ class userAppService
     }
 
     return $user;
-}
+    }
+
+    public function actualizarPerfil($id_usuario, $nombre, $email, $edad, $genero, $pais, $telefono)
+    {
+    $IUserDAO = userFactory::CreateUser();
+    return $IUserDAO->actualizarPerfil($id_usuario, $nombre, $email, $edad, $genero, $pais, $telefono);
+    }
+
 
 
 

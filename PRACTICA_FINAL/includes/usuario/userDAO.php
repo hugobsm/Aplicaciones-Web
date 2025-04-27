@@ -275,6 +275,17 @@ public function findAll()
     return $usuarios;
 }
 
+public function actualizarPerfil($id_usuario, $nombre, $email, $edad, $genero, $pais, $telefono)
+{
+    $conn = application::getInstance()->getConexionBd();
+    $query = "UPDATE usuarios SET nombre = ?, email = ?, edad = ?, genero = ?, pais = ?, telefono = ? WHERE id_usuario = ?";
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ssisssi", $nombre, $email, $edad, $genero, $pais, $telefono, $id_usuario);
+    return $stmt->execute();
+}
+
+
 
 }
 ?>
