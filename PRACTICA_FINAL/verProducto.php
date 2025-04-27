@@ -82,7 +82,20 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
     $botonComprar = '<a href="login.php" class="button">Inicia sesión para comprar</a>';
 }
 
-
+// ✅ HTML final unificado
+$contenidoPrincipal = <<<EOS
+<div class="detalle-wrapper">
+    <div class="producto-detalle">
+        <h1>{$producto->getNombre()}</h1>
+        <img src="{$producto->getImagen()}" alt="Imagen del producto">
+        <p class="descripcion">{$producto->getDescripcion()}</p>
+        <p class="precio"><strong>Precio:</strong> \${$producto->getPrecio()}</p>
+        <p class="fecha"><strong>Publicado el:</strong> {$producto->getFechaPublicacion()}</p>
+        $botonComprar
+    </div>
+    $valoracionesHtml
+</div>
+EOS;
 
 require("includes/comun/plantilla.php");
 ?>
