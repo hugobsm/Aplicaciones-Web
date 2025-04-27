@@ -6,6 +6,7 @@ $tituloPagina = "Ver Productos";
 
 $contenidoProductos = verProductos::mostrarTodos();
 
+// -- Primero el filtro (sin meter script aquí) --
 $filtros = <<<HTML
 <div class="menu-filtros">
     <div class="filtro-hover">
@@ -61,6 +62,19 @@ $filtros = <<<HTML
                         <label><input type="checkbox" name="categorias[]" value="Talla XL"> XL</label>
                     </div>
                 </div>
+
+                <div class="categoria">
+                    <span>Precio ▾</span>
+                    <div class="subcategoria" style="display: flex; flex-direction: column; gap: 10px;">
+                        <label for="precio_maximo">Precio máximo:</label>
+                        <input type="range" id="rango_precio" name="precio_rango" min="0" max="500" value="500" step="1" oninput="actualizarPrecio(this.value)">
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <span id="precio_actual">$500</span>
+                            <input type="number" id="precio_manual" min="0" max="500" value="500" style="width: 80px;" onchange="actualizarRango(this.value)">    
+                        </div>
+                    </div>
+                </div>
+
                 <div class="aplicar-wrap"><button class="btn-aplicar" type="submit">Aplicar filtros</button></div>
             </form>
         </div>
@@ -68,15 +82,30 @@ $filtros = <<<HTML
 </div>
 HTML;
 
+// -- Ahora fuera del heredoc: --
+$scriptExtra = <<<HTML
+<script>
+function actualizarPrecio(valor) {
+    document.getElementById('precio_actual').innerText = `$` + valor;
+    document.getElementById('precio_manual').value = valor;
+}
+function actualizarRango(valor) {
+    document.getElementById('rango_precio').value = valor;
+    document.getElementById('precio_actual').innerText = `$` + valor;
+}
+</script>
+HTML;
 
-
+// -- Y finalmente montamos el contenido --
 $contenidoPrincipal = <<<EOS
 <h1>Lista de Productos</h1>
 {$filtros}
 <div class="productos-container">
 {$contenidoProductos}
 </div>
+{$scriptExtra}
 EOS;
 
 require("includes/comun/plantilla.php");
 ?>
+

@@ -9,11 +9,19 @@ class verProductos
 
         // Si se han pasado filtros por GET, aplicar filtrado
         $categoriasSeleccionadas = $_GET['categorias'] ?? [];
+        $precioMaximo = isset($_GET['precio_rango']) ? floatval($_GET['precio_rango']) : null;
+
 
         if (!empty($categoriasSeleccionadas)) {
             $productos = $productoAppService->obtenerProductosPorCategorias($categoriasSeleccionadas);
         } else {
             $productos = $productoAppService->obtenerTodosLosProductos();
+        }
+
+        if ($precioMaximo !== null) {
+            $productos = array_filter($productos, function($producto) use ($precioMaximo) {
+                return $producto->getPrecio() <= $precioMaximo;
+            });
         }
 
         if (!$productos || empty($productos)) {
