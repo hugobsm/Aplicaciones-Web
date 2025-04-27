@@ -8,8 +8,8 @@ class valoracionDAO extends baseDAO implements IValoracion {
     public function insertarValoracion($valoracionDTO) {
         $conn = application::getInstance()->getConexionBd();
     
-        $query = "INSERT INTO valoraciones (id_comprador, id_vendedor, puntuacion, comentario, fecha_valoracion, id_producto) 
-          VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO valoraciones (id_comprador, id_vendedor, id_producto, puntuacion, comentario, fecha_valoracion) VALUES (?, ?, ?, ?, ?, ?)";
+
         $stmt = $conn->prepare($query);
     
         if (!$stmt) {
@@ -19,12 +19,13 @@ class valoracionDAO extends baseDAO implements IValoracion {
     
         $id_comprador = $valoracionDTO->getIdComprador();
         $id_vendedor = $valoracionDTO->getIdVendedor();
+        $id_producto = $valoracionDTO->getIdProducto();
         $puntuacion = $valoracionDTO->getPuntuacion();
         $comentario = $valoracionDTO->getComentario();
         $fecha = $valoracionDTO->getFechaValoracion();
-        $id_producto = $valoracionDTO->getIdProducto(); // Añadido para la inserción
+
     
-        $stmt->bind_param("iiiss", $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha,$id_producto);
+        $stmt->bind_param("iiiiss", $id_comprador, $id_vendedor,$id_producto, $puntuacion, $comentario, $fecha);
     
         if (!$stmt->execute()) {
             error_log("❌ Error al ejecutar la consulta: " . $stmt->error);
