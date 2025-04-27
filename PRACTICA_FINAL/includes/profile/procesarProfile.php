@@ -135,6 +135,34 @@ HTML;
         }
 
         $html .= "</div></div>";
+
+        $html .= <<<HTML
+            <h2>Mis Valoraciones</h2>
+            <div class="valoraciones-container">
+                <p><strong>Media de valoraciones:</strong> {$mediaValoraciones} ⭐</p>
+        HTML;
+
+        if (empty($valoraciones)) {
+            $html .= "<p>Aún no has recibido valoraciones.</p>";
+        } else {
+            foreach ($valoraciones as $valoracion) {
+                $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
+                $comentario = htmlspecialchars($valoracion->getComentario());
+                $emailComprador = htmlspecialchars($valoracion->emailComprador);
+
+                $html .= <<<HTML
+                <div class="valoracion-card">
+                    <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
+                    <p><strong>Comentario:</strong> {$comentario}</p>
+                    <p><strong>De:</strong> {$emailComprador}</p>
+                </div>
+        HTML;
+            }
+        }
+
+        $html .= "</div></div>";
+
+
         return $html;
     }
 
