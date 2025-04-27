@@ -66,6 +66,17 @@ public function obtenerProductosPorCategorias($nombresCategorias) {
     return $IProductoDAO->obtenerProductosPorCategorias($nombresCategorias);
 }
 
+public function obtenerPrecioMaximo() {
+    $conn = Application::getInstance()->getConexionBd();
+    $query = "SELECT MAX(precio) AS max_precio FROM productos";
+    $res = $conn->query($query);
+    if ($fila = $res->fetch_assoc()) {
+        return (float) $fila['max_precio'] ?? 500;
+    }
+    return 500; // Por defecto
+}
+
+
 
 
 }

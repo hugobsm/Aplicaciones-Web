@@ -6,6 +6,11 @@ $tituloPagina = "Ver Productos";
 
 $contenidoProductos = verProductos::mostrarTodos();
 
+
+$productoAppService = productoAppService::GetSingleton();
+$precioMaximo = $productoAppService->obtenerPrecioMaximo();
+$precioMaximo = ceil($precioMaximo); // Redondeamos hacia arriba
+
 // -- Primero el filtro (sin meter script aquí) --
 $filtros = <<<HTML
 <div class="menu-filtros">
@@ -67,10 +72,11 @@ $filtros = <<<HTML
                     <span>Precio ▾</span>
                     <div class="subcategoria" style="display: flex; flex-direction: column; gap: 10px;">
                         <label for="precio_maximo">Precio máximo:</label>
-                        <input type="range" id="rango_precio" name="precio_rango" min="0" max="500" value="500" step="1" oninput="actualizarPrecio(this.value)">
+                        <input type="range" id="rango_precio" name="precio_rango" min="0" max="{$precioMaximo}" value="{$precioMaximo}" step="1" oninput="actualizarPrecio(this.value)">
                         <div style="display: flex; align-items: center; gap: 5px;">
-                            <span id="precio_actual">$500</span>
-                            <input type="number" id="precio_manual" min="0" max="500" value="500" style="width: 80px;" onchange="actualizarRango(this.value)">    
+                        <span id="precio_actual">\${$precioMaximo}</span>
+
+                            <input type="number" id="precio_manual" min="0" max="{$precioMaximo}" value="{$precioMaximo}" style="width: 80px;" onchange="actualizarRango(this.value)">    
                         </div>
                     </div>
                 </div>
