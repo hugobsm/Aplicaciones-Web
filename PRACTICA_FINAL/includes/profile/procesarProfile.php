@@ -4,7 +4,6 @@ require_once(__DIR__ . "/../usuario/userAppService.php");
 require_once(__DIR__ . "/../compras/compraAppService.php");
 require_once(__DIR__ . "/../valoraciones/valoracionAppService.php");
 
-
 class profileForm extends formBase
 {
     public function __construct()
@@ -24,6 +23,7 @@ class profileForm extends formBase
 
         $userAppService = userAppService::GetSingleton();
         $compraService = compraAppService::GetSingleton();
+        $valoracionService = valoracionAppService::GetSingleton();
 
         $user = $userAppService->getUserProfile($id_usuario);
         if (!$user) {
@@ -35,11 +35,9 @@ class profileForm extends formBase
 
         $compras = $compraService->obtenerComprasPorUsuario($id_usuario);
 
-        // 🛎️ Cargar valoraciones y media de puntuaciones
-        $valoracionService = valoracionAppService::GetSingleton();
+        // 🛎️ Valoraciones
         $mediaValoraciones = $valoracionService->obtenerMediaPorVendedor($id_usuario);
         $valoraciones = $valoracionService->obtenerValoracionesPorVendedor($id_usuario);
-
 
         $nombre = htmlspecialchars($user->nombre(), ENT_QUOTES, 'UTF-8');
         $email = htmlspecialchars($user->email(), ENT_QUOTES, 'UTF-8');
@@ -74,7 +72,7 @@ HTML;
 
                 $html .= <<<HTML
                 <div class="product-card">
-                    $imgTag
+                    {$imgTag}
                     <div class="product-details">
                         <h3 class="product-name">{$producto['nombre_producto']}</h3>
                         <p class="product-description">{$producto['descripcion']}</p>
@@ -90,11 +88,10 @@ HTML;
             }
         }
 
-        // Mostrar compras
         $html .= <<<HTML
-        </div>
-        <h2>Mis Compras</h2>
-        <div class="productos-container">
+            </div> <!-- productos-container -->
+            <h2>Mis Compras</h2>
+            <div class="productos-container">
 HTML;
 
         if (empty($compras)) {
@@ -111,39 +108,49 @@ HTML;
                 $html .= <<<HTML
                 <div class="product-card">
                     <div class="product-details">
-                        <h3 class="product-name">Producto comprado (ID: $idProducto)</h3>
+                        <h3 class="product-name">Producto comprado (ID: {$idProducto})</h3>
                         <p class="product-date"><strong>Fecha de compra:</strong> {$fechaCompra}</p>
                         <p class="product-date"><strong>Método de pago:</strong> {$metodoPago}</p>
-                        <p class="product-name">ID vendedor: $idVendedorRaw</p>
-                HTML;
-
-                // CIERRO el heredoc porque quiero usar PHP normal
+                        <p class="product-name">ID vendedor: {$idVendedorRaw}</p>
+HTML;
                 if ($this->compraValorada($idProductoRaw)) {
                     $html .= "<p class='valorado-texto'>Ya has valorado este producto.</p>";
                 } else {
-                    $html .= "<a href='valorarVendedor.php?id_vendedor=$idVendedorRaw&id_producto=$idProductoRaw' class='button valorar-button'>Valorar vendedor</a>";
+                    $html .= "<a href='valorarVendedor.php?id_vendedor={$idVendedorRaw}&id_producto={$idProductoRaw}' class='button valorar-button'>Valorar vendedor</a>";
                 }
 
-                // Y VUELVO a abrir el heredoc para terminar el cierre del div
                 $html .= <<<HTML
                     </div>
                 </div>
-                HTML;
-
-
+HTML;
             }
         }
 
-        $html .= "</div></div>";
-
         $html .= <<<HTML
-            <h2>Mis Valoraciones</h2>
-            <div class="valoraciones-container">
-                <p><strong>Media de valoraciones:</strong> {$mediaValoraciones} ⭐</p>
-        HTML;
+            </div> <!-- productos-container -->
 
+            <h2>Mis Valoraciones</h2>
+            <div class="productos-container">
+HTML;
+
+        // Mostrar media de valoraciones
+        $html .= <<<HTML
+            <div class="product-card">
+                <div class="product-details">
+                    <p><strong>Media de valoraciones:</strong> {$mediaValoraciones} ⭐</p>
+                </div>
+            </div>
+HTML;
+
+        // Mostrar valoraciones
         if (empty($valoraciones)) {
-            $html .= "<p>Aún no has recibido valoraciones.</p>";
+            $html .= <<<HTML
+            <div class="product-card">
+                <div class="product-details">
+                    <p>No has recibido ninguna valoración todavía.</p>
+                </div>
+            </div>
+HTML;
         } else {
             foreach ($valoraciones as $valoracion) {
                 $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
@@ -151,17 +158,18 @@ HTML;
                 $emailComprador = htmlspecialchars($valoracion->emailComprador);
 
                 $html .= <<<HTML
-                <div class="valoracion-card">
-                    <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
-                    <p><strong>Comentario:</strong> {$comentario}</p>
-                    <p><strong>De:</strong> {$emailComprador}</p>
+                <div class="product-card">
+                    <div class="product-details">
+                        <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
+                        <p><strong>Comentario:</strong> {$comentario}</p>
+                        <p><strong>De:</strong> {$emailComprador}</p>
+                    </div>
                 </div>
-        HTML;
+HTML;
             }
         }
 
-        $html .= "</div></div>";
-
+        $html .= "</div></div>"; // Cerrar productos-container y perfil-container
 
         return $html;
     }
@@ -173,20 +181,16 @@ HTML;
 
     public function compraValorada($id_producto)
     {
-    $conn = application::getInstance()->getConexionBd();
+        $conn = application::getInstance()->getConexionBd();
+        $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_producto = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $id_producto);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_producto = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $id_producto);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-
-    if ($fila = $resultado->fetch_assoc()) {
-        return $fila['total'] > 0; // Devuelve true si ya está valorado
+        if ($fila = $resultado->fetch_assoc()) {
+            return $fila['total'] > 0;
+        }
+        return false;
     }
-
-    return false;
-    }
-
-    
 }
