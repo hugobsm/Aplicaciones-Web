@@ -59,6 +59,10 @@ class profileForm extends formBase
                     <p><strong>Género:</strong> {$genero}</p>
                     <p><strong>País:</strong> {$pais}</p>
                     <p><strong>Teléfono:</strong> {$telefono}</p>
+                    <div class="editar-container">
+                    <a href="editarPerfil.php" class="button editar-button">Editar Perfil</a>
+                </div>
+
                 </div>
             </div>
 
