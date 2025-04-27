@@ -129,17 +129,23 @@ HTML;
         $html .= <<<HTML
     </div> <!-- productos-container -->
 
-    <h2>Mis Valoraciones</h2>
+    <h2 style="text-align: center;">Mis Valoraciones</h2>
+
+HTML;
+
+    // Mostrar media de valoraciones
+    $mediaFormateada = number_format($mediaValoraciones, 1);
+    $html .= <<<HTML
+    <div style="text-align: center; margin-bottom: 30px;">
+        <p style="font-size: 18px; font-weight: bold;">Media de valoraciones: {$mediaFormateada} / 5 ⭐</p>
+    </div>
+HTML;
+
+    // Ahora sí empieza las tarjetas de valoraciones
+    $html .= <<<HTML
     <div class="productos-container">
 HTML;
 
-    // Mostrar media de valoraciones (sin tarjeta)
-    $mediaFormateada = number_format($mediaValoraciones, 1);
-    $html .= <<<HTML
-    <p style="text-align: center; font-weight: bold; margin-bottom: 20px;">Media de valoraciones: {$mediaFormateada} / 5 ⭐</p>
-HTML;
-
-    // Mostrar valoraciones
     if (empty($valoraciones)) {
         $html .= <<<HTML
         <div class="product-card">
@@ -167,6 +173,7 @@ HTML;
     }
 
     $html .= "</div></div>"; // Cerrar productos-container y perfil-container
+
 
 
         return $html;
