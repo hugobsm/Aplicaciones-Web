@@ -6,11 +6,13 @@ class ValoracionDTO {
     private $puntuacion;
     private $comentario;
     private $fecha_valoracion;
+    private $id_producto;
 
-    public function __construct($id_valoracion, $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha_valoracion) {
+    public function __construct($id_valoracion, $id_comprador, $id_vendedor, $id_producto, $puntuacion, $comentario, $fecha_valoracion) {
         $this->id_valoracion = $id_valoracion;
         $this->id_comprador = $id_comprador;
         $this->id_vendedor = $id_vendedor;
+        $this->id_producto = $id_producto;
         $this->puntuacion = $puntuacion;
         $this->comentario = $comentario;
         $this->fecha_valoracion = $fecha_valoracion;
@@ -22,5 +24,6 @@ class ValoracionDTO {
     public function getPuntuacion() { return $this->puntuacion; }
     public function getComentario() { return $this->comentario; }
     public function getFechaValoracion() { return $this->fecha_valoracion; }
+    public function getIdProducto() {return $this->id_producto;}
 }
 ?>

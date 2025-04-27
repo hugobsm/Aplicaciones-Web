@@ -93,7 +93,8 @@ HTML;
             $html .= "<p class='no-products'>Aún no has realizado ninguna compra.</p>";
         } else {
             foreach ($compras as $compra) {
-                $idProducto = htmlspecialchars($compra->getIdProducto());
+                $idProductoRaw = $compra->getIdProducto();
+                $idProducto = htmlspecialchars($idProductoRaw);
                 $fechaCompra = htmlspecialchars($compra->getFechaCompra());
                 $metodoPago = htmlspecialchars($compra->getMetodoPago());
                 $idVendedorRaw = $compra->getIdVendedor();
@@ -106,7 +107,7 @@ HTML;
                         <p class="product-date"><strong>Fecha de compra:</strong> {$fechaCompra}</p>
                         <p class="product-date"><strong>Método de pago:</strong> {$metodoPago}</p>
                         <p class="product-name">ID vendedor: $idVendedorRaw</p>
-                        <a href="valorarVendedor.php?id_vendedor=$idVendedorRaw" class="button valorar-button">Valorar vendedor</a>
+                        <a href="valorarVendedor.php?id_vendedor=$idVendedorRaw&id_producto=$idProductoRaw" class="button valorar-button">Valorar vendedor</a>
 
                     </div>
                 </div>

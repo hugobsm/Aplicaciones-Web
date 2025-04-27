@@ -33,6 +33,11 @@ class valoracionAppService {
         return $valoracionDAO->obtenerMediaPorVendedor($id_vendedor);
     }
     
+    public function existeValoracionPorProducto($id_comprador, $id_producto) {
+        $valoracionDAO = valoracionFactory::CreateValoracion();
+        return $valoracionDAO->existeValoracionPorProducto($id_comprador, $id_producto);
+    }
+    
     
 }
 ?>

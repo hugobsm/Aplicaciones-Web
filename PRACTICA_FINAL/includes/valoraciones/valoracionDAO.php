@@ -8,8 +8,8 @@ class valoracionDAO extends baseDAO implements IValoracion {
     public function insertarValoracion($valoracionDTO) {
         $conn = application::getInstance()->getConexionBd();
     
-        $query = "INSERT INTO valoraciones (id_comprador, id_vendedor, puntuacion, comentario, fecha_valoracion)
-                  VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO valoraciones (id_comprador, id_vendedor, puntuacion, comentario, fecha_valoracion, id_producto) 
+          VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
     
         if (!$stmt) {
@@ -22,8 +22,9 @@ class valoracionDAO extends baseDAO implements IValoracion {
         $puntuacion = $valoracionDTO->getPuntuacion();
         $comentario = $valoracionDTO->getComentario();
         $fecha = $valoracionDTO->getFechaValoracion();
+        $id_producto = $valoracionDTO->getIdProducto(); // Añadido para la inserción
     
-        $stmt->bind_param("iiiss", $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha);
+        $stmt->bind_param("iiiss", $id_comprador, $id_vendedor, $puntuacion, $comentario, $fecha,$id_producto);
     
         if (!$stmt->execute()) {
             error_log("❌ Error al ejecutar la consulta: " . $stmt->error);
@@ -79,6 +80,19 @@ public function obtenerMediaPorVendedor($id_vendedor) {
     $stmt->fetch();
     $stmt->close();
     return $media ?? 0;
+}
+
+public function existeValoracionPorProducto($id_comprador, $id_producto) {
+    $conn = application::getInstance()->getConexionBd();
+    $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_comprador = ? AND id_producto = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("ii", $id_comprador, $id_producto);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        return $row['total'] > 0;
+    }
+    return false;
 }
 
 }
