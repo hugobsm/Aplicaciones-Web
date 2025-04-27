@@ -103,93 +103,118 @@ EOF;
 }
 
 
-    protected function Process($datos)
-    {
+protected function Process($datos)
+{
+    $result = array();
 
-        $result = array();
+    // Capturar y validar datos del formulario
+    $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
+    $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        // Capturar y validar datos del formulario
-        $nombreUsuario = trim($datos['nombreUsuario'] ?? '');
-        $nombreUsuario = filter_var($nombreUsuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $email = trim($datos['email'] ?? '');
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
-        if (empty($nombreUsuario)) {
-            $result[] = "El nombre de usuario no puede estar vacío.";
-        }
+    $password = trim($datos['password'] ?? '');
+    $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $email = trim($datos['email'] ?? '');
-        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $rePassword = trim($datos['rePassword'] ?? '');
+    $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        if (empty($email)) {
-            $result[] = "El email no puede estar vacío.";
-        }
+    $edad = isset($datos['edad']) ? intval($datos['edad']) : null;
+    $genero = isset($datos['genero']) ? trim($datos['genero']) : null;
+    $pais = isset($datos['pais']) ? trim($datos['pais']) : null;
+    $prefijo = isset($datos['prefijo']) ? trim($datos['prefijo']) : '';
+    $telefono = isset($datos['telefono']) ? trim($datos['telefono']) : '';
 
-        $password = trim($datos['password'] ?? '');
-        $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if (empty($password)) {
-            $result[] = "El password no puede estar vacío.";
-        }
-
-        $rePassword = trim($datos['rePassword'] ?? '');
-        $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if ($password !== $rePassword) {
-            
-            $result[] = "Las contraseñas no coinciden.";
-        }
-
-        // Manejo de foto de perfil
-        $fotoPerfil = "uploads/default-avatar.png"; // Imagen por defecto
-        if (isset($_FILES['fotoPerfil']) && $_FILES['fotoPerfil']['error'] == 0) {
-            $imagen = $_FILES['fotoPerfil'];
-            $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
-            $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
-
-            if (in_array($extension, $extensionesPermitidas)) {
-                if (!is_dir("uploads/")) {
-                    mkdir("uploads/", 0777, true);
-                }
-                $nombreImagen = "uploads/" . uniqid("perfil_") . "." . $extension;
-                move_uploaded_file($imagen['tmp_name'], $nombreImagen);
-                $fotoPerfil = $nombreImagen;
-               
-            } else {
-                
-                $result[] = "Formato de imagen no permitido.";
-            }
-        }
-
-        if (count($result) === 0) {
-            try {
-                // Crear DTO correctamente
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $userDTO = new userDTO(0, $nombreUsuario, $email, $hashedPassword, $fotoPerfil);
-                $userAppService = userAppService::GetSingleton();
-
-                $createdUserDTO = $userAppService->create($userDTO);
-
-                if (!$createdUserDTO) {
-                    throw new Exception("Error al registrar el usuario.");
-                }
+$telefonoCompleto = $prefijo . $telefono;
 
 
-                // Iniciar sesión después del registro
-                $_SESSION["login"] = true;
-                $_SESSION["id_usuario"] = $createdUserDTO->id();
-                $_SESSION["nombre"] = $createdUserDTO->nombre();
-                $_SESSION["email"] = $createdUserDTO->email();
-                $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
-
-                // Redirigir a index.php
-                header("Location: index.php");
-                exit();
-
-            } catch (Exception $e) {
-                $result[] = $e->getMessage();
-            }
-        }
-
-        return $result;
+    if (empty($nombreUsuario)) {
+        $result[] = "El nombre de usuario no puede estar vacío.";
     }
+    if (empty($email)) {
+        $result[] = "El email no puede estar vacío.";
+    }
+    if (empty($password)) {
+        $result[] = "El password no puede estar vacío.";
+    }
+    if ($password !== $rePassword) {
+        $result[] = "Las contraseñas no coinciden.";
+    }
+    if (empty($edad) || $edad <= 0) {
+        $result[] = "La edad debe ser un número válido.";
+    }
+    if (empty($genero)) {
+        $result[] = "Debes seleccionar un género.";
+    }
+    if (empty($pais)) {
+        $result[] = "El país no puede estar vacío.";
+    }
+    if (empty($telefono)) {
+        $result[] = "Debes introducir un número de teléfono.";
+    }
+
+    // Manejo de foto de perfil
+    $fotoPerfil = "uploads/default-avatar.png"; // Imagen por defecto
+    if (isset($_FILES['fotoPerfil']) && $_FILES['fotoPerfil']['error'] == 0) {
+        $imagen = $_FILES['fotoPerfil'];
+        $extensionesPermitidas = ['jpg', 'jpeg', 'png'];
+        $extension = strtolower(pathinfo($imagen['name'], PATHINFO_EXTENSION));
+
+        if (in_array($extension, $extensionesPermitidas)) {
+            if (!is_dir("uploads/")) {
+                mkdir("uploads/", 0777, true);
+            }
+            $nombreImagen = "uploads/" . uniqid("perfil_") . "." . $extension;
+            move_uploaded_file($imagen['tmp_name'], $nombreImagen);
+            $fotoPerfil = $nombreImagen;
+        } else {
+            $result[] = "Formato de imagen no permitido.";
+        }
+    }
+
+    if (count($result) === 0) {
+        try {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Crear DTO con los nuevos datos
+            $userDTO = new userDTO(
+                0, 
+                $nombreUsuario, 
+                $email, 
+                $hashedPassword, 
+                $fotoPerfil,
+                'usuario',
+                $edad,
+                $genero,
+                $pais,
+                $telefonoCompleto
+            );
+
+            $userAppService = userAppService::GetSingleton();
+            $createdUserDTO = $userAppService->create($userDTO);
+
+            if (!$createdUserDTO) {
+                throw new Exception("Error al registrar el usuario.");
+            }
+
+            // Iniciar sesión
+            $_SESSION["login"] = true;
+            $_SESSION["id_usuario"] = $createdUserDTO->id();
+            $_SESSION["nombre"] = $createdUserDTO->nombre();
+            $_SESSION["email"] = $createdUserDTO->email();
+            $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
+
+            header("Location: index.php");
+            exit();
+
+        } catch (Exception $e) {
+            $result[] = $e->getMessage();
+        }
+    }
+
+    return $result;
+}
+
 }
 ?>

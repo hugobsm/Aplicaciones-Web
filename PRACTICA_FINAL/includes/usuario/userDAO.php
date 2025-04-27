@@ -75,43 +75,79 @@ class userDAO extends baseDAO implements IUser
     
 
     public function create($userDTO)
+{
+    $createdUserDTO = false;
+
+    try
     {
-        $createdUserDTO = false;
-    
-        try
-        {
-            $escEmail = $this->realEscapeString($userDTO->email());
-            $escNombre = $this->realEscapeString($userDTO->nombre());
-            $hashedPassword = self::hashPassword($userDTO->password());
-            $fotoPerfil = $userDTO->fotoPerfil();
-            $tipo = $userDTO->tipo();
-    
-            $conn = application::getInstance()->getConexionBd();
-    
-            $query = "INSERT INTO usuarios(nombre, email, contrasena, foto_perfil, tipo, fecha_registro) VALUES (?, ?, ?, ?, ?, NOW())";
-    
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("sssss", $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $tipo);
-    
-            if ($stmt->execute())
-            {
-                $idUser = $conn->insert_id;
-                $createdUserDTO = new userDTO($idUser, $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $tipo);
-    
-                return $createdUserDTO;
-            }
+        $escEmail = $this->realEscapeString($userDTO->email());
+        $escNombre = $this->realEscapeString($userDTO->nombre());
+        $hashedPassword = self::hashPassword($userDTO->password());
+        $fotoPerfil = $userDTO->fotoPerfil();
+        $tipo = $userDTO->tipo();
+
+        $edad = $userDTO->edad();
+        $genero = $userDTO->genero();
+        $pais = $userDTO->pais();
+        $telefono = $userDTO->telefono();
+
+        $conn = application::getInstance()->getConexionBd();
+
+        $query = "INSERT INTO usuarios(nombre, email, contrasena, foto_perfil, tipo, fecha_registro, edad, genero, pais, telefono) 
+                  VALUES (?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?)";
+
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception("❌ Error preparando el statement: " . $conn->error);
         }
-        catch(mysqli_sql_exception $e)
+
+        // Aquí ajustamos correctamente los tipos:
+        // s = string, i = integer
+        $stmt->bind_param(
+            "sssssisss",
+            $escNombre,   // s
+            $escEmail,    // s
+            $hashedPassword, // s
+            $fotoPerfil,  // s
+            $tipo,        // s
+            $edad,        // i
+            $genero,      // s
+            $pais,        // s
+            $telefono     // s
+        );
+
+        if ($stmt->execute())
         {
-            if ($conn->sqlstate == 23000) 
-            { 
-                throw new userAlreadyExistException("Ya existe el usuario '{$userDTO->email()}'");
-            }
-            throw $e;
+            $idUser = $conn->insert_id;
+            $createdUserDTO = new userDTO(
+                $idUser,
+                $escNombre,
+                $escEmail,
+                $hashedPassword,
+                $fotoPerfil,
+                $tipo,
+                $userDTO->edad(),
+                $userDTO->genero(),
+                $userDTO->pais(),
+                $userDTO->telefono()
+            );
+            
+            return $createdUserDTO;
         }
-    
-        return $createdUserDTO;
     }
+    catch(mysqli_sql_exception $e)
+    {
+        if ($conn->sqlstate == 23000) 
+        { 
+            throw new userAlreadyExistException("Ya existe el usuario '{$userDTO->email()}'");
+        }
+        throw $e;
+    }
+
+    return $createdUserDTO;
+}
+
+
     
 
     private static function hashPassword($password)
