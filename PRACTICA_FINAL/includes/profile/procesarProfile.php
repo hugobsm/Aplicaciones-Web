@@ -42,6 +42,10 @@ class profileForm extends formBase
         $nombre = htmlspecialchars($user->nombre(), ENT_QUOTES, 'UTF-8');
         $email = htmlspecialchars($user->email(), ENT_QUOTES, 'UTF-8');
         $foto_perfil = !empty($user->fotoPerfil()) ? htmlspecialchars($user->fotoPerfil(), ENT_QUOTES, 'UTF-8') : "uploads/default-avatar.png";
+        $edad = htmlspecialchars($user->edad(), ENT_QUOTES, 'UTF-8');
+        $genero = htmlspecialchars($user->genero(), ENT_QUOTES, 'UTF-8');
+        $pais = htmlspecialchars($user->pais(), ENT_QUOTES, 'UTF-8');
+        $telefono = htmlspecialchars($user->telefono(), ENT_QUOTES, 'UTF-8');
 
         $html = <<<HTML
         <div class="perfil-container">
@@ -51,6 +55,10 @@ class profileForm extends formBase
                 <div class="perfil-datos">
                     <p><strong>Nombre:</strong> {$nombre}</p>
                     <p><strong>Email:</strong> {$email}</p>
+                    <p><strong>Edad:</strong> {$edad}</p>
+                    <p><strong>Género:</strong> {$genero}</p>
+                    <p><strong>País:</strong> {$pais}</p>
+                    <p><strong>Teléfono:</strong> {$telefono}</p>
                 </div>
             </div>
 
