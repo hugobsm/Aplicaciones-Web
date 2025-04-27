@@ -1,4 +1,5 @@
 <?php
+
 require_once("includes/config.php");
 require_once("includes/verProductos/procesarVerProducto.php");
 
@@ -56,7 +57,7 @@ if (empty($valoraciones)) {
 $valoracionesHtml .= "</div></div>";
 
 // ✅ HTML final unificado
-$contenidoPrincipal = <<<EOS
+/*$contenidoPrincipal = <<<EOS
 <div class="detalle-wrapper">
     <div class="producto-detalle">
         <h1>{$producto->getNombre()}</h1>
@@ -68,7 +69,20 @@ $contenidoPrincipal = <<<EOS
     </div>
     $valoracionesHtml
 </div>
-EOS;
+EOS;*/
+
+// Aquí cambiamos el botón de Comprar según el login
+$botonComprar = "";
+
+if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
+    // Usuario logueado: puede comprar
+    $botonComprar = '<a href="comprarProducto.php?id=' . htmlspecialchars($producto->getId()) . '" class="button">Comprar</a>';
+} else {
+    // Usuario no logueado: mandar a login
+    $botonComprar = '<a href="login.php" class="button">Inicia sesión para comprar</a>';
+}
+
+
 
 require("includes/comun/plantilla.php");
 ?>
