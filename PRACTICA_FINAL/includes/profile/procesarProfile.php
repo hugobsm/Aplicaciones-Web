@@ -107,11 +107,22 @@ HTML;
                         <p class="product-date"><strong>Fecha de compra:</strong> {$fechaCompra}</p>
                         <p class="product-date"><strong>Método de pago:</strong> {$metodoPago}</p>
                         <p class="product-name">ID vendedor: $idVendedorRaw</p>
-                        <a href="valorarVendedor.php?id_vendedor=$idVendedorRaw&id_producto=$idProductoRaw" class="button valorar-button">Valorar vendedor</a>
+                HTML;
 
+                // CIERRO el heredoc porque quiero usar PHP normal
+                if ($this->compraValorada($idProductoRaw)) {
+                    $html .= "<p class='valorado-texto'>Ya has valorado este producto.</p>";
+                } else {
+                    $html .= "<a href='valorarVendedor.php?id_vendedor=$idVendedorRaw&id_producto=$idProductoRaw' class='button valorar-button'>Valorar vendedor</a>";
+                }
+
+                // Y VUELVO a abrir el heredoc para terminar el cierre del div
+                $html .= <<<HTML
                     </div>
                 </div>
-HTML;
+                HTML;
+
+
             }
         }
 
@@ -124,20 +135,22 @@ HTML;
         return "profile.php";
     }
 
-    public function compraValorada($id_compra)
+    public function compraValorada($id_producto)
     {
-        $conn = application::getInstance()->getConexionBd();
+    $conn = application::getInstance()->getConexionBd();
 
-        $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_compra = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $id_compra);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
+    $query = "SELECT COUNT(*) as total FROM valoraciones WHERE id_producto = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $id_producto);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-        if ($fila = $resultado->fetch_assoc()) {
-            return $fila['total'] > 0; // Devuelve true si ya está valorada
-        }
-
-        return false;
+    if ($fila = $resultado->fetch_assoc()) {
+        return $fila['total'] > 0; // Devuelve true si ya está valorado
     }
+
+    return false;
+    }
+
+    
 }
