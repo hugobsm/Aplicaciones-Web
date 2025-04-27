@@ -897,3 +897,61 @@ main {
     font-weight: bold;
     margin-top: 10px;
 }
+
+/*VVVV*/
+.editar-perfil-container {
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 20px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.editar-perfil-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.editar-perfil-form label {
+    font-weight: bold;
+    text-align: left;
+}
+
+.editar-perfil-form input,
+.editar-perfil-form select {
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.editar-perfil-form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.editar-perfil-form button:hover {
+    background-color: #218838;
+}
+
+.button-cancelar {
+    display: inline-block;
+    margin-top: 10px;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.button-cancelar:hover {
+    text-decoration: underline;
+}
+
