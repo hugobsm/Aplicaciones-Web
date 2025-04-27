@@ -43,8 +43,8 @@ class userDAO extends baseDAO implements IUser
         $escEmail = $this->realEscapeString($email);
         $conn = application::getInstance()->getConexionBd();
     
-        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo FROM usuarios WHERE email = ?";
-    
+        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo, edad, genero, pais, telefono FROM usuarios WHERE email = ?";
+
         error_log("Ejecutando consulta: " . $query);
     
         $stmt = $conn->prepare($query);
@@ -59,11 +59,12 @@ class userDAO extends baseDAO implements IUser
             return false;
         }
     
-        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo);
+        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
+
     
         if ($stmt->fetch()) {
             error_log("Usuario encontrado: ID = " . $id_usuario);
-            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo);
+            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
             $stmt->close();
             return $user;
         } else {
@@ -82,7 +83,8 @@ class userDAO extends baseDAO implements IUser
     {
         $escEmail = $this->realEscapeString($userDTO->email());
         $escNombre = $this->realEscapeString($userDTO->nombre());
-        $hashedPassword = self::hashPassword($userDTO->password());
+        $hashedPassword = $userDTO->password();
+
         $fotoPerfil = $userDTO->fotoPerfil();
         $tipo = $userDTO->tipo();
 
