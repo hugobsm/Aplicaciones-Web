@@ -127,49 +127,47 @@ HTML;
         }
 
         $html .= <<<HTML
-            </div> <!-- productos-container -->
+    </div> <!-- productos-container -->
 
-            <h2>Mis Valoraciones</h2>
-            <div class="productos-container">
+    <h2>Mis Valoraciones</h2>
+    <div class="productos-container">
 HTML;
 
-        // Mostrar media de valoraciones
+    // Mostrar media de valoraciones (sin tarjeta)
+    $mediaFormateada = number_format($mediaValoraciones, 1);
+    $html .= <<<HTML
+    <p style="text-align: center; font-weight: bold; margin-bottom: 20px;">Media de valoraciones: {$mediaFormateada} / 5 ⭐</p>
+HTML;
+
+    // Mostrar valoraciones
+    if (empty($valoraciones)) {
         $html .= <<<HTML
-            <div class="product-card">
-                <div class="product-details">
-                    <p><strong>Media de valoraciones:</strong> {$mediaValoraciones} ⭐</p>
-                </div>
+        <div class="product-card">
+            <div class="product-details">
+                <p>No has recibido ninguna valoración todavía.</p>
             </div>
+        </div>
 HTML;
+    } else {
+        foreach ($valoraciones as $valoracion) {
+            $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
+            $comentario = htmlspecialchars($valoracion->getComentario());
+            $emailComprador = htmlspecialchars($valoracion->emailComprador);
 
-        // Mostrar valoraciones
-        if (empty($valoraciones)) {
             $html .= <<<HTML
             <div class="product-card">
                 <div class="product-details">
-                    <p>No has recibido ninguna valoración todavía.</p>
+                    <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
+                    <p><strong>Comentario:</strong> {$comentario}</p>
+                    <p><strong>De:</strong> {$emailComprador}</p>
                 </div>
             </div>
 HTML;
-        } else {
-            foreach ($valoraciones as $valoracion) {
-                $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
-                $comentario = htmlspecialchars($valoracion->getComentario());
-                $emailComprador = htmlspecialchars($valoracion->emailComprador);
-
-                $html .= <<<HTML
-                <div class="product-card">
-                    <div class="product-details">
-                        <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
-                        <p><strong>Comentario:</strong> {$comentario}</p>
-                        <p><strong>De:</strong> {$emailComprador}</p>
-                    </div>
-                </div>
-HTML;
-            }
         }
+    }
 
-        $html .= "</div></div>"; // Cerrar productos-container y perfil-container
+    $html .= "</div></div>"; // Cerrar productos-container y perfil-container
+
 
         return $html;
     }
