@@ -60,6 +60,7 @@ class valoracionDAO extends baseDAO implements IValoracion {
             $fila['id_valoracion'],
             $fila['id_comprador'],
             $fila['id_vendedor'],
+            $fila['id_producto'],
             $fila['puntuacion'],
             $fila['comentario'],
             $fila['fecha_valoracion']
