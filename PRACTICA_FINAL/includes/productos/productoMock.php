@@ -38,5 +38,20 @@ class productoMock implements IProducto
         return true;
     }
      
+    public function obtenerProductosPaginados($offset, $limite, $id_usuario_actual = null) {
+
+        $productos = $this->obtenerTodosLosProductos();
+
+        if ($id_usuario_actual !== null) {
+            $productos = array_filter($productos, function($producto) use ($id_usuario_actual) {
+                return $producto->getIdUsuario() == $id_usuario_actual;
+            });
+        }
+
+        $productos = array_values($productos); // Reindexar
+        
+        return array_slice($productos, $offset, $limite);
+    }
+    
 }
 ?>

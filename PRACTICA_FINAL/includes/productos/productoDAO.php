@@ -223,5 +223,33 @@ class productoDAO extends baseDAO implements IProducto
     }
     
 
+    public function obtenerProductosPaginados($offset, $limite, $id_usuario_actual = null) {
+        
+        $conn = application::getInstance()->getConexionBd();
+
+        $query = "SELECT * FROM productos";
+        if ($id_usuario_actual !== null) {
+            $query .= " WHERE id_usuario != ?";
+        }
+        $query .= " ORDER BY fecha_publicacion DESC LIMIT ?, ?";
+
+        $stmt = $conn->prepare($query);
+
+        if ($id_usuario_actual !== null) {
+            $stmt->bind_param("iii", $id_usuario_actual, $offset, $limite);
+        } else {
+            $stmt->bind_param("ii", $offset, $limite);
+        }
+
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+
+        $productos = [];
+        while ($fila = $resultado->fetch_assoc()) {
+            $productos[] = new ProductoDTO(...array_values($fila));
+        }
+
+        return $productos;
+    }
 }
 ?>
