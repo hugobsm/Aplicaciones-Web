@@ -966,14 +966,16 @@ main {
     text-decoration: underline;
 }
 
-/* Estilo general de la paginación */
+/* Estilo para los botones de paginación */
 .paginacion {
     display: flex;
     justify-content: center; /* Centra los botones */
     margin-top: 20px;
+    flex-wrap: wrap; /* Permite que los botones se ajusten si hay muchos */
+    text-align: center; /* Asegura que el contenido se centre correctamente */
+    width: 100%; /* Garantiza que el contenedor ocupe todo el ancho disponible */
 }
 
-/* Estilo de cada número de página */
 .pagina-numero {
     margin: 0 5px;
     padding: 8px 16px;
@@ -982,23 +984,46 @@ main {
     border: 1px solid #ccc;
     border-radius: 5px;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px;
+    white-space: nowrap; /* Evita que el texto se rompa */
+    display: inline-block; /* Asegura que los elementos no se estiren */
 }
 
-/* Estilo para cuando el número de la página está activo */
 .pagina-numero.active {
     background-color: #007bff;
     color: white;
 }
 
-/* Estilo para cuando el usuario pasa el mouse por encima de los botones */
 .pagina-numero:hover {
     background-color: #0056b3;
     color: white;
 }
 
-/* Estilo para el caso de la página anterior y siguiente (si quieres agregarlas) */
 .pagina-numero.prev, .pagina-numero.next {
     padding: 8px 12px;
     font-weight: bold;
+    font-size: 14px;
 }
 
+.pagina-numero {
+    max-width: 60px; /* Ajusta el tamaño máximo de los botones */
+    text-align: center;
+}
+
+.pagina-numero.prev, .pagina-numero.next {
+    max-width: 100px; /* Establece un tamaño fijo para los botones "Anterior" y "Siguiente" */
+}
+
+/* Para los contenedores de la paginación */
+.paginacion a {
+    display: inline-block;
+    width: auto; /* El ancho de los botones debe ser automático */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho */
+}
+
+.paginacion .pagina-numero {
+    width: auto !important;
+    text-align: center;
+    padding: 8px 16px; /* Asegura que haya suficiente espacio */
+    margin: 5px; /* Espaciado entre botones */
+}
