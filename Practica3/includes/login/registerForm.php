@@ -25,6 +25,7 @@ class registerForm extends formBase
             <p><label>Password:</label> <input type="password" name="password" required/></p>
             <p><label>Re-Password:</label> <input type="password" name="rePassword" required/></p>
             <p><label>Foto de Perfil:</label> <input type="file" name="fotoPerfil" accept="image/*"/></p>
+            <!-- Elimina el campo de rol -->
             <button type="submit" name="register">Registrar</button>
         </fieldset>
 EOF;
@@ -33,7 +34,6 @@ EOF;
 
     protected function Process($datos)
     {
-
         $result = array();
 
         // Capturar y validar datos del formulario
@@ -62,7 +62,6 @@ EOF;
         $rePassword = filter_var($rePassword, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ($password !== $rePassword) {
-            
             $result[] = "Las contraseñas no coinciden.";
         }
 
@@ -80,18 +79,26 @@ EOF;
                 $nombreImagen = "uploads/" . uniqid("perfil_") . "." . $extension;
                 move_uploaded_file($imagen['tmp_name'], $nombreImagen);
                 $fotoPerfil = $nombreImagen;
-               
             } else {
-                
                 $result[] = "Formato de imagen no permitido.";
             }
+        }
+
+        // Asignar rol automáticamente
+        $rol = 'user'; // Rol por defecto
+
+        // Contraseña secreta para asignar rol de admin
+        $passwordSecreta = 'admin123'; // Puedes cambiar esta contraseña secreta por cualquier valor
+
+        if ($password === $passwordSecreta) {
+            $rol = 'admin'; // Asignar rol de admin si la contraseña es correcta
         }
 
         if (count($result) === 0) {
             try {
                 // Crear DTO correctamente
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                $userDTO = new userDTO(0, $nombreUsuario, $email, $hashedPassword, $fotoPerfil);
+                $userDTO = new userDTO(0, $nombreUsuario, $email, $hashedPassword, $fotoPerfil, $rol); // Se pasa el rol al DTO
                 $userAppService = userAppService::GetSingleton();
 
                 $createdUserDTO = $userAppService->create($userDTO);
@@ -100,16 +107,17 @@ EOF;
                     throw new Exception("Error al registrar el usuario.");
                 }
 
-
                 // Iniciar sesión después del registro
                 $_SESSION["login"] = true;
                 $_SESSION["id_usuario"] = $createdUserDTO->id();
                 $_SESSION["nombre"] = $createdUserDTO->nombre();
                 $_SESSION["email"] = $createdUserDTO->email();
                 $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
+                $_SESSION["rol"] = $createdUserDTO->rol(); // Almacenar el rol en sesión
 
                 // Redirigir a index.php
-                header("Location: index.php");
+                header("Location: " . RUTA_APP . "/index.php");
+
                 exit();
 
             } catch (Exception $e) {

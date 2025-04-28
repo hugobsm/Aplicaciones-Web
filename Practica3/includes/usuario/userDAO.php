@@ -30,80 +30,80 @@ class userDAO extends baseDAO implements IUser
     private function buscaUsuario($email)
     {
         error_log("Buscando usuario con email: " . $email);
-    
+
         $escEmail = $this->realEscapeString($email);
         $conn = application::getInstance()->getConexionBd();
-    
-        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo FROM usuarios WHERE email = ?";
-    
+
+        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, rol FROM usuarios WHERE email = ?";
+
         error_log("Ejecutando consulta: " . $query);
-    
+
         $stmt = $conn->prepare($query);
         if (!$stmt) {
             error_log("Error preparando consulta: " . $conn->error);
             return false;
         }
-    
+
         $stmt->bind_param("s", $escEmail);
         if (!$stmt->execute()) {
             error_log("Error ejecutando consulta: " . $stmt->error);
             return false;
         }
-    
-        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo);
-    
+
+        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $rol);
+
         if ($stmt->fetch()) {
             error_log("Usuario encontrado: ID = " . $id_usuario);
-            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo);
+            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $rol); // Incluye el rol
             $stmt->close();
             return $user;
         } else {
             error_log("Usuario NO encontrado.");
         }
-    
+
         return false;
     }
-    
+
 
     public function create($userDTO)
+{
+    $createdUserDTO = false;
+
+    try
     {
-        $createdUserDTO = false;
-    
-        try
+        $escEmail = $this->realEscapeString($userDTO->email());
+        $escNombre = $this->realEscapeString($userDTO->nombre());
+        $hashedPassword = self::hashPassword($userDTO->password());
+        $fotoPerfil = $userDTO->fotoPerfil();
+        $rol = $userDTO->rol(); // Obtén el rol del DTO
+
+        $conn = application::getInstance()->getConexionBd();
+
+        $query = "INSERT INTO usuarios(nombre, email, contrasena, foto_perfil, fecha_registro, rol) VALUES (?, ?, ?, ?, NOW(), ?)";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("sssss", $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $rol); // Agregar rol a la consulta
+
+        if ($stmt->execute())
         {
-            $escEmail = $this->realEscapeString($userDTO->email());
-            $escNombre = $this->realEscapeString($userDTO->nombre());
-            $hashedPassword = self::hashPassword($userDTO->password());
-            $fotoPerfil = $userDTO->fotoPerfil();
-            $tipo = $userDTO->tipo();
-    
-            $conn = application::getInstance()->getConexionBd();
-    
-            $query = "INSERT INTO usuarios(nombre, email, contrasena, foto_perfil, tipo, fecha_registro) VALUES (?, ?, ?, ?, ?, NOW())";
-    
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("sssss", $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $tipo);
-    
-            if ($stmt->execute())
-            {
-                $idUser = $conn->insert_id;
-                $createdUserDTO = new userDTO($idUser, $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $tipo);
-    
-                return $createdUserDTO;
-            }
+            $idUser = $conn->insert_id;
+            $createdUserDTO = new userDTO($idUser, $escNombre, $escEmail, $hashedPassword, $fotoPerfil, $rol);
+
+            return $createdUserDTO;
         }
-        catch(mysqli_sql_exception $e)
-        {
-            if ($conn->sqlstate == 23000) 
-            { 
-                throw new userAlreadyExistException("Ya existe el usuario '{$userDTO->email()}'");
-            }
-            throw $e;
-        }
-    
-        return $createdUserDTO;
     }
-    
+    catch(mysqli_sql_exception $e)
+    {
+        if ($conn->sqlstate == 23000) 
+        { 
+            throw new userAlreadyExistException("Ya existe el usuario '{$userDTO->email()}'");
+        }
+        throw $e;
+    }
+
+    return $createdUserDTO;
+}
+
 
     private static function hashPassword($password)
     {
@@ -139,30 +139,29 @@ class userDAO extends baseDAO implements IUser
     return null;
     }*/
     public function getUserById($id_usuario)
-    {
-        $conn = application::getInstance()->getConexionBd();
-        $query = "SELECT id_usuario, nombre, email, foto_perfil, tipo FROM usuarios WHERE id_usuario = ?";
-        
-        $stmt = $conn->prepare($query);
-        if (!$stmt) {
-            error_log("❌ Error preparando la consulta en getUserById()");
-            return null;
-        }
+{
+    $conn = application::getInstance()->getConexionBd();
+    $query = "SELECT id_usuario, nombre, email, foto_perfil FROM usuarios WHERE id_usuario = ?";
     
-        $stmt->bind_param("i", $id_usuario);
-        $stmt->execute();
-        $stmt->bind_result($id, $nombre, $email, $fotoPerfil, $tipo);
-    
-        if ($stmt->fetch()) {
-            $stmt->close();
-            error_log("✅ Usuario encontrado: $nombre");
-            return new userDTO($id, $nombre, $email, "", $fotoPerfil, $tipo);
-        }
-    
-        error_log("⚠️ Usuario con ID $id_usuario no encontrado.");
+    $stmt = $conn->prepare($query);
+    if (!$stmt) {
+        error_log("❌ Error preparando la consulta en getUserById()");
         return null;
     }
-    
+
+    $stmt->bind_param("i", $id_usuario);
+    $stmt->execute();
+    $stmt->bind_result($id, $nombre, $email, $fotoPerfil);
+
+    if ($stmt->fetch()) {
+        $stmt->close();
+        error_log("✅ Usuario encontrado: $nombre");
+        return new userDTO($id, $nombre, $email, "", $fotoPerfil);
+    }
+
+    error_log("⚠️ Usuario con ID $id_usuario no encontrado.");
+    return null;
+}
 
 
 public function getProductsByUserId($id_usuario)
@@ -183,47 +182,6 @@ public function getProductsByUserId($id_usuario)
 
     $stmt->close();
     return $productos;
-}
-
-
-public function delete(int $id)
-{
-    $conn = application::getInstance()->getConexionBd();
-    $query = "DELETE FROM usuarios WHERE id_usuario = ?";
-
-    $stmt = $conn->prepare($query);
-    if (!$stmt) {
-        error_log("❌ Error preparando consulta en delete()");
-        return false;
-    }
-
-    $stmt->bind_param("i", $id);
-    $resultado = $stmt->execute();
-    $stmt->close();
-
-    return $resultado;
-}
-
-public function findAll()
-{
-    $conn = application::getInstance()->getConexionBd();
-    $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo FROM usuarios";
-    
-    $result = $conn->query($query);
-    $usuarios = [];
-
-    while ($row = $result->fetch_assoc()) {
-        $usuarios[] = new userDTO(
-            $row['id_usuario'],
-            $row['nombre'],
-            $row['email'],
-            $row['contrasena'],
-            $row['foto_perfil'],
-            $row['tipo']
-        );
-    }
-
-    return $usuarios;
 }
 
 
