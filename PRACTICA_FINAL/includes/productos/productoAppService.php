@@ -77,7 +77,14 @@ public function obtenerPrecioMaximo() {
 }
 
 
+public function obtenerProductosPaginados($pagina, $id_usuario_actual = null) {
 
+    $IProductoDAO = productoFactory::CreateProducto();
+    $limite = 12; // 12 productos por página
+    $offset = ($pagina - 1) * $limite;
+    
+    return $IProductoDAO->obtenerProductosPaginados($offset, $limite, $id_usuario_actual);
+}
 
 }
 

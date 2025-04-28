@@ -14,7 +14,6 @@ interface IProducto
 
     public function obtenerTodosLosProductos();
 
-
-    //public function obtenerProductosPaginados($offset, $limite, $id_usuario_actual = null);
+    public function obtenerProductosPaginados($offset, $limite, $id_usuario_actual = null);
 }
 ?>
