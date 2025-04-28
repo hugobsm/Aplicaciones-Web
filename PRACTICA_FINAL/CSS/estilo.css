@@ -965,3 +965,40 @@ main {
 .button-cancelar:hover {
     text-decoration: underline;
 }
+
+/* Estilo general de la paginación */
+.paginacion {
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    margin-top: 20px;
+}
+
+/* Estilo de cada número de página */
+.pagina-numero {
+    margin: 0 5px;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilo para cuando el número de la página está activo */
+.pagina-numero.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Estilo para cuando el usuario pasa el mouse por encima de los botones */
+.pagina-numero:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/* Estilo para el caso de la página anterior y siguiente (si quieres agregarlas) */
+.pagina-numero.prev, .pagina-numero.next {
+    padding: 8px 12px;
+    font-weight: bold;
+}
+
