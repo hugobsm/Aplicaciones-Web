@@ -11,6 +11,8 @@ $productoAppService = productoAppService::GetSingleton();
 $precioMaximo = $productoAppService->obtenerPrecioMaximo();
 $precioMaximo = ceil($precioMaximo); // Redondeamos hacia arriba
 
+$valorBusqueda = isset($_GET['busqueda']) ? $_GET['busqueda']:'';
+
 // -- Primero el filtro (sin meter script aquí) --
 $filtros = <<<HTML
 <div class="menu-filtros">
@@ -80,6 +82,14 @@ $filtros = <<<HTML
                         </div>
                     </div>
                 </div>
+
+                <!-- 🆕 Campo de búsqueda -->
+                <div class="categoria">
+                    <span>Búsqueda ▾</span>
+                    <div class="subcategoria">
+                        <input type="text" name="busqueda" placeholder="Buscar por nombre..." value="{$valorBusqueda}" style="padding: 5px; width: 100%;">
+                    </div>
+                </div>
 
                 <div class="aplicar-wrap"><button class="btn-aplicar" type="submit">Aplicar filtros</button></div>
             </form>
