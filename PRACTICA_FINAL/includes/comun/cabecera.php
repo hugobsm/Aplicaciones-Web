@@ -28,9 +28,18 @@ function mostrarSaludo()
             <img src="<?php echo RUTA_APP; ?>Imagenes Marca/logo.png" alt="Logo">
             </div>
             <div class="right-menu">
+
+
                 <div class="search">
-                    <input type="text" placeholder="Buscar...">
+                    <form method="GET" action="<?php echo RUTA_APP; ?>verProductos.php" style="display: flex;">
+                        <input type="text" name="busqueda" placeholder="Buscar productos..." style="padding: 5px; border-radius: 4px 0 0 4px; border: 1px solid #ccc;">
+                        <button type="submit" style="padding: 5px 10px; border-radius: 0 4px 4px 0; border: 1px solid #ccc; background-color: #eee; cursor: pointer;">🔍</button>
+                    </form>
                 </div>
+
+                
+
+
                 <div class="saludo">
                     <?php mostrarSaludo(); ?>
                 </div>
