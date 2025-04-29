@@ -2,7 +2,7 @@
 
 require("IUser.php");
 require("userDTO.php");
-require(__DIR__ . "/../comun/baseDAO.php");
+require_once(__DIR__ . "/../comun/baseDAO.php");
 require("userAlreadyExistException.php");
 require_once(__DIR__ . '/../application.php'); // Ajusta la ruta según tu estructura
 require_once(__DIR__ . '/../config.php'); // Ajusta la ruta según tu estructura
