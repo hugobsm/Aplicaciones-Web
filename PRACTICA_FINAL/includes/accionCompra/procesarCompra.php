@@ -39,17 +39,10 @@ EOF;
         $id_producto = intval($datos['id_producto'] ?? 0);
         $metodo_pago = trim($datos['metodo_pago'] ?? '');
         $id_usuario = $_SESSION['id_usuario'] ?? null;
-        
-        $id_producto = filter_var($id_producto, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $metodo_pago = filter_var($metodo_pago, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $id_usuario = filter_var($id_usuario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        
+
         if (!$id_usuario || !$id_producto || !$metodo_pago) {
             return ["Faltan datos obligatorios para completar la compra."];
         }
-
-        // Validación básica de seguridad (escapar entrada de usuario)
-        $metodo_pago = htmlspecialchars($metodo_pago, ENT_QUOTES, 'UTF-8');
 
         $productoService = productoAppService::GetSingleton();
         $producto = $productoService->obtenerProductoPorId($id_producto);
@@ -58,23 +51,31 @@ EOF;
             return ["El producto seleccionado no existe."];
         }
 
-        $id_vendedor = $producto->getIdUsuario();
-        $fecha_compra = date("Y-m-d H:i:s");
+        $precio = $producto->getPrecio();
 
-        $compraDTO = new CompraDTO(
-            0,
-            $id_usuario,
-            $id_producto,
-            $fecha_compra,
-            $metodo_pago,
-            $id_vendedor
-        );
+        if ($metodo_pago === "Tarjeta") {
+            // ✅ Ruta absoluta desde raíz del sitio
+            header("Location: pagoRedsys.php?id_producto=$id_producto&precio=$precio&id_usuario=$id_usuario");
+            exit();
+        } else {
+            $id_vendedor = $producto->getIdUsuario();
+            $fecha_compra = date("Y-m-d H:i:s");
 
-        $compraService = compraAppService::GetSingleton();
-        $compraService->realizarCompra($compraDTO);
-        $productoService->eliminarProducto($id_producto);
+            $compraDTO = new CompraDTO(
+                0,
+                $id_usuario,
+                $id_producto,
+                $fecha_compra,
+                $metodo_pago,
+                $id_vendedor
+            );
 
-        header("Location: confirmacionCompra.php");
-        exit();
+            $compraService = compraAppService::GetSingleton();
+            $compraService->realizarCompra($compraDTO);
+            $productoService->eliminarProducto($id_producto);
+
+            header("Location: confirmacionCompra.php");
+            exit();
+        }
     }
 }
