@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="CSS/estilo.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" type="text/css" href="<?= RUTA_CSS ?>/estilo.css?v=<?php echo time(); ?>">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title><?= $tituloPagina ?></title>
 </head>
@@ -11,7 +11,8 @@
 <div id="contenedor">
 
 	<?php
-		require("includes/comun/cabecera.php");
+		//require("includes/comun/cabecera.php");
+		require(__DIR__ . "/cabecera.php");
 	?>
 
 	<main>
@@ -21,7 +22,8 @@
 	</main>
 
 	<?php
-		require("includes/comun/pie.php");
+		//require("includes/comun/pie.php");
+		require(__DIR__ . "/pie.php");
 	?>
 
 </div> <!-- Fin del contenedor -->

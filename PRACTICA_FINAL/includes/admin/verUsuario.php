@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../usuario/userDAO.php';
-require_once __DIR__ . '/../comun/cabecera.php';
+
+$tituloPagina = 'Lista de usuarios';
 
 /*if (session_status() === PHP_SESSION_NONE) session_start();
 
@@ -12,27 +13,43 @@ if (!isset($_SESSION['usuario']['tipo']) || $_SESSION['usuario']['tipo'] !== 'ad
 
 $userDAO = new userDAO();
 $usuarios = $userDAO->findAll(); // Método que recupera todos los usuarios
+
+// Empieza a capturar la salida
+ob_start();
 ?>
 
-<h2>Lista de Usuarios</h2>
-<a href="crearUsuario.php">Crear nuevo usuario</a>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Tipo</th>
-        <th>Acciones</th>
-    </tr>
-    <?php foreach ($usuarios as $usuario): ?>
+<!-- Contenedor principal de la página -->
+<div class="lista-usuarios-container">
+    <h2>Lista de Usuarios</h2>
+    
+    <!-- Enlace para crear un nuevo usuario -->
+    <a href="crearUsuario.php">Crear nuevo usuario</a>
+
+    <!-- Tabla que muestra la lista de usuarios -->
+    <table>
         <tr>
-            <td><?= $usuario->id() ?></td>
-            <td><?= $usuario->nombre() ?></td>
-            <td><?= $usuario->email() ?></td>
-            <td><?= $usuario->tipo() ?></td>
-            <td>
-                <a href="eliminarUsuario.php?id=<?= $usuario->id() ?>" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
-            </td>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
         </tr>
-    <?php endforeach; ?>
-</table>
+        <?php foreach ($usuarios as $usuario): ?>
+            <tr>
+                <td><?= $usuario->id() ?></td>
+                <td><?= $usuario->nombre() ?></td>
+                <td><?= $usuario->email() ?></td>
+                <td><?= $usuario->tipo() ?></td>
+                <td>
+                    <a href="eliminarUsuario.php?id=<?= $usuario->id() ?>" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">Eliminar</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+
+<?php
+// Guardar en variable
+$contenidoPrincipal = ob_get_clean();
+require(__DIR__ . "/../comun/plantilla.php");
+?>

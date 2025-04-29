@@ -1027,3 +1027,127 @@ main {
     padding: 8px 16px; /* Asegura que haya suficiente espacio */
     margin: 5px; /* Espaciado entre botones */
 }
+
+.gestion-usuarios {
+    margin-top: 30px;
+    background-color: #f5f5f5; /* Fondo más neutro, igual al resto de las secciones */
+    padding: 20px;
+    border-radius: 10px; /* Bordes redondeados, al igual que en otras secciones */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Añadí una sombra para mantener el estilo */
+}
+
+.gestion-usuarios ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.gestion-usuarios li {
+    margin: 15px 0; /* Aumenté el margen entre los ítems para más separación */
+    padding: 10px;
+    background: #fff; /* Fondo blanco para cada elemento de la lista */
+    border-radius: 8px; /* Bordes redondeados, igual que en el resto */
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1); /* Sombras ligeras */
+    transition: transform 0.2s ease-in-out;
+}
+
+.gestion-usuarios li:hover {
+    transform: scale(1.02); /* Efecto hover, como en las tarjetas de producto */
+}
+
+.gestion-usuarios a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px; /* Aumenté el tamaño de fuente para hacerlo más legible */
+    transition: color 0.2s ease-in-out;
+}
+
+.gestion-usuarios a:hover {
+    color: #444; /* Cambio de color al pasar el mouse */
+}
+
+/* Estilos generales para la página de lista de usuarios */
+.lista-usuarios-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f5f5f5; /* Fondo de la página */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título de la página */
+.lista-usuarios-container h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #222;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilo del enlace para crear nuevo usuario */
+.lista-usuarios-container a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #333;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.lista-usuarios-container a:hover {
+    background-color: #444;
+}
+
+/* Estilo para la tabla */
+.lista-usuarios-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.lista-usuarios-container th, .lista-usuarios-container td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.lista-usuarios-container th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    color: #333;
+}
+
+.lista-usuarios-container td {
+    background-color: #fff;
+    color: #555;
+}
+
+.lista-usuarios-container td a {
+    text-decoration: none;
+    color: red;
+    font-weight: bold;
+    transition: color 0.2s ease;
+}
+
+.lista-usuarios-container td a:hover {
+    color: darkred;
+}
+
+/* Estilo para la confirmación de eliminación */
+.lista-usuarios-container td a:focus {
+    outline: none;
+}
+
+/* Agregar más espaciado entre filas */
+.lista-usuarios-container tr {
+    transition: background-color 0.3s ease;
+}
+
+.lista-usuarios-container tr:hover {
+    background-color: #f1f1f1;
+}

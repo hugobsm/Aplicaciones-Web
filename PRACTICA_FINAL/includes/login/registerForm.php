@@ -172,6 +172,15 @@ $telefonoCompleto = $prefijo . $telefono;
             $result[] = "Formato de imagen no permitido.";
         }
     }
+    // Asignar rol automáticamente
+    $tipo = 'usuario'; // Rol por defecto
+
+    // Contraseña secreta para asignar rol de admin
+    $passwordSecreta = 'admin123'; // Puedes cambiar esta contraseña secreta por cualquier valor
+
+    if ($password === $passwordSecreta) {
+        $tipo = 'admin'; // Asignar rol de admin si la contraseña es correcta
+    }
 
     if (count($result) === 0) {
         try {
@@ -184,7 +193,7 @@ $telefonoCompleto = $prefijo . $telefono;
                 $email, 
                 $hashedPassword, 
                 $fotoPerfil,
-                'usuario',
+                $tipo,
                 $edad,
                 $genero,
                 $pais,
@@ -204,7 +213,7 @@ $telefonoCompleto = $prefijo . $telefono;
             $_SESSION["nombre"] = $createdUserDTO->nombre();
             $_SESSION["email"] = $createdUserDTO->email();
             $_SESSION["foto_perfil"] = $createdUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
-
+            $_SESSION["tipo"] = $createdUserDTO->tipo();
             header("Location: index.php");
             exit();
 

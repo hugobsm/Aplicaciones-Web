@@ -1,6 +1,6 @@
 <?php
 
-require_once("includes/application.php");
+require_once(__DIR__. "/application.php");
 
 
 //define('BD_HOST', 'vm018.db.swarm.test');

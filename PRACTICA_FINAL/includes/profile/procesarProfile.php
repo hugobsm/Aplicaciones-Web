@@ -49,6 +49,20 @@ class profileForm extends formBase
         $telefono = htmlspecialchars($user->telefono(), ENT_QUOTES, 'UTF-8');
         $saldo = htmlspecialchars($user->saldo(), ENT_QUOTES, 'UTF-8'); // 🔥 saldo añadido
 
+        $gestionUsuariosHTML = '';
+        if (isset($_SESSION['tipo']) && $_SESSION['tipo'] === 'admin') {
+        $gestionUsuariosHTML = <<<HTML
+        <div class="gestion-usuarios">
+        <h2>👤 Gestión de Usuarios</h2>
+        <ul>
+            <li><a href="includes/admin/crearUsuario.php">➕ Añadir Usuario</a></li>
+            <li><a href="includes/admin/verUsuario.php">👀 Ver Usuarios</a></li>
+        </ul>
+        </div>
+        HTML;
+        }
+
+
         $html = <<<HTML
         <div class="perfil-container">
             <h1>Mi Perfil</h1>
@@ -67,6 +81,9 @@ class profileForm extends formBase
                     </div>
                 </div>
             </div>
+
+            {$gestionUsuariosHTML}
+
 
             <div class="publicar-container">
                 <a href="publicarProducto.php" class="button publicar-button">Publicar Artículo</a>
