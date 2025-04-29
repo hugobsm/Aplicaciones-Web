@@ -97,7 +97,7 @@ HTML;
 
         // Botones de paginación numerados
     // Construir paginación con filtros mantenidos
-    $queryParams = $_GET;
+    /*$queryParams = $_GET;
     unset($queryParams['pagina']); // Quitamos pagina para no duplicar
     $queryBase = http_build_query($queryParams);
 
@@ -109,11 +109,39 @@ HTML;
             $html .= "<a class='pagina-numero {$active}' href='{$url}'>" . $i . "</a> ";
         }
         $html .= "</div>";
-    }
+    }*/
+
+    // 🆕 AÑADIR ESTO: Paginación con "Anterior", números y "Siguiente"
+        // Construir paginación con filtros mantenidos
+        $queryParams = $_GET;
+        unset($queryParams['pagina']); // Quitamos pagina para no duplicar
+        $queryBase = http_build_query($queryParams);
+
+        $html .= "<div class='paginacion'>";
+
+        // Botón de "Anterior"
+        if ($pagina > 1) {
+            $prevPage = $pagina - 1;
+            $html .= "<a class='pagina-numero prev' href='?$queryBase&pagina=$prevPage'>Anterior</a> ";
+        }
+
+        // Botones numerados
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $active = ($i == $pagina) ? "active" : "";
+            $url = '?' . $queryBase . '&pagina=' . $i;
+            $html .= "<a class='pagina-numero {$active}' href='{$url}'>" . $i . "</a> ";
+        }
+
+        // Botón de "Siguiente"
+        if ($pagina < $totalPaginas) {
+            $nextPage = $pagina + 1;
+            $html .= "<a class='pagina-numero next' href='?$queryBase&pagina=$nextPage'>Siguiente</a>";
+        }
+
+        $html .= "</div>";
 
 
-
-        return $html;
+    return $html;
     }
 }
 
