@@ -37,24 +37,36 @@ class profileForm extends formBase
         $email = htmlspecialchars($user->email(), ENT_QUOTES, 'UTF-8');
         $foto_perfil = !empty($user->fotoPerfil()) ? htmlspecialchars($user->fotoPerfil(), ENT_QUOTES, 'UTF-8') : "uploads/default-avatar.png";
 
+        $gestionUsuariosHTML = '';
+        if (isset($_SESSION['rol']) && $_SESSION['rol'] === 'admin') {
+            $gestionUsuariosHTML = <<<HTML
+                <h2>Gestión de Usuarios</h2>
+                <a href="includes/admin/addUser.php">➕ Añadir Usuario</a><br>
+                <a href="includes/admin/deleteUser.php">🗑️ Eliminar Usuario</a>
+        HTML;
+        }
+        
         $html = <<<HTML
-        <div class="perfil-container">
-            <h1>Mi Perfil</h1>
-            <div class="perfil-info">
-                <img class="perfil-foto" src="{$foto_perfil}" alt="Foto de perfil">
-                <div class="perfil-datos">
-                    <p><strong>Nombre:</strong> {$nombre}</p>
-                    <p><strong>Email:</strong> {$email}</p>
+            <div class="perfil-container">
+                <h1>Mi Perfil</h1>
+                <div class="perfil-info">
+                    <img class="perfil-foto" src="{$foto_perfil}" alt="Foto de perfil">
+                    <div class="perfil-datos">
+                        <p><strong>Nombre:</strong> {$nombre}</p>
+                        <p><strong>Email:</strong> {$email}</p>
+                    </div>
                 </div>
-            </div>
-
-            <div class="publicar-container">
-                <a href="publicarProducto.php" class="button publicar-button">Publicar Artículo</a>
-            </div>
-
-            <h2>Mis Productos</h2>
-            <div class="productos-container">
-HTML;
+        
+                <div class="publicar-container">
+                    <a href="publicarProducto.php" class="button publicar-button">Publicar Artículo</a>
+                </div>
+        
+                {$gestionUsuariosHTML}
+        
+                <h2>Mis Productos</h2>
+                <div class="productos-container">
+        HTML;
+        
 
         if ($mensaje) {
             $html .= "<p class='no-products'>{$mensaje}</p>";

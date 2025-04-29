@@ -1,14 +1,18 @@
 <?php
 
-require_once("includes/application.php");
+require_once(_DIR_ . "/application.php");
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> bc0b14e0c7fee32bd60cc61a01cd7f15c3040cf8
 define('BD_HOST', 'localhost');
 define('BD_NAME', 'brandswap');
 define('BD_USER', 'root'); // Ajusta según tu configuración
 define('BD_PASS', ''); // Si tienes contraseña, colócala aquí
 
-define('RAIZ_APP',__DIR__);
+define('RAIZ_APP',_DIR_);
 define('RUTA_APP', '/Aplicaciones-Web/Practica3/');
 define('RUTA_IMGS', RUTA_APP.'/imgs');
 define('RUTA_CSS',  RUTA_APP.'/css');
@@ -34,7 +38,7 @@ function gestorExcepciones(Throwable $exception)
     <p> Parece que ha habido un fallo.</p>
     EOS;
 
-    require("includes/comun/plantilla.php");
+    require(_DIR_ . "/comun/plantilla.php");
 }
 
 set_exception_handler('gestorExcepciones');

@@ -55,6 +55,16 @@ class userAppService
 
     return $user;
 }
+public function deleteByEmail($email) {
+    $conn = Application::getInstance()->getConnection();
+    $stmt = $conn->prepare("DELETE FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $affected = $stmt->affected_rows;
+    $stmt->close();
+    return $affected > 0;
+}
+
 
 
 

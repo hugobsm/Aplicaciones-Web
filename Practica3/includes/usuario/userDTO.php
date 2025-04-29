@@ -1,28 +1,23 @@
 <?php
 
-class userDTO {
+class userDTO
+{
     private $id;
     private $nombre;
     private $email;
-    private $contrasena;
+    private $password;
     private $fotoPerfil;
-    private $tipo;
+    private $rol;
 
-    public function __construct($id, $nombre, $email, $contrasena, $fotoPerfil = null, $tipo = 'usuario') {
+    public function __construct($id, $nombre, $email, $password, $fotoPerfil = null, $rol = 'user')
+    {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->email = $email;
-        $this->contrasena = $contrasena;
+        $this->password = $password;
         $this->fotoPerfil = $fotoPerfil;
-        $this->tipo = $tipo;
+        $this->rol = $rol; // Inicializa el rol
     }
-
-    // Añade un getter para el tipo:
-    public function tipo() {
-        return $this->tipo;
-    }
-
-   
     public function id()
     {
         return $this->id;
@@ -47,5 +42,7 @@ class userDTO {
     {
         return $this->fotoPerfil;
     }
+
+    public function rol() { return $this->rol; } // Getter del rol
 }
 ?>
