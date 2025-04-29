@@ -12,7 +12,12 @@ class comprarProductoForm extends formBase {
     }
 
     protected function CreateFields($datos) {
+        $error = $datos['error'] ?? '';
+
+        $mensajeError = $error ? "<p style='color: red; font-weight: bold;'>$error</p>" : "";
+
         $html = <<<EOF
+        $mensajeError
         <form method="POST" action="{$_SERVER['PHP_SELF']}">
             <fieldset>
                 <legend>Confirmar Compra</legend>
@@ -21,6 +26,7 @@ class comprarProductoForm extends formBase {
                         <option value="Tarjeta">Tarjeta de Crédito</option>
                         <option value="PayPal">PayPal</option>
                         <option value="Transferencia">Transferencia Bancaria</option>
+                        <option value="Saldo">Saldo</option> <!-- ✅ Añadido -->
                     </select>
                 </p>
                 <input type="hidden" name="id_producto" value="{$this->idProducto}">
@@ -54,7 +60,6 @@ EOF;
         $precio = $producto->getPrecio();
 
         if ($metodo_pago === "Tarjeta") {
-            // ✅ Ruta absoluta desde raíz del sitio
             header("Location: pagoRedsys.php?id_producto=$id_producto&precio=$precio&id_usuario=$id_usuario");
             exit();
         } else {
@@ -71,9 +76,15 @@ EOF;
             );
 
             $compraService = compraAppService::GetSingleton();
-            $compraService->realizarCompra($compraDTO);
-            $productoService->eliminarProducto($id_producto);
+            $resultado = $compraService->realizarCompra($compraDTO);
 
+            if (!$resultado) {
+                // ❌ Error, probablemente por saldo insuficiente
+                return ["No tienes saldo suficiente para completar esta compra."];
+            }
+
+            // ✅ Compra realizada
+            $productoService->eliminarProducto($id_producto);
             header("Location: confirmacionCompra.php");
             exit();
         }
