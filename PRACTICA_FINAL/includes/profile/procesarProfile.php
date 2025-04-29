@@ -39,6 +39,7 @@ class profileForm extends formBase
         $mediaValoraciones = $valoracionService->obtenerMediaPorVendedor($id_usuario);
         $valoraciones = $valoracionService->obtenerValoracionesPorVendedor($id_usuario);
 
+        // Datos del usuario
         $nombre = htmlspecialchars($user->nombre(), ENT_QUOTES, 'UTF-8');
         $email = htmlspecialchars($user->email(), ENT_QUOTES, 'UTF-8');
         $foto_perfil = !empty($user->fotoPerfil()) ? htmlspecialchars($user->fotoPerfil(), ENT_QUOTES, 'UTF-8') : "uploads/default-avatar.png";
@@ -46,6 +47,7 @@ class profileForm extends formBase
         $genero = htmlspecialchars($user->genero(), ENT_QUOTES, 'UTF-8');
         $pais = htmlspecialchars($user->pais(), ENT_QUOTES, 'UTF-8');
         $telefono = htmlspecialchars($user->telefono(), ENT_QUOTES, 'UTF-8');
+        $saldo = htmlspecialchars($user->saldo(), ENT_QUOTES, 'UTF-8'); // 🔥 saldo añadido
 
         $html = <<<HTML
         <div class="perfil-container">
@@ -59,10 +61,10 @@ class profileForm extends formBase
                     <p><strong>Género:</strong> {$genero}</p>
                     <p><strong>País:</strong> {$pais}</p>
                     <p><strong>Teléfono:</strong> {$telefono}</p>
+                    <p><strong>Saldo:</strong> {$saldo} €</p> <!-- 🔥 Mostrar saldo aquí -->
                     <div class="editar-container">
-                    <a href="editarPerfil.php" class="button editar-button">Editar Perfil</a>
-                </div>
-
+                        <a href="editarPerfil.php" class="button editar-button">Editar Perfil</a>
+                    </div>
                 </div>
             </div>
 
@@ -139,54 +141,51 @@ HTML;
         }
 
         $html .= <<<HTML
-    </div> <!-- productos-container -->
+            </div> <!-- productos-container -->
 
-    <h2 style="text-align: center;">Mis Valoraciones</h2>
-
+            <h2 style="text-align: center;">Mis Valoraciones</h2>
 HTML;
 
-    // Mostrar media de valoraciones
-    $mediaFormateada = number_format($mediaValoraciones, 1);
-    $html .= <<<HTML
-    <div style="text-align: center; margin-bottom: 30px;">
-        <p style="font-size: 18px; font-weight: bold;">Media de valoraciones: {$mediaFormateada} / 5 ⭐</p>
-    </div>
-HTML;
-
-    // Ahora sí empieza las tarjetas de valoraciones
-    $html .= <<<HTML
-    <div class="productos-container">
-HTML;
-
-    if (empty($valoraciones)) {
+        // Mostrar media de valoraciones
+        $mediaFormateada = number_format($mediaValoraciones, 1);
         $html .= <<<HTML
-        <div class="product-card">
-            <div class="product-details">
-                <p>No has recibido ninguna valoración todavía.</p>
-            </div>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p style="font-size: 18px; font-weight: bold;">Media de valoraciones: {$mediaFormateada} / 5 ⭐</p>
         </div>
 HTML;
-    } else {
-        foreach ($valoraciones as $valoracion) {
-            $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
-            $comentario = htmlspecialchars($valoracion->getComentario());
-            $emailComprador = htmlspecialchars($valoracion->emailComprador);
 
+        // Tarjetas de valoraciones
+        $html .= <<<HTML
+        <div class="productos-container">
+HTML;
+
+        if (empty($valoraciones)) {
             $html .= <<<HTML
             <div class="product-card">
                 <div class="product-details">
-                    <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
-                    <p><strong>Comentario:</strong> {$comentario}</p>
-                    <p><strong>De:</strong> {$emailComprador}</p>
+                    <p>No has recibido ninguna valoración todavía.</p>
                 </div>
             </div>
 HTML;
+        } else {
+            foreach ($valoraciones as $valoracion) {
+                $puntuacion = htmlspecialchars($valoracion->getPuntuacion());
+                $comentario = htmlspecialchars($valoracion->getComentario());
+                $emailComprador = htmlspecialchars($valoracion->emailComprador);
+
+                $html .= <<<HTML
+                <div class="product-card">
+                    <div class="product-details">
+                        <p><strong>Puntuación:</strong> {$puntuacion} ⭐</p>
+                        <p><strong>Comentario:</strong> {$comentario}</p>
+                        <p><strong>De:</strong> {$emailComprador}</p>
+                    </div>
+                </div>
+HTML;
+            }
         }
-    }
 
-    $html .= "</div></div>"; // Cerrar productos-container y perfil-container
-
-
+        $html .= "</div></div>"; // cerrar productos-container y perfil-container
 
         return $html;
     }
@@ -211,3 +210,4 @@ HTML;
         return false;
     }
 }
+?>

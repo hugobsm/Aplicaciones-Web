@@ -11,8 +11,9 @@ class userDTO {
     private $genero;
     private $pais;
     private $telefono;
+    private $saldo;
 
-    public function __construct($id, $nombre, $email, $contrasena, $fotoPerfil = null, $tipo = 'usuario', $edad = null, $genero = null, $pais = null, $telefono = null) {
+    public function __construct($id, $nombre, $email, $contrasena, $fotoPerfil = null, $tipo = 'usuario', $edad = null, $genero = null, $pais = null, $telefono = null, $saldo = 0) {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->email = $email;
@@ -23,6 +24,7 @@ class userDTO {
         $this->genero = $genero;
         $this->pais = $pais;
         $this->telefono = $telefono;
+        $this->saldo = $saldo;
     }
 
     public function id() {
@@ -64,6 +66,13 @@ class userDTO {
     public function telefono() {
         return $this->telefono;
     }
-}
 
+    public function saldo() {
+        return $this->saldo;
+    }
+
+    public function setSaldo($saldo) {
+        $this->saldo = $saldo;
+    }
+}
 ?>
