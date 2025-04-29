@@ -50,6 +50,21 @@ class compraDAO extends baseDAO implements ICompra {
         }
         return $compras;
     }
+
+    public function obtenerTodasLasCompras() {
+        $conn = application::getInstance()->getConexionBd();
+        $query = "SELECT * FROM compras ORDER BY fecha_compra DESC";
+    
+        $resultado = $conn->query($query);
+        $compras = [];
+    
+        while ($fila = $resultado->fetch_assoc()) {
+            $compras[] = new CompraDTO(...array_values($fila));
+        }
+    
+        return $compras;
+    }
+    
 }
 
 ?>

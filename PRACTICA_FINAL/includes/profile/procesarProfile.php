@@ -57,6 +57,8 @@ class profileForm extends formBase
         <ul>
             <li><a href="includes/admin/crearUsuario.php">➕ Añadir Usuario</a></li>
             <li><a href="includes/admin/verUsuario.php">👀 Ver Usuarios</a></li>
+            <li><a href="includes/admin/verCompras.php">📄 Registro compras</a></li>
+
         </ul>
         </div>
         HTML;

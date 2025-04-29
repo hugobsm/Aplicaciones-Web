@@ -56,5 +56,12 @@ class compraAppService {
         $ICompraDAO = compraFactory::CreateCompra();
         return $ICompraDAO->obtenerComprasPorUsuario($id_usuario);
     }
+
+    
+    public function obtenerTodasLasCompras() {
+        $ICompraDAO = compraFactory::CreateCompra();
+        return $ICompraDAO->obtenerTodasLasCompras();
+    }
+    
 }
 ?>
