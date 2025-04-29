@@ -15,7 +15,7 @@ class verProductos
         $categoriasSeleccionadas = $_GET['categorias'] ?? [];
         $precioMaximo = isset($_GET['precio_rango']) ? floatval($_GET['precio_rango']) : null;
 
-        $productosPorPagina = 10;
+        $productosPorPagina = 12;
 
         if (!empty($categoriasSeleccionadas)) {
             $productos = $productoAppService->obtenerProductosPorCategorias($categoriasSeleccionadas);

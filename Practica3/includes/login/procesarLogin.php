@@ -56,13 +56,11 @@ EOF;
    
 
     $_SESSION["login"] = true;
-$_SESSION["id_usuario"] = $foundedUserDTO->id();
-$_SESSION["nombre"] = $foundedUserDTO->nombre();
-$_SESSION["email"] = $foundedUserDTO->email();
-$_SESSION["foto_perfil"] = $foundedUserDTO->fotoPerfil() ?? "uploads/default-avatar.png";
-$_SESSION["usuario"] = [
-    "tipo" => $foundedUserDTO->tipo()
-]; 
+    $_SESSION["id_usuario"] = $foundedUserDTO->id();
+    $_SESSION["nombre"] = $foundedUserDTO->nombre();
+    $_SESSION["email"] = $foundedUserDTO->email();
+    $_SESSION["foto_perfil"] = $foundedUserDTO->fotoPerfil() ?? "uploads/default-avatar.png"; 
+    $_SESSION["rol"] = $foundedUserDTO->rol(); // Almacena el rol (usuario/admin)
 
 
     header("Location: index.php");

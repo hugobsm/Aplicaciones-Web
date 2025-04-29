@@ -43,7 +43,7 @@ class userDAO extends baseDAO implements IUser
         $escEmail = $this->realEscapeString($email);
         $conn = application::getInstance()->getConexionBd();
     
-        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo, edad, genero, pais, telefono FROM usuarios WHERE email = ?";
+        $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo, edad, genero, pais, telefono, saldo FROM usuarios WHERE email = ?";
 
         error_log("Ejecutando consulta: " . $query);
     
@@ -59,12 +59,12 @@ class userDAO extends baseDAO implements IUser
             return false;
         }
     
-        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
+        $stmt->bind_result($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono, $saldo);
 
     
         if ($stmt->fetch()) {
             error_log("Usuario encontrado: ID = " . $id_usuario);
-            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
+            $user = new userDTO($id_usuario, $nombre, $email, $contrasena, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono, $saldo);
             $stmt->close();
             return $user;
         } else {
@@ -188,7 +188,7 @@ class userDAO extends baseDAO implements IUser
     public function getUserById($id_usuario)
     {
         $conn = application::getInstance()->getConexionBd();
-        $query = "SELECT id_usuario, nombre, email, foto_perfil, tipo, edad, genero, pais, telefono FROM usuarios WHERE id_usuario = ?";
+        $query = "SELECT id_usuario, nombre, email, foto_perfil, tipo, edad, genero, pais, telefono, saldo FROM usuarios WHERE id_usuario = ?";
 
         $stmt = $conn->prepare($query);
         if (!$stmt) {
@@ -198,13 +198,14 @@ class userDAO extends baseDAO implements IUser
     
         $stmt->bind_param("i", $id_usuario);
         $stmt->execute();
-        $stmt->bind_result($id, $nombre, $email, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
+        $stmt->bind_result($id, $nombre, $email, $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono, $saldo);
 
     
         if ($stmt->fetch()) {
             $stmt->close();
             error_log("✅ Usuario encontrado: $nombre");
-            return new userDTO($id, $nombre, $email, "", $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono);
+            return new userDTO($id, $nombre, $email, "", $fotoPerfil, $tipo, $edad, $genero, $pais, $telefono, $saldo);
+
 
         }
     
@@ -256,7 +257,7 @@ public function delete(int $id)
 public function findAll()
 {
     $conn = application::getInstance()->getConexionBd();
-    $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo FROM usuarios";
+    $query = "SELECT id_usuario, nombre, email, contrasena, foto_perfil, tipo, saldo FROM usuarios";
     
     $result = $conn->query($query);
     $usuarios = [];
@@ -268,7 +269,8 @@ public function findAll()
             $row['email'],
             $row['contrasena'],
             $row['foto_perfil'],
-            $row['tipo']
+            $row['tipo'],
+            $row['saldo']
         );
     }
 
@@ -282,6 +284,22 @@ public function actualizarPerfil($id_usuario, $nombre, $email, $edad, $genero, $
 
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ssisssi", $nombre, $email, $edad, $genero, $pais, $telefono, $id_usuario);
+    return $stmt->execute();
+}
+
+public function sumarSaldo($id_usuario, $cantidad) {
+    $conn = application::getInstance()->getConexionBd();
+    $query = "UPDATE usuarios SET saldo = saldo + ? WHERE id_usuario = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("di", $cantidad, $id_usuario);
+    return $stmt->execute();
+}
+
+public function restarSaldo($id_usuario, $cantidad) {
+    $conn = application::getInstance()->getConexionBd();
+    $query = "UPDATE usuarios SET saldo = saldo - ? WHERE id_usuario = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("di", $cantidad, $id_usuario);
     return $stmt->execute();
 }
 

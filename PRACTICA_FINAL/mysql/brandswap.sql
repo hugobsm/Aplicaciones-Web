@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-04-2025 a las 19:26:54
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Tiempo de generación: 28-04-2025 a las 12:23:28
+-- Versión del servidor: 10.4.28-MariaDB
+-- Versión de PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -114,7 +114,17 @@ CREATE TABLE `productos` (
 
 INSERT INTO `productos` (`id_producto`, `id_usuario`, `nombre_producto`, `descripcion`, `precio`, `fecha_publicacion`, `imagen`) VALUES
 (131, 4, 'camiseta', 'Unisex, camisetas, verde, M', 15, '2025-04-25 11:32:13.000000', 'uploads/img_680b72bda4ffd.png'),
-(136, 7, 'camiseta', 'Hombre, rojo', 25, '2025-04-27 11:10:22.000000', 'uploads/img_680e109e4cf78.png');
+(136, 7, 'camiseta', 'Hombre, rojo', 25, '2025-04-27 11:10:22.000000', 'uploads/img_680e109e4cf78.png'),
+(137, 26, 'camiseta', 'camiseta amarilla', 20, '2025-04-27 23:33:57.000000', 'uploads/img_680ebee5e482c.jpeg'),
+(138, 26, 'camiseta', 'camiseta naranja', 12, '2025-04-27 23:34:24.000000', 'uploads/img_680ebf0090dd9.jpeg'),
+(139, 26, 'camiseta', 'camiseta morada', 11, '2025-04-27 23:35:04.000000', 'uploads/img_680ebf2816d7a.jpeg'),
+(140, 26, 'camiseta', 'camiseta azul', 22, '2025-04-27 23:35:47.000000', 'uploads/img_680ebf5314b14.jpeg'),
+(141, 26, 'camiseta', 'camiseta rosa', 13, '2025-04-27 23:36:23.000000', 'uploads/img_680ebf7712de1.jpeg'),
+(142, 26, 'camiseta', 'camiseta negra', 11, '2025-04-27 23:37:06.000000', 'uploads/img_680ebfa2d0786.jpeg'),
+(143, 26, 'camiseta', 'camiseta lila', 22, '2025-04-27 23:41:29.000000', 'uploads/img_680ec0a97e060.jpeg'),
+(144, 26, 'camiseta', 'camiseta marron', 20, '2025-04-27 23:42:11.000000', 'uploads/img_680ec0d35a184.jpeg'),
+(145, 26, 'camiseta', 'camiseta blanca', 12, '2025-04-27 23:42:58.000000', 'uploads/img_680ec1021862c.jpeg'),
+(146, 26, 'camiseta', 'camiseta blanca hombre', 21, '2025-04-27 23:43:20.000000', 'uploads/img_680ec1189de40.jpeg');
 
 -- --------------------------------------------------------
 
@@ -137,7 +147,47 @@ INSERT INTO `producto_categoria` (`id_producto`, `id_categoria`) VALUES
 (131, 15),
 (131, 27),
 (136, 2),
-(136, 19);
+(136, 19),
+(137, 4),
+(137, 12),
+(137, 17),
+(137, 25),
+(138, 1),
+(138, 12),
+(138, 18),
+(138, 26),
+(139, 4),
+(139, 12),
+(139, 21),
+(139, 29),
+(140, 4),
+(140, 12),
+(140, 20),
+(140, 28),
+(141, 2),
+(141, 12),
+(141, 16),
+(141, 27),
+(142, 1),
+(142, 12),
+(142, 14),
+(142, 25),
+(143, 2),
+(143, 12),
+(143, 22),
+(143, 27),
+(144, 1),
+(144, 12),
+(144, 23),
+(144, 25),
+(145, 1),
+(145, 12),
+(145, 24),
+(145, 25),
+(146, 2),
+(146, 12),
+(146, 24),
+(146, 28);
 
 -- --------------------------------------------------------
 
@@ -168,7 +218,8 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre`, `email`, `contrasena`, `fecha_re
 (7, 'juan', 'juan@gmail.com', '$2y$10$gsNAScxxKnDclvZGxoNwVeicRVAuT7VOJP04XfIuyaKjqpUuMJgMK', '2025-03-06 12:12:47', 'uploads/perfil_67c9832f83cd8.jpg', 'user', 30, 'México', 'Hombre', '+525511223344'),
 (15, 'lucia', 'lucai@gmail.com', '$2y$10$j.9JzpuBYGdKpgGtGtta7.P/HCLIo5FGNgRQESBhzp8QEXBNs0PN2', '2025-04-23 18:47:13', 'uploads/perfil_68091990eecc5.jpg', 'admin', 27, 'Argentina', 'Mujer', '+541131112233'),
 (17, 'carlos', 'carlos@gmail.com', '$2y$10$WFs1VRcZHQdThfiYxBwDH.hx6FfOPvu9L3V19eqoa8lrn8UodV3yu', '2025-04-24 20:45:53', 'uploads/default-avatar.png', 'usuario', NULL, NULL, NULL, NULL),
-(25, 'laura', 'laura@gmail.com', '$2y$10$okVoQ6fzpu6/bfk9xkkEVeUldGzaX.BrgGrREePv1wGeodAYTZk9G', '2025-04-27 18:51:13', 'uploads/default-avatar.png', 'usuario', 25, 'España', 'Mujer', '+34678 456 453');
+(25, 'laura', 'laura@gmail.com', '$2y$10$okVoQ6fzpu6/bfk9xkkEVeUldGzaX.BrgGrREePv1wGeodAYTZk9G', '2025-04-27 18:51:13', 'uploads/default-avatar.png', 'usuario', 25, 'España', 'Mujer', '+34678 456 453'),
+(26, 'Mario', 'Mario@ucm.es', '$2y$10$Sg0MfHmdgJ8tbYdo3UJwcOwuOIh6NVC14UWJ5wgrUSBiTS6NzeuVm', '2025-04-28 00:31:53', 'uploads/perfil_680eb05971924.jpg', 'usuario', 22, 'España', 'Hombre', '+34633921795');
 
 -- --------------------------------------------------------
 
@@ -261,13 +312,13 @@ ALTER TABLE `compras`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id_producto` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_usuario` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT de la tabla `valoraciones`

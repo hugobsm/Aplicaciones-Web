@@ -63,6 +63,17 @@ class userAppService
     return $IUserDAO->actualizarPerfil($id_usuario, $nombre, $email, $edad, $genero, $pais, $telefono);
     }
 
+    public function sumarSaldo($id_usuario, $cantidad)
+{
+    $IUserDAO = userFactory::CreateUser();
+    return $IUserDAO->sumarSaldo($id_usuario, $cantidad);
+}
+
+public function restarSaldo($id_usuario, $cantidad)
+{
+    $IUserDAO = userFactory::CreateUser();
+    return $IUserDAO->restarSaldo($id_usuario, $cantidad);
+}
 
 
 
