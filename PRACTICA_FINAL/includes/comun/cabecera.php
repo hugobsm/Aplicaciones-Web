@@ -25,7 +25,9 @@ function mostrarSaludo()
             </div>
 
             <div class="logo">
-            <img src="<?php echo RUTA_APP; ?>Imagenes Marca/logo.png" alt="Logo">
+            <a href="<?php echo RUTA_APP; ?>index.php">
+            <img src="<?php echo RUTA_APP; ?>/Imagenes Marca/logo.png" alt="Logo">
+            </a>
             </div>
             <div class="right-menu">
 
