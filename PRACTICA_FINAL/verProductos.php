@@ -83,7 +83,7 @@ $filtros = <<<HTML
                     </div>
                 </div>
 
-                <!-- 🆕 Campo de búsqueda -->
+                <!-- Campo de búsqueda -->
                 <div class="categoria">
                     <span>Búsqueda ▾</span>
                     <div class="subcategoria">

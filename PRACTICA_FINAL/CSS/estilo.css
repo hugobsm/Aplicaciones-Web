@@ -343,6 +343,7 @@ main {
 }
 
 .product-card {
+    
     background: #fff;
     padding: 15px;
     border-radius: 10px;
@@ -1339,4 +1340,22 @@ button[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.ver-mas-button {
+    display: block;
+    margin: 10px auto 0 auto;
+    background-color: #000;
+    color: white;
+    padding: 10px 16px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.ver-mas-button:hover {
+    background-color: #0056b3;
 }
