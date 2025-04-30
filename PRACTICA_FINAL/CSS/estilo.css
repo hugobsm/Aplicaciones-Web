@@ -258,12 +258,7 @@ body {
     margin-bottom: 15px;
 }
 
-.form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input, 
+/*.form-group input, 
 .form-group textarea {
     width: 100%;
     padding: 10px;
@@ -275,7 +270,7 @@ body {
 .form-group textarea {
     height: 100px;
     resize: none;
-}
+}*/
 
 button {
     width: 100%;
@@ -330,6 +325,7 @@ main {
 
 .perfil-datos {
     text-align: left;
+    font-size: 16px;
 }
 
 .perfil-datos p {
@@ -643,22 +639,7 @@ main {
 .button:hover {
     background-color: #218838 !important; /* Un verde más oscuro al pasar el mouse */
 }
-.perfil-info {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Espaciado entre imagen y texto */
-    background: #f9f9f9;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 0 auto; /* Centrar */
-}
 
-
-.perfil-datos {
-    font-size: 16px;
-}
 
 .perfil-datos p {
     margin: 5px 0;
@@ -953,16 +934,8 @@ main {
     background-color: #218838;
 }
 
-.button-cancelar {
-    display: block;
-    text-align: center;
-    margin-top: 15px;
-    color: #888;
-    font-size: 14px;
-    text-decoration: none;
-}
-
 .button-cancelar:hover {
+    color: #444;
     text-decoration: underline;
 }
 
@@ -1231,12 +1204,6 @@ main {
 }
 
 
-
-
-
-
-
-
 .editar-producto-container {
     max-width: 600px;
     margin: 50px auto;
@@ -1272,6 +1239,7 @@ main {
 }
 
 .form-group input,
+.form-group select,
 .form-group textarea {
     width: 100%;
     padding: 10px;
@@ -1310,15 +1278,6 @@ button[type="submit"]:hover {
     font-size: 14px;
 }
 
-.button-cancelar:hover {
-    color: #444;
-    text-decoration: underline;
-}
-
-
-
-
-
 .editar-perfil-container {
     max-width: 600px;
     margin: 50px auto;
@@ -1339,61 +1298,6 @@ button[type="submit"]:hover {
     flex-direction: column;
     gap: 20px;
 }
-
-.form-group {
-    background-color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-button[type="submit"] {
-    background-color: #000;
-    color: white;
-    padding: 14px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #333;
-}
-
-.button-cancelar {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    color: #777;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.button-cancelar:hover {
-    color: #444;
-    text-decoration: underline;
-}
-
-
-
 
 .registrar-usuario-container {
     max-width: 600px;
@@ -1416,60 +1320,6 @@ button[type="submit"]:hover {
     gap: 20px;
 }
 
-.form-group {
-    background-color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-button[type="submit"] {
-    background-color: #000;
-    color: white;
-    padding: 14px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #333;
-}
-
-.button-cancelar {
-    display: block;
-    text-align: center;
-    margin-top: 10px;
-    color: #777;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.button-cancelar:hover {
-    color: #444;
-    text-decoration: underline;
-}
-
-
-
 .login-container {
     max-width: 600px;
     margin: 50px auto;
@@ -1489,41 +1339,4 @@ button[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-.form-group {
-    background-color: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-button[type="submit"] {
-    background-color: #000;
-    color: white;
-    padding: 14px;
-    font-size: 16px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-button[type="submit"]:hover {
-    background-color: #333;
 }
