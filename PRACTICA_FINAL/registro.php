@@ -9,7 +9,7 @@ $form = new registerForm();
 $htmlFormRegister = $form->Manage(); // Renderiza el formulario
 
 $contenidoPrincipal = <<<EOS
-<h1>Registro de usuario</h1>
+
 $htmlFormRegister
 EOS;
 

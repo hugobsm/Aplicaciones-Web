@@ -9,7 +9,7 @@ $form = new loginForm();
 $htmlFormLogin = $form->Manage(); // Renderiza el formulario
 
 $contenidoPrincipal = <<<EOS
-<h1>Login de usuario</h1>
+
 $htmlFormLogin
 EOS;
 

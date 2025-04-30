@@ -19,13 +19,24 @@ class loginForm extends formBase
         }
 
         $html = <<<EOF
-        <fieldset>
-            <legend>Usuario y contraseña</legend>
-            <p><label>Email:</label> <input type="email" name="nombreUsuario" value="$nombreUsuario" required/></p>
-            <p><label>Password:</label> <input type="password" name="password" required/></p>
+    <div class="login-container">
+        <h1>Usuario y Contraseña</h1>
+        <form method="POST" class="login-form">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="nombreUsuario" value="{$nombreUsuario}" required/>
+            </div>
+
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" name="password" required/>
+            </div>
+
             <button type="submit" name="login">Entrar</button>
-        </fieldset>
+        </form>
+    </div>
 EOF;
+
         return $html;
     }
     protected function Process($datos)
