@@ -12,7 +12,9 @@ define('BD_USER', 'root'); // Ajusta según tu configuración
 define('BD_PASS', '');
 
 define('RAIZ_APP',__DIR__);
-define('RUTA_APP', '/Aplicaciones-Web/PRACTICA_FINAL/');
+//define('RUTA_APP', '/Aplicaciones-Web/PRACTICA_FINAL/');
+define('RUTA_APP', rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') . '/');
+
 define('RUTA_IMGS', RUTA_APP.'/uploads');
 define('RUTA_CSS',  RUTA_APP.'/CSS');
 //define('RUTA_JS',  RUTA_APP.'/js/');
