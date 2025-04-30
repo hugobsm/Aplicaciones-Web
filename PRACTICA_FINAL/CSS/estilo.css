@@ -1151,7 +1151,10 @@ main {
 .lista-usuarios-container tr:hover {
     background-color: #f1f1f1;
 }
-
+.carrusel-contenedor {
+    width: 100vw;
+    overflow-x: hidden; /* Solo oculta el desplazamiento horizontal */
+}
 /* Estilos para el carrusel */
 .slick-carousel {
     margin-top: 20px;

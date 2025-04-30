@@ -47,8 +47,10 @@ $contenidoPrincipal = <<<EOS
 
 <section class="productos">
     <h2>Últimas Novedades</h2>
-    <div class="carousel slick-carousel">
-        {$productosHTML}
+    <div class="carrusel-contenedor">
+        <div class="slick-carousel">
+            {$productosHTML}
+        </div>
     </div>
 </section>
 
