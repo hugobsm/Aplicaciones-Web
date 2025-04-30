@@ -24,8 +24,6 @@ class comprarProductoForm extends formBase {
                 <p><label>Método de Pago:</label> 
                     <select name="metodo_pago" required>
                         <option value="Tarjeta">Tarjeta de Crédito</option>
-                        <option value="PayPal">PayPal</option>
-                        <option value="Transferencia">Transferencia Bancaria</option>
                         <option value="Saldo">Saldo</option> <!-- ✅ Añadido -->
                     </select>
                 </p>
