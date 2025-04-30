@@ -1151,3 +1151,81 @@ main {
 .lista-usuarios-container tr:hover {
     background-color: #f1f1f1;
 }
+
+/* Estilos para el carrusel */
+.slick-carousel {
+    margin-top: 20px;
+}
+
+/* Estilos para cada producto en el carrusel */
+.producto-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Centra el contenido verticalmente */
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 100%; /* Asegura que los productos ocupen todo el alto del carrusel */
+    position: relative;
+}
+
+/* Imagen del producto */
+.producto-imagen {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: 200px; /* Tamaño fijo para la imagen */
+    object-fit: contain; /* Hace que la imagen mantenga su proporción sin distorsionarse */
+    margin-bottom: 15px; /* Espacio entre la imagen y el nombre del producto */
+}
+
+/* Nombre del producto */
+.producto-nombre {
+    font-size: 1.2em;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Botón de comprar */
+.producto-boton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.producto-boton:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para las flechas de navegación */
+.slick-prev, .slick-next {
+    font-size: 30px;
+    color: #007bff;
+    z-index: 1;
+}
+
+.slick-prev:hover, .slick-next:hover {
+    color: #0056b3;
+}
+
+/* Estilos para los puntos de navegación */
+.slick-dots {
+    bottom: -30px;
+}
+
+.slick-dots li button:before {
+    color: #007bff;
+}
+
+.slick-dots li.slick-active button:before {
+    color: #0056b3;
+}
+
+
+

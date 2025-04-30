@@ -9,7 +9,7 @@ class ProductoDTO {
     private $imagen;
     private $fecha_publicacion;
 
-    public function __construct($id, $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion) {
+    public function __construct($id, $id_usuario, $nombre, $descripcion, $precio, $fecha_publicacion, $imagen) {
         $this->id = $id;
         $this->id_usuario = $id_usuario;
         $this->nombre = $nombre;

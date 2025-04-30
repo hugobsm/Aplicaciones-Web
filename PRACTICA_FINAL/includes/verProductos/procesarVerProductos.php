@@ -165,13 +165,13 @@ class verProductos
             $html .= <<<HTML
             <div class="product-card">
                 <a href="verProducto.php?id={$idProducto}">
-                    <img class="product-image" src="{$fecha}" alt="Imagen del producto">
+                    <img class="product-image" src="{$imagen}" alt="Imagen del producto">
                 </a>
                 <div class="product-info">
                     <p class="product-name"><strong>{$nombre}</strong></p>
                     <p class="product-description">{$descripcion}</p>
                     <p class="product-price"><strong>Precio:</strong> \${$precio}</p>
-                    <p class="product-date"><strong>Publicado:</strong> {$imagen}</p>
+                    <p class="product-date"><strong>Publicado:</strong> {$fecha}</p>
                     <a href="verProducto.php?id={$idProducto}" class="ver-detalle">Ver más</a>
                 </div>
             </div>

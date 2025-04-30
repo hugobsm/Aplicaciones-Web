@@ -20,10 +20,10 @@ class productoDAO extends baseDAO implements IProducto
     $nombre = $productoDTO->getNombre();
     $descripcion = $productoDTO->getDescripcion();
     $precio = $productoDTO->getPrecio();
-    $imagen = $productoDTO->getImagen();
     $fecha_publicacion = $productoDTO->getFechaPublicacion();
+    $imagen = $productoDTO->getImagen();
 
-    $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $imagen, $fecha_publicacion);
+    $stmt->bind_param("issdss", $id_usuario, $nombre, $descripcion, $precio, $fecha_publicacion, $imagen);
 
     if ($stmt->execute()) {
         $nuevoId = $conn->insert_id; // ✅ Captura del ID generado
@@ -35,8 +35,8 @@ class productoDAO extends baseDAO implements IProducto
             $nombre,
             $descripcion,
             $precio,
-            $imagen,
-            $fecha_publicacion
+            $fecha_publicacion,
+            $imagen
         );
     } else {
         return false;
@@ -70,8 +70,8 @@ class productoDAO extends baseDAO implements IProducto
                 $fila['nombre_producto'],
                 $fila['descripcion'],
                 $fila['precio'],
-                $fila['imagen'],
-                $fila['fecha_publicacion']
+                $fila['fecha_publicacion'],
+                $fila['imagen']
             );
         } else {
 
