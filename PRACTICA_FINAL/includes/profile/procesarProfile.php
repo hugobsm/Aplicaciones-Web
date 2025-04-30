@@ -77,9 +77,10 @@ class profileForm extends formBase
                     <p><strong>Género:</strong> {$genero}</p>
                     <p><strong>País:</strong> {$pais}</p>
                     <p><strong>Teléfono:</strong> {$telefono}</p>
-                    <p><strong>Saldo:</strong> {$saldo} €</p> <!-- 🔥 Mostrar saldo aquí -->
+                    <p><strong>Saldo:</strong> {$saldo} €</p>
                     <div class="editar-container">
                         <a href="editarPerfil.php" class="button editar-button">Editar Perfil</a>
+                        <a href="anadirSaldo.php" class="button editar-button">Añadir saldo</a>
                     </div>
                 </div>
             </div>
