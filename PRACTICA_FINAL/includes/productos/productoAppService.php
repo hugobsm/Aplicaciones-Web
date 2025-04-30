@@ -86,6 +86,13 @@ public function obtenerProductosPaginados($pagina, $id_usuario_actual = null) {
     return $IProductoDAO->obtenerProductosPaginados($offset, $limite, $id_usuario_actual);
 }
 
+
+public function actualizarProducto($productoDTO)
+{
+    $IProductoDAO = productoFactory::CreateProducto();
+    return $IProductoDAO->actualizarProducto($productoDTO);
+}
+
 }
 
 ?>
