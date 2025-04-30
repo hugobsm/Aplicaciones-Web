@@ -17,6 +17,7 @@ foreach ($ultimosProductos as $producto) {
 
     $nombre = htmlspecialchars($producto->getNombre());
     $imagen = htmlspecialchars($producto->getImagen());
+    $precio = htmlspecialchars($producto->getPrecio());
 
     // Etiqueta de la imagen con verificación de formato
     $imgTag = str_starts_with($imagen, 'uploads/')
@@ -25,7 +26,7 @@ foreach ($ultimosProductos as $producto) {
 
     // Botón dinámico según login
     $botonComprar = (isset($_SESSION['login']) && $_SESSION['login'] === true)
-        ? '<a href="comprarProducto.php?id=' . htmlspecialchars($producto->getId()) . '" class="button producto-boton">Comprar</a>'
+        ? '<a href="comprarProducto.php?id=' . htmlspecialchars($producto->getId()) . '" class="button producto-boton">Comprar ' . $precio . '€</a>'
         : '<a href="login.php" class="button producto-boton">Inicia sesión para comprar</a>';
 
     $productosHTML .= <<<HTML
