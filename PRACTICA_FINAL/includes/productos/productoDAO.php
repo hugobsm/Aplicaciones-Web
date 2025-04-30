@@ -2,6 +2,7 @@
 
 require_once("IProducto.php");
 require_once("productoDTO.php");
+require_once("includes/application.php");
 require_once(__DIR__ . "/../comun/baseDAO.php");
 
 class productoDAO extends baseDAO implements IProducto
@@ -98,17 +99,25 @@ class productoDAO extends baseDAO implements IProducto
         return $productos;
     }
 
-    /*public function obtenerTodosLosProductos()
-    {
-        $sql = "SELECT * FROM productos ORDER BY fecha_publicacion DESC";
-        $resultado = $this->ExecuteQuery($sql);
-    
-        $productos = [];
-        foreach ($resultado as $fila) {
-            $productos[] = new ProductoDTO(...array_values($fila));
-        }
-        return $productos;
-    }*/
+    public function borrarPorId($id)
+{
+    $conn = Application::getInstance()->getConexionBd();
+    $stmt = $conn->prepare("DELETE FROM productos WHERE id_producto = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
+}
+
+public function obtenerPorId($id)
+{
+    $conn = Application::getInstance()->getConexionBd();
+    $stmt = $conn->prepare("SELECT * FROM productos WHERE id_producto = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    return $resultado->fetch_assoc(); // Devuelve array asociativo
+}
+
+
     public function obtenerTodosLosProductos($id_usuario_actual = null)
     {
     $conn = application::getInstance()->getConexionBd();
@@ -220,6 +229,15 @@ class productoDAO extends baseDAO implements IProducto
         }
     
         return $valoraciones;
+    }
+
+
+    public function procesarEliminarProducto($idProducto) {
+        $conn = application::getConexionBd();
+        $stmt = $conn->prepare("DELETE FROM productos WHERE id = ?");
+        $stmt->bind_param("i", $idProducto);
+        $stmt->execute();
+        $stmt->close();
     }
     
 

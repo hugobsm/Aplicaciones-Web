@@ -75,6 +75,17 @@ public function restarSaldo($id_usuario, $cantidad)
     return $IUserDAO->restarSaldo($id_usuario, $cantidad);
 }
 
+public function eliminarProducto($idProducto)
+{
+    $productoDAO = ProductoDAO::getInstance();
+    return $productoDAO->borrarPorId($idProducto);
+}
+
+public function getProductoPorId($idProducto)
+{
+    $productoDAO = ProductoDAO::getInstance();
+    return $productoDAO->obtenerPorId($idProducto);
+}
 
 
 }

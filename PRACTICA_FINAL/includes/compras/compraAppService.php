@@ -57,6 +57,33 @@ class compraAppService {
         return $ICompraDAO->obtenerComprasPorUsuario($id_usuario);
     }
 
+    public function crearCompraPendiente($id_usuario, $id_producto, $precio, $metodo) {
+        $ICompraDAO = compraFactory::CreateCompra();
+    
+        // Obtener el vendedor desde el producto
+        require_once(__DIR__ . '/../productos/productoAppService.php');
+        $productoService = productoAppService::GetSingleton();
+        $producto = $productoService->obtenerProductoPorId($id_producto);
+        $id_vendedor = $producto ? $producto->getIdUsuario() : null;
+    
+        // Validación básica
+        if (!$id_vendedor) {
+            throw new Exception("No se pudo obtener el vendedor del producto.");
+        }
+    
+        $fecha_compra = date('Y-m-d H:i:s');
+    
+        // Crear el DTO correctamente con setters
+        $compra = new CompraDTO(null, $id_usuario, $id_producto, $fecha_compra, $metodo, $id_vendedor);
+        /*$compra->setIdUsuario((int)$id_usuario);
+        $compra->setIdProducto((int)$id_producto);
+        $compra->setFechaCompra($fecha_compra);
+        $compra->setMetodoPago($metodo);
+        $compra->setIdVendedor((int)$id_vendedor);
+    */
+        return $ICompraDAO->insertarCompraYDevolverId($compra);
+    }
+
     
     public function obtenerTodasLasCompras() {
         $ICompraDAO = compraFactory::CreateCompra();

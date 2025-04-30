@@ -114,7 +114,7 @@ HTML;
                     </div>
                     <div class="product-buttons">
                         <a href="editarproducto.php?id={$producto['id_producto']}" class="button edit-button">Editar</a>
-                        <a href="eliminarproducto.php?id={$producto['id_producto']}" class="button delete-button">Eliminar</a>
+                        <a href="eliminarProducto.php?id={$producto['id_producto']}" class="button delete-button">Eliminar</a>
                     </div>
                 </div>
 HTML;
