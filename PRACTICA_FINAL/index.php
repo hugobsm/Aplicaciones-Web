@@ -26,7 +26,7 @@ foreach ($ultimosProductos as $producto) {
 
     // Botón dinámico según login
     $botonComprar = (isset($_SESSION['login']) && $_SESSION['login'] === true)
-        ? '<a href="comprarProducto.php?id=' . htmlspecialchars($producto->getId()) . '" class="button producto-boton">Comprar ' . $precio . '€</a>'
+        ? '<a href="verProducto.php?id=' . htmlspecialchars($producto->getId()) . '" class="button producto-boton">Comprar ' . $precio . '€</a>'
         : '<a href="login.php" class="button producto-boton">Inicia sesión para comprar</a>';
 
     $productosHTML .= <<<HTML
