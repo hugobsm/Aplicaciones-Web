@@ -31,7 +31,7 @@ class editarProductoForm extends formBase
         $precio = htmlspecialchars($producto->getPrecio());
         $imagen = htmlspecialchars($producto->getImagen());
 
-        $html = <<<HTML
+        /*$html = <<<HTML
         <div class="editar-producto-container">
             <h1>Editar Producto</h1>
             <form method="POST" class="editar-producto-form">
@@ -53,7 +53,65 @@ class editarProductoForm extends formBase
                 <a href="profile.php" class="button-cancelar">Cancelar</a>
             </form>
         </div>
+HTML;*/
+
+        /*$html = <<<HTML
+        <div class="editar-producto-container">
+            <h1>Editar Producto</h1>
+            <form method="POST" class="editar-producto-form">
+                <input type="hidden" name="id_producto" value="{$id_producto}">
+                
+                <label>Nombre:</label>
+                <input type="text" name="nombre" value="{$nombre}" required>
+
+                <label>Descripción:</label>
+                <textarea name="descripcion" required>{$descripcion}</textarea>
+
+                <label>Precio (€):</label>
+                <input type="number" name="precio" step="0.01" value="{$precio}" required>
+
+                <label>Imagen (URL):</label>
+                <input type="text" name="imagen" value="{$imagen}">
+
+                <button type="submit" name="editar">Guardar Cambios</button>
+                <a href="profile.php" class="button-cancelar">Cancelar</a>
+            </form>
+        </div>
+HTML;*/
+
+
+        $html = <<<HTML
+        <div class="editar-producto-container">
+            <h1>Editar Producto</h1>
+            <form method="POST" class="editar-producto-form">
+                <input type="hidden" name="id_producto" value="{$id_producto}">
+                
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <input type="text" name="nombre" value="{$nombre}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea name="descripcion" required>{$descripcion}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Precio (€):</label>
+                    <input type="number" name="precio" step="0.01" value="{$precio}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Imagen (URL):</label>
+                    <input type="text" name="imagen" value="{$imagen}">
+                </div>
+
+                <button type="submit" name="editar">Guardar Cambios</button>
+                <a href="profile.php" class="button-cancelar">Cancelar</a>
+            </form>
+        </div>
 HTML;
+
 
         return $html;
     }
