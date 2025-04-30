@@ -36,27 +36,41 @@ class editarPerfilForm extends formBase
     <div class="editar-perfil-container">
         <h1>Editar Mi Perfil</h1>
         <form method="POST" class="editar-perfil-form">
-            <label>Nombre:</label>
-            <input type="text" name="nombreUsuario" value="$nombre" required>
+            <input type="hidden" name="id_usuario" value="{$id_usuario}">
 
-            <label>Email:</label>
-            <input type="email" name="email" value="$email" required>
+            <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" name="nombreUsuario" value="{$nombre}" required>
+            </div>
 
-            <label>Edad:</label>
-            <input type="number" name="edad" value="$edad" min="0" max="120">
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" name="email" value="{$email}" required>
+            </div>
 
-            <label>Género:</label>
-            <select name="genero" required>
-                <option value="Mujer" {$this->selected($genero, 'Mujer')}>Mujer</option>
-                <option value="Hombre" {$this->selected($genero, 'Hombre')}>Hombre</option>
-                <option value="Otro" {$this->selected($genero, 'Otro')}>Otro</option>
-            </select>
+            <div class="form-group">
+                <label>Edad:</label>
+                <input type="number" name="edad" value="{$edad}" min="0" max="120">
+            </div>
 
-            <label>País:</label>
-            <input type="text" name="pais" value="$pais" required>
+            <div class="form-group">
+                <label>Género:</label>
+                <select name="genero" required>
+                    <option value="Mujer" {$this->selected($genero, 'Mujer')}>Mujer</option>
+                    <option value="Hombre" {$this->selected($genero, 'Hombre')}>Hombre</option>
+                    <option value="Otro" {$this->selected($genero, 'Otro')}>Otro</option>
+                </select>
+            </div>
 
-            <label>Teléfono:</label>
-            <input type="text" name="telefono" value="$telefono">
+            <div class="form-group">
+                <label>País:</label>
+                <input type="text" name="pais" value="{$pais}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="text" name="telefono" value="{$telefono}">
+            </div>
 
             <button type="submit" name="editar">Guardar Cambios</button>
             <a href="profile.php" class="button-cancelar">Cancelar</a>
