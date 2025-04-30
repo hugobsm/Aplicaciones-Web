@@ -138,7 +138,8 @@ class verProductos
         // 🆕 FILTRO DE BÚSQUEDA
         if (!empty($busqueda)) {
             $productos = array_filter($productos, function($producto) use ($busqueda) {
-                return stripos($producto->getNombre(), $busqueda) !== false;
+                return stripos($producto->getNombre(), $busqueda) !== false || 
+                stripos($producto->getDescripcion(), $busqueda) !== false;
             });
         }
 
