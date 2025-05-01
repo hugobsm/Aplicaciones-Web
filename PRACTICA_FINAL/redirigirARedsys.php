@@ -1,24 +1,19 @@
-
 <?php
 session_start();
 require_once("includes/accionCompra/apiRedsys.php");
-$config = require("includes/accionCompra/redsysConfig.php");
+$config = require_once("includes/accionCompra/redsysConfig.php");
 
-if (!isset($_POST['importe']) || floatval($_POST['importe']) <= 0) {
-    die("Importe inválido");
-}
+$importe = isset($_POST['importe']) ? floatval($_POST['importe']) : 0;
+$importe_cents = intval($importe * 100);
 
-$importe = floatval($_POST['importe']);
-$importe_cents = intval(round($importe * 100)); // Euros a céntimos correctamente redondeado
-
-// Configuración Redsys
+// Valores de Redsys desde config
 $clave = $config['clave'];
 $fuc = $config['codigo_comercio'];
 $terminal = $config['terminal'];
 $moneda = $config['moneda'];
 
 $pedido = str_pad(rand(1, 99999999), 12, "0", STR_PAD_LEFT);
-$url_tienda = "http://localhost/PRACTICA_FINAL"; // Asegúrate de poner la ruta correcta
+$url_tienda = "http://localhost"; // ajusta si estás en producción
 
 $urlOK = $url_tienda . "/includes/compras/respuestaPago.php";
 $urlKO = $url_tienda . "/includes/compras/respuestaPago.php?error=1";
@@ -31,11 +26,10 @@ $redsys->setParameter("DS_MERCHANT_MERCHANTCODE", $fuc);
 $redsys->setParameter("DS_MERCHANT_CURRENCY", $moneda);
 $redsys->setParameter("DS_MERCHANT_TRANSACTIONTYPE", "0");
 $redsys->setParameter("DS_MERCHANT_TERMINAL", $terminal);
-$redsys->setParameter("DS_MERCHANT_MERCHANTURL", $urlOK); // Notificación servidor a servidor
+$redsys->setParameter("DS_MERCHANT_MERCHANTURL", $urlOK); // notificación
 $redsys->setParameter("DS_MERCHANT_URLOK", $urlOK);
 $redsys->setParameter("DS_MERCHANT_URLKO", $urlKO);
 
-// Crear parámetros y firma
 $params = $redsys->createMerchantParameters();
 $signature = $redsys->createMerchantSignature($clave);
 ?>
@@ -49,4 +43,3 @@ $signature = $redsys->createMerchantSignature($clave);
 <script>
     document.getElementById('form_pago').submit();
 </script>
-
