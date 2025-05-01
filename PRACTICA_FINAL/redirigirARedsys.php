@@ -1,23 +1,25 @@
 <?php
-session_start();
+
 require_once("includes/accionCompra/apiRedsys.php");
 $config = require_once("includes/accionCompra/redsysConfig.php");
 
+
 // ✅ VALIDACIÓN DEL IMPORTE
-if (!isset($_POST['importe'])) {
-    die("No se recibió el importe.");
-}
+if (isset($_POST['importe'])) {
+    $importe = floatval($_POST['importe']);
 
-$importe = floatval($_POST['importe']);
-if ($importe <= 0) {
-    die("Importe no válido.");
-}
+    if ($importe <= 0) {
+        die("Importe no válido.");
+    }
 
-// 🔐 GUARDAR EN SESIÓN PARA USO POSTERIOR
-$_SESSION['importe_pendiente'] = $importe;
+    $_SESSION['importe_recarga'] = $importe;
 
-// Redsys trabaja en céntimos
-$importeCents = intval($importe * 100);
+    // 💡 Aquí debes convertirlo a céntimos
+    $importe_cents = number_format($importe * 100, 0, '', '');
+
+    } else {
+        die("No se recibió el importe.");
+    }
 
 // 🔧 PARÁMETROS CONFIGURADOS
 $clave = $config['clave'];
@@ -33,7 +35,7 @@ $urlNotificacion = $config['url_notificacion'];
 
 // 🧠 INICIALIZAR API Redsys
 $redsys = new RedsysAPI();
-$redsys->setParameter("DS_MERCHANT_AMOUNT", $importeCents);
+$redsys->setParameter("DS_MERCHANT_AMOUNT", $importe_cents);
 $redsys->setParameter("DS_MERCHANT_ORDER", $pedido);
 $redsys->setParameter("DS_MERCHANT_MERCHANTCODE", $fuc);
 $redsys->setParameter("DS_MERCHANT_CURRENCY", $moneda);
@@ -43,8 +45,22 @@ $redsys->setParameter("DS_MERCHANT_MERCHANTURL", $urlNotificacion);
 $redsys->setParameter("DS_MERCHANT_URLOK", $urlOK);
 $redsys->setParameter("DS_MERCHANT_URLKO", $urlKO);
 
+
 $params = $redsys->createMerchantParameters();
 $signature = $redsys->createMerchantSignature($clave);
+
+
+
+// Solo para debug: inspeccionar los datos enviados
+echo "<pre>";
+echo "🧾 Datos enviados a Redsys:\n";
+print_r($redsys->decodeMerchantParameters($params));
+echo "\n🔐 Firma generada:\n";
+echo $signature;
+echo "</pre>";
+exit;
+
+ 
 ?>
 
 <!DOCTYPE html>
@@ -56,10 +72,10 @@ $signature = $redsys->createMerchantSignature($clave);
 <body>
     <p>Redirigiendo al sistema de pagos seguro...</p>
     <form id="form_pago" action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST">
-        <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
-        <input type="hidden" name="Ds_MerchantParameters" value="<?php echo $params; ?>" />
-        <input type="hidden" name="Ds_Signature" value="<?php echo $signature; ?>" />
-    </form>
+    <input type="hidden" name="Ds_SignatureVersion" value="HMAC_SHA256_V1" />
+    <input type="hidden" name="Ds_MerchantParameters" value="<?php echo htmlspecialchars($params); ?>" />
+    <input type="hidden" name="Ds_Signature" value="<?php echo htmlspecialchars($signature); ?>" />
+</form>
     <script>
         document.getElementById('form_pago').submit();
     </script>
