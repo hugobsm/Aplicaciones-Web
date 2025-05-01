@@ -80,7 +80,7 @@ class profileForm extends formBase
                     <p><strong>Saldo:</strong> {$saldo} €</p>
                     <div class="editar-container">
                         <a href="editarPerfil.php" class="button editar-button">Editar Perfil</a>
-                        <a href="anadirSaldo.php" class="button editar-button">Añadir saldo</a>
+                        <a href="formularioPago.php" class="button editar-button">Añadir saldo</a>
                     </div>
                 </div>
             </div>
