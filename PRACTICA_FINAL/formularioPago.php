@@ -22,14 +22,6 @@ session_start();
         <input type="number" step="0.01" name="importe" id="importe" required><br>
         <span id="errorImporte" class="error"></span><br>
 
-        <label for="tarjeta">Número de Tarjeta (simulado):</label>
-        <input type="text" name="tarjeta" id="tarjeta" maxlength="19" placeholder="1234 5678 9012 3456" required><br>
-        <span id="errorTarjeta" class="error"></span><br>
-
-        <label for="cvc">CVC (simulado):</label>
-        <input type="text" name="cvc" id="cvc" maxlength="3" placeholder="123" required><br>
-        <span id="errorCVC" class="error"></span><br>
-
         <input type="submit" value="Continuar con el pago">
     </form>
 
