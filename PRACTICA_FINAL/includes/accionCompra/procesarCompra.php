@@ -22,10 +22,8 @@ class comprarProductoForm extends formBase {
             <fieldset>
                 <legend>Confirmar Compra</legend>
                 <p><label>Método de Pago:</label> 
-                    <select name="metodo_pago" required>
-                        <option value="Tarjeta">Tarjeta de Crédito</option>
-                        <option value="Saldo">Saldo</option> <!-- ✅ Añadido -->
-                    </select>
+                <label>Saldo</label> 
+                   
                 </p>
                 <input type="hidden" name="id_producto" value="{$this->idProducto}">
                 <button type="submit" name="comprar">Confirmar Compra</button>
