@@ -2,7 +2,7 @@
 session_start();
 require_once("../accionCompra/apiRedsys.php");
 $config = require("../accionCompra/redsysConfig.php");
-require_once("../../services/userAppService.php");
+//require("../../usuario/userAppService.php");
 
 $redsys = new RedsysAPI();
 

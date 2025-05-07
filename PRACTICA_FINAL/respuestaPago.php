@@ -1,12 +1,10 @@
 
 <?php
-require_once("includes/redsysConfig.php");
-require_once("includes/apiRedsys.php");
+require_once("includes/apiRedsys.php"); 
 require_once(__DIR__ . "/../compras/compraAppService.php");
 
 session_start();
 
-$config = include("redsysConfig.php");
 
 $signatureVersion = $_POST["Ds_SignatureVersion"] ?? null;
 $merchantParameters = $_POST["Ds_MerchantParameters"] ?? null;
