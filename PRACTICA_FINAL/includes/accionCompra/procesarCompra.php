@@ -21,12 +21,9 @@ class comprarProductoForm extends formBase {
         <form method="POST" action="{$_SERVER['PHP_SELF']}">
             <fieldset>
                 <legend>Confirmar Compra</legend>
-                <p><label>Método de Pago:</label> 
-                    <select name="metodo_pago" required>
-                        <option value="Tarjeta">Tarjeta de Crédito</option>
-                        <option value="Saldo">Saldo</option> <!-- ✅ Añadido -->
-                    </select>
-                </p>
+                <p><strong>Método de Pago:</strong> Saldo</p>
+<input type="hidden" name="metodo_pago" value="Saldo">
+
                 <input type="hidden" name="id_producto" value="{$this->idProducto}">
                 <button type="submit" name="comprar">Confirmar Compra</button>
             </fieldset>
@@ -57,10 +54,7 @@ EOF;
 
         $precio = $producto->getPrecio();
 
-        if ($metodo_pago === "Tarjeta") {
-            header("Location: pagoRedsys.php?id_producto=$id_producto&precio=$precio&id_usuario=$id_usuario");
-            exit();
-        } else {
+        
             $id_vendedor = $producto->getIdUsuario();
             $fecha_compra = date("Y-m-d H:i:s");
 
@@ -85,6 +79,6 @@ EOF;
             $productoService->eliminarProducto($id_producto);
             header("Location: confirmacionCompra.php");
             exit();
-        }
+        
     }
 }
