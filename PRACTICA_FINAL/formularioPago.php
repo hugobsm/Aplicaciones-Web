@@ -22,7 +22,7 @@ session_start();
         <input type="number" step="0.01" name="importe" id="importe" required><br>
         <span id="errorImporte" class="error"></span><br>
 
-        <input type="submit" value="Continuar con el pago">
+        <input type="submit" value="Continuar con el recargo de saldo">
     </form>
 
     <script>

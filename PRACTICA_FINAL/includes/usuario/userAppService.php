@@ -100,5 +100,12 @@ class userAppService
 
         return true;
     }
+
+    public function getUserById($idUsuario) {
+        $IUserDAO = userFactory::CreateUser();
+        return $IUserDAO->getUserById($idUsuario);
+    }
+    
+    
 }
 ?>

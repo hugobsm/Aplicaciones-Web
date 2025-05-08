@@ -39,7 +39,9 @@ function gestorExcepciones(Throwable $exception)
     <p> Parece que ha habido un fallo.</p>
     EOS;
 
-    require("includes/comun/plantilla.php");
+    //require("includes/comun/plantilla.php");
+    require_once(__DIR__ . '/comun/plantilla.php');
+
 }
 
 set_exception_handler('gestorExcepciones');
