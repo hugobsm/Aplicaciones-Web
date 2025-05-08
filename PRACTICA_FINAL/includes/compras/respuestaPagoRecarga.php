@@ -12,6 +12,6 @@ if ($status === 'ok') {
     // y sumarle el importe a su cuenta
 
 } else {
-   
+    echo "<h2>❌ El pago fue cancelado o fallido</h2>";
 }
 ?>
