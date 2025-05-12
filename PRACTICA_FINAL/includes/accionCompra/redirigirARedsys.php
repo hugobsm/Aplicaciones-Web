@@ -1,6 +1,10 @@
 <?php
-session_start();
-include 'includes/accionCompra/apiRedsys.php';
+require_once(__DIR__ . '/../config.php');
+
+include_once(__DIR__ . '/apiRedsys.php');
+
+//require_once(__DIR__ . '/../includes/application.php');
+
 
 $miObj = new RedsysAPI;
 
