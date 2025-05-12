@@ -3,13 +3,13 @@
 require_once(__DIR__. "/application.php");
 
 
-//define('BD_HOST', 'vm018.db.swarm.test');
-define('BD_HOST', 'localhost');
+define('BD_HOST', 'vm018.db.swarm.test');
+//define('BD_HOST', 'localhost');
 define('BD_NAME', 'brandswap');
-//define('BD_USER', 'prueba'); // Ajusta según tu configuración
-define('BD_USER', 'root'); // Ajusta según tu configuración
-//define('BD_PASS', 'prueba'); // Si tienes contraseña, colócala aquí
-define('BD_PASS', '');
+define('BD_USER', 'prueba'); // Ajusta según tu configuración
+//define('BD_USER', 'root'); // Ajusta según tu configuración
+define('BD_PASS', 'prueba'); // Si tienes contraseña, colócala aquí
+//define('BD_PASS', '');
 
 define('RAIZ_APP',__DIR__);
 define('RUTA_APP', '/Aplicaciones-Web/PRACTICA_FINAL/');
