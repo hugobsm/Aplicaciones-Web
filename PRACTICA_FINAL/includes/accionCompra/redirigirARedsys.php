@@ -13,8 +13,8 @@ $terminal="1";
 $moneda="978";
 $trans="0";
 $url="";
-$urlOK = 'http://localhost/Aplicaciones-Web/PRACTICA_FINAL/includes/compras/respuestaPagoRecarga.php?status=ok';
-$urlKO = 'http://localhost/Aplicaciones-Web/PRACTICA_FINAL/includes/compras/respuestaPagoRecarga.php?status=ko';
+$urlOK = 'https://vm018.containers.fdi.ucm.es/Aplicaciones-Web/PRACTICA_FINAL/includes/compras/respuestaPagoRecarga.php?status=ok';
+$urlKO = 'https://vm018.containers.fdi.ucm.es/Aplicaciones-Web/PRACTICA_FINAL/includes/compras/respuestaPagoRecarga.php?status=ko';
 
 $id = time();
 $importe = isset($_POST['importe']) ? str_replace(',', '.', $_POST['importe']) : 0;
